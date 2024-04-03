@@ -15,4 +15,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SupplyTrackerMVC.Application\SupplyTrackerMVC.Application.csproj" />
+    <ProjectReference Include="..\SupplyTrackerMVC.Infrastructure\SupplyTrackerMVC.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
