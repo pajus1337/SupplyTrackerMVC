@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SupplyTrackerMVC.Application.Interfaces;
+using SupplyTrackerMVC.Application.Services;
 using SupplyTrackerMVC.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+// DI Configuration
+builder.Services.AddTransient<IReceiverService, ReceiverService>();
 
 var app = builder.Build();
 
