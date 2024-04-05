@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupplyTrackerMVC.Domain.Model
+namespace SupplyTrackerMVC.Domain.Model.Receiver
 {
-    internal class DeliveryBranch
+    public class DeliveryBranch
     {
+        public int Id { get; set; }
+        public string BranchInternalID { get; set; }
     }
 }
