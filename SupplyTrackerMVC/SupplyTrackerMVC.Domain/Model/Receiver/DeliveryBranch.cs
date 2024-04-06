@@ -10,5 +10,8 @@ namespace SupplyTrackerMVC.Domain.Model.Receiver
     {
         public int Id { get; set; }
         public string BranchInternalID { get; set; }
+
+        public int ReceiverId { get; set; }
+        public Receiver Receiver { get; set; }
     }
 }

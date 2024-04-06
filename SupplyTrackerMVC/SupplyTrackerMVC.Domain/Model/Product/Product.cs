@@ -10,8 +10,12 @@ namespace SupplyTrackerMVC.Domain.Model.Product
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int ProductTypeId { get; set; }
 
+        // N:1
+        public int ProductTypeId { get; set; }
         public ProductType ProductType { get; set; }
+
+        // 1:1
+        public ProductDetail ProductDetail { get; set; }
     }
 }

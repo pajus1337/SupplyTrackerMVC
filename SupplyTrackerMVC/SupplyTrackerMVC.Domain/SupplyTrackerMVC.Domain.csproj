@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\" />
+    <Folder Include="Model\Delivery\" />
   </ItemGroup>
 
 </Project>
