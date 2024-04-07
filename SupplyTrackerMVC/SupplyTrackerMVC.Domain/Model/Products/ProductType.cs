@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupplyTrackerMVC.Domain.Model.Product
+namespace SupplyTrackerMVC.Domain.Model.Products
 {
     public class ProductType
     {

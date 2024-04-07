@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupplyTrackerMVC.Domain.Model.Sender
+namespace SupplyTrackerMVC.Domain.Model.Contacts
 {
-    public class Sender
+    public class ContactDetailType
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int MyProperty { get; set; }
+
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupplyTrackerMVC.Domain.Model.Receiver
+namespace SupplyTrackerMVC.Domain.Model.Receivers
 {
     public class DeliveryBranch
     {

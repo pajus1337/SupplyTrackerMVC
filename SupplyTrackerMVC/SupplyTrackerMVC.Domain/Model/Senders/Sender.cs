@@ -4,14 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupplyTrackerMVC.Domain.Model.Receiver
+namespace SupplyTrackerMVC.Domain.Model.Senders
 {
-    public class Receiver
+    public class Sender
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
-        // 1:N
-        public ICollection<DeliveryBranch> DeliveryBranchs { get; set; }
     }
 }
