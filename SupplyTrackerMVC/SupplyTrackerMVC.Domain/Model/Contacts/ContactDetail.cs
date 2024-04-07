@@ -11,6 +11,5 @@ namespace SupplyTrackerMVC.Domain.Model.Contacts
         public int Id { get; set; }
         public int ContactDetailTypeId { get; set; }
         public ContactDetailType ContactDetailType { get; set; }
-        public int MyProperty { get; set; }
     }
 }

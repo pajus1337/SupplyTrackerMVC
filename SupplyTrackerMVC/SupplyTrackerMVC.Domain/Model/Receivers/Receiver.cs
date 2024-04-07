@@ -14,6 +14,8 @@ namespace SupplyTrackerMVC.Domain.Model.Receivers
 
         // 1:N
         public ICollection<DeliveryBranch> DeliveryBranchs { get; set; }
+
+        // 1:N
         public ICollection<Contact> Contacts { get; set; }
     }
 }
