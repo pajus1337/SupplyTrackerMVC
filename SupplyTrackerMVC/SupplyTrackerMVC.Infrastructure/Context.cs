@@ -30,7 +30,11 @@ namespace SupplyTrackerMVC.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder); 
+            base.OnModelCreating(builder);
+
+            builder.Entity<Product>()
+                .HasOne(a => a.ProductDetail).WithOne(b => b.Product)
+                .HasForeignKey<ProductDetail>(fk => fk.ProductRef);
         }
     }
 }
