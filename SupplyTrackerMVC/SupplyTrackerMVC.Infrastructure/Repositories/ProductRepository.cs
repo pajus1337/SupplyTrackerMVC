@@ -1,4 +1,6 @@
-﻿using SupplyTrackerMVC.Domain.Model.Products;
+﻿using SupplyTrackerMVC.Domain.Exceptions;
+using SupplyTrackerMVC.Domain.Interfaces;
+using SupplyTrackerMVC.Domain.Model.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Infrastructure.Repositories
 {
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly Context _context;
         public ProductRepository(Context context)
@@ -24,9 +26,9 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context.Products.Add(product);
             _context.SaveChanges();
             return product.Id;
-        }
+        }   
 
-        public void EditProduct()
+        public void UpdateProduct()
         {
 
         }
@@ -50,6 +52,27 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             }
             var products = _context.Products.Where(p => p.ProductTypeId == productTypeId);
             return products;
+        }
+
+        public Product GetProoductById(int productId)
+        {
+            if (productId <= 0)
+            {
+                throw new ArgumentException("Product Id must be '> 0'", nameof(productId));
+            }
+
+            var product = _context.Products.FirstOrDefault(p => p.Id == productId);
+            if (product == null)
+            {
+                throw new ProductNotFoundException($"No product with ID {productId} found.", productId);
+            }
+            return product; 
+        }
+
+        public IQueryable<ProductType> GetAllProductTypes()
+        {
+            var productTypes = _context.ProductTypes;
+            return productTypes;
         }
     }
 }
