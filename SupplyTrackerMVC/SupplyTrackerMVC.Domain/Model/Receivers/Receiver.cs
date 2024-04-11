@@ -11,6 +11,8 @@ namespace SupplyTrackerMVC.Domain.Model.Receivers
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public byte LogoPic { get; set; }
+        public bool isActive { get; set; }
 
         // 1:N
         public ICollection<DeliveryBranch> DeliveryBranchs { get; set; }

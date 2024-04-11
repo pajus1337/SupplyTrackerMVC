@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupplyTrackerMVC.Domain.Model.Senders
+namespace SupplyTrackerMVC.Application.ViewModels.Receiver
 {
-    public class Sender
+    public class ReceiverForListVm
     {
         public int Id { get; set; }
+
         public string Name { get; set; }
-        public bool IsActive { get; set; }
     }
 }

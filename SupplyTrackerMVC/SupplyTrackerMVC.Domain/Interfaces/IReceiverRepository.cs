@@ -13,6 +13,8 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         int AddReceiver(Receiver receiver);
         void UpdateReceiver();
         void DeleteReceiver(int receiverId);
-        Product GetReceiverById(int receiverId);
+        Receiver GetReceiverById(int receiverId);
+        IQueryable<Receiver> GetAllActiveReceivers();
+
     }
 }
