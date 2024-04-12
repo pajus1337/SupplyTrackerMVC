@@ -37,7 +37,9 @@ namespace SupplyTrackerMVC.Application.Services
 
         public ReceiverDetailsVm GetReceiiverDetailsById(int receiverId)
         {
-            throw new NotImplementedException();
+            var receiver = _receiverRepository.GetReceiverById(receiverId);
+            var receiverVm = new NewReceiverVm();
+            receiverVm.Id = 
         }
     }
 }

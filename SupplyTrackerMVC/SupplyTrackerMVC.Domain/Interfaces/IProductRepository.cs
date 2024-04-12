@@ -1,5 +1,4 @@
-﻿using SupplyTrackerMVC.Domain.Exceptions;
-using SupplyTrackerMVC.Domain.Model.Products;
+﻿using SupplyTrackerMVC.Domain.Model.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;

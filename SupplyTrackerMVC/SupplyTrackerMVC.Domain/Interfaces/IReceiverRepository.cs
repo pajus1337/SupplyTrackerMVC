@@ -1,5 +1,4 @@
-﻿using SupplyTrackerMVC.Domain.Model.Products;
-using SupplyTrackerMVC.Domain.Model.Receivers;
+﻿using SupplyTrackerMVC.Domain.Model.Receivers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +14,5 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         void DeleteReceiver(int receiverId);
         Receiver GetReceiverById(int receiverId);
         IQueryable<Receiver> GetAllActiveReceivers();
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Domain.Model.Contacts;
+using SupplyTrackerMVC.Domain.Model.Deliveries;
 using SupplyTrackerMVC.Domain.Model.Products;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 using SupplyTrackerMVC.Domain.Model.Senders;
@@ -23,18 +24,37 @@ namespace SupplyTrackerMVC.Infrastructure
         public DbSet<DeliveryBranch> DeliveryBranches { get; set; }
         public DbSet<Receiver> Receivers { get; set; }
         public DbSet<Sender> Senders { get; set; }
-            
+
         public Context(DbContextOptions options) : base(options)
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
 
-            builder.Entity<Product>()
-                .HasOne(a => a.ProductDetail).WithOne(b => b.Product)
-                .HasForeignKey<ProductDetail>(fk => fk.ProductRef);
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.ProductDetail)
+                .WithOne(pd => pd.Product)
+                .HasForeignKey<ProductDetail>(pd => pd.ProductRef);
+
+            modelBuilder.Entity<Delivery>()
+                .HasOne(d => d.Sender)
+                .WithMany(s => s.Deliveries)
+                .HasForeignKey(d => d.SenderId)
+                .IsRequired();
+
+            modelBuilder.Entity<Delivery>()
+                .HasOne(d => d.receiver)
+                .WithMany(r => r.Deliveries)
+                .HasForeignKey(d => d.ReceiverId)
+                .IsRequired();
+
+            modelBuilder.Entity<Delivery>()
+                .HasOne(d => d.Product)
+                .WithMany(p => p.Deliveries)
+                .HasForeignKey(d => d.ProductID)
+                .IsRequired();
         }
     }
 }

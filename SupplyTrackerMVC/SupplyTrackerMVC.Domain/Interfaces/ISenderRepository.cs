@@ -1,6 +1,4 @@
-﻿using SupplyTrackerMVC.Domain.Model.Products;
-using SupplyTrackerMVC.Domain.Model.Receivers;
-using SupplyTrackerMVC.Domain.Model.Senders;
+﻿using SupplyTrackerMVC.Domain.Model.Senders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +12,6 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         int AddSender(Sender sender);
         void UpdateSender();
         void DeleteSender(int senderId);
-        Product GetSenderById(int senderId);
+        Sender GetSenderById(int senderId);
     }
 }

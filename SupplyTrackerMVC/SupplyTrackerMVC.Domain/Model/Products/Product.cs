@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SupplyTrackerMVC.Domain.Model.Deliveries;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,7 @@ namespace SupplyTrackerMVC.Domain.Model.Products
 
         // 1:1
         public ProductDetail ProductDetail { get; set; }
+
+        public ICollection<Delivery> Deliveries { get; set; }
     }
 }
