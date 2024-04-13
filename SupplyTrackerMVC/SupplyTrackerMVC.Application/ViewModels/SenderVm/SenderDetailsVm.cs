@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupplyTrackerMVC.Application.ViewModels.Receiver
+namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
 {
-    public class NewReceiverVm
+    public class SenderDetailsVM
     {
         public int Id { get; set; }
         public string Name { get; set; }

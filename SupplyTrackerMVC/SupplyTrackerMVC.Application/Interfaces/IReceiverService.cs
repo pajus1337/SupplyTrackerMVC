@@ -1,4 +1,4 @@
-﻿using SupplyTrackerMVC.Application.ViewModels.Receiver;
+﻿using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,6 @@ namespace SupplyTrackerMVC.Application.Interfaces
     {
         int AddNewReceiver(NewReceiverVm receiver);
         ListReceiverForListVm GetAllReceiversForList();
-        ReceiverDetailsVm GetReceiiverDetailsById(int receiverId);
+        ReceiverDetailsVm GetReceiverDetailsById(int receiverId);
     }
 }

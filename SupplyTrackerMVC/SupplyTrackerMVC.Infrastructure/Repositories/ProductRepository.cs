@@ -54,7 +54,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             return products;
         }
 
-        public Product GetProoductById(int productId)
+        public Product GetProductById(int productId)
         {
             if (productId <= 0)
             {

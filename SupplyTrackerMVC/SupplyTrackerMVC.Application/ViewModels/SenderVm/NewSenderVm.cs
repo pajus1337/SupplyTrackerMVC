@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupplyTrackerMVC.Application.ViewModels.Delivery
+namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
 {
-    public class AddDeliveryVm
+    public class NewSenderVm
     {
     }
 }

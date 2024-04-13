@@ -12,7 +12,7 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         int AddProduct(Product product);
         void UpdateProduct();
         void DeleteProduct(int productId);
-        Product GetProoductById(int productId);
+        Product GetProductById(int productId);
         IQueryable<Product> GetProductsByProductTypeId(int productTypeId);
         IQueryable<ProductType> GetAllProductTypes();
     }

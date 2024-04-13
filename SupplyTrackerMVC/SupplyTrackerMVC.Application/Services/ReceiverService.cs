@@ -1,5 +1,5 @@
 ﻿using SupplyTrackerMVC.Application.Interfaces;
-using SupplyTrackerMVC.Application.ViewModels.Receiver;
+using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public ListReceiverForListVm GetAllReceiversForList()
         {
-            var receivers = _receiverRepository.GetAllActiveReceivers();
+            var receivers = _receiverRepository.GetAllReceivers();
             ListReceiverForListVm result = new ListReceiverForListVm();
             result.Receivers = new List<ReceiverForListVm>();
 
@@ -35,11 +35,17 @@ namespace SupplyTrackerMVC.Application.Services
             return result;
         }
 
-        public ReceiverDetailsVm GetReceiiverDetailsById(int receiverId)
+        public ReceiverDetailsVm GetReceiverDetailsById(int receiverId)
         {
             var receiver = _receiverRepository.GetReceiverById(receiverId);
-            var receiverVm = new NewReceiverVm();
-            receiverVm.Id = 
+            var receiverVm = new ReceiverDetailsVm();
+            receiverVm.Id = receiver.Id;
+            receiverVm.Name = receiver.Name;
+            receiverVm.Street = receiver.Address.Street;
+            receiverVm.City = receiver.Address.City;
+            receiverVm.ZIP = receiver.Address.ZIP;
+
+            return receiverVm;
         }
     }
 }

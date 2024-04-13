@@ -9,6 +9,7 @@ namespace SupplyTrackerMVC.Domain.Model.Contacts
     public class ContactDetail
     {
         public int Id { get; set; }
+        public string ContactDetailValue { get; set; }
         public int ContactDetailTypeId { get; set; }
         public ContactDetailType ContactDetailType { get; set; }
     }

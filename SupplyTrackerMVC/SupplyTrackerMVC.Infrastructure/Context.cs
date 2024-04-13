@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SupplyTrackerMVC.Domain.Model.Addresses;
 using SupplyTrackerMVC.Domain.Model.Contacts;
 using SupplyTrackerMVC.Domain.Model.Deliveries;
 using SupplyTrackerMVC.Domain.Model.Products;
@@ -21,7 +22,7 @@ namespace SupplyTrackerMVC.Infrastructure
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
-        public DbSet<DeliveryBranch> DeliveryBranches { get; set; }
+        public DbSet<ReceiverBranch> DeliveryBranches { get; set; }
         public DbSet<Receiver> Receivers { get; set; }
         public DbSet<Sender> Senders { get; set; }
 
@@ -37,6 +38,12 @@ namespace SupplyTrackerMVC.Infrastructure
                 .HasOne(p => p.ProductDetail)
                 .WithOne(pd => pd.Product)
                 .HasForeignKey<ProductDetail>(pd => pd.ProductRef);
+
+            modelBuilder.Entity<Receiver>()
+                .HasOne(r => r.Address)
+                .WithOne(a => a.Receiver)
+                .HasForeignKey<Address>(a => a.ReceiverRef)
+                .IsRequired();
 
             modelBuilder.Entity<Delivery>()
                 .HasOne(d => d.Sender)

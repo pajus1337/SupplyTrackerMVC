@@ -1,4 +1,5 @@
-﻿using SupplyTrackerMVC.Domain.Model.Contacts;
+﻿using SupplyTrackerMVC.Domain.Model.Addresses;
+using SupplyTrackerMVC.Domain.Model.Contacts;
 using SupplyTrackerMVC.Domain.Model.Deliveries;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,12 @@ namespace SupplyTrackerMVC.Domain.Model.Receivers
         public byte LogoPic { get; set; }
         public bool isActive { get; set; }
 
+        // 1:1 
+        public int AddressId { get; set; }
+        public Address Address { get; set; }
+
         // 1:N
-        public ICollection<DeliveryBranch> DeliveryBranchs { get; set; }
+        public ICollection<ReceiverBranch> DeliveryBranchs { get; set; }
 
         // 1:N
         public ICollection<Contact> Contacts { get; set; }
