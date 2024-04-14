@@ -1,15 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Services;
+using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 
 namespace SupplyTrackerMVC.Web.Controllers
 {
     public class ReceiverController : Controller
     {
+        private readonly IReceiverService _receiverService;
+
+        public ReceiverController(IReceiverService receiverService)
+        {
+            _receiverService = receiverService;
+        }
         public IActionResult Index()
         {
-            var model = IReceiverService.GetAllReceiversForList();
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult ListOfActiveReceivers()
+        {
+            var model = _receiverService.GetAllActiveReceiversForList();
+            return View(model);
         }
 
         [HttpGet]
@@ -19,7 +32,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddReceiver(ReceiverModel receiverModel)
+        public IActionResult AddReceiver(NewReceiverVm newReceiverModel)
         {
             return View();
         }

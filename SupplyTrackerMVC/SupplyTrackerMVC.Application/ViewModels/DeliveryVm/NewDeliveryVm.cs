@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.DeliveryVm
 {
-    public class AddDeliveryVm
+    public class NewDeliveryVm
     {
     }
 }

@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SupplyTrackerMVC.Application.DI;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Services;
+using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Infrastructure;
+using SupplyTrackerMVC.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +20,11 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 
 // DI Configuration
-builder.Services.AddTransient<IReceiverService, ReceiverService>();
+//- Services
+builder.Services.AddApplication();
+//- Repositories
+builder.Services.AddInfrastructure();
+// * End of DI Configuration
 
 var app = builder.Build();
 

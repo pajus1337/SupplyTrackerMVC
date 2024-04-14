@@ -13,8 +13,5 @@ namespace SupplyTrackerMVC.Domain.Model.Addresses
         public string Street { get; set; }
         public string City { get; set; }
         public string ZIP { get; set; }
-
-        public int ReceiverRef { get; set; }
-        public Receiver Receiver { get; set; }
     }
 }

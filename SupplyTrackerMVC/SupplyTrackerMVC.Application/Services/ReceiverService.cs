@@ -1,4 +1,5 @@
-﻿using SupplyTrackerMVC.Application.Interfaces;
+﻿using AutoMapper;
+using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using System;
@@ -12,14 +13,22 @@ namespace SupplyTrackerMVC.Application.Services
     public class ReceiverService : IReceiverService
     {
         private readonly IReceiverRepository _receiverRepository;
+        private readonly IMapper _mapper;
+
+        public ReceiverService(IReceiverRepository receiverRepository, IMapper mapper )
+        {
+            _receiverRepository = receiverRepository;
+            _mapper = mapper;
+        }
+
         public int AddNewReceiver(NewReceiverVm receiver)
         {
             throw new NotImplementedException();
         }
 
-        public ListReceiverForListVm GetAllReceiversForList()
+        public ListReceiverForListVm GetAllActiveReceiversForList()
         {
-            var receivers = _receiverRepository.GetAllReceivers();
+            var receivers = _receiverRepository.GetAllActiveReceivers();
             ListReceiverForListVm result = new ListReceiverForListVm();
             result.Receivers = new List<ReceiverForListVm>();
 

@@ -20,7 +20,7 @@ namespace SupplyTrackerMVC.Domain.Model.Deliveries
 
         // 1:N 
         public int ReceiverId { get; set; }
-        public Receiver receiver { get; set; }
+        public Receiver Receiver { get; set; }
 
         // 1:N 
         public int ProductID { get; set; }

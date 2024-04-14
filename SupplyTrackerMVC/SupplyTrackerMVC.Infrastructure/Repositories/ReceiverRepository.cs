@@ -10,6 +10,13 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 {
     public class ReceiverRepository : IReceiverRepository
     {
+        private readonly Context _context;
+
+        public ReceiverRepository(Context context)
+        {
+            _context = context;
+        }
+
         public int AddReceiver(Receiver receiver)
         {
             throw new NotImplementedException();
@@ -20,9 +27,10 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public IQueryable<Receiver> GetAllReceivers()
+        public IQueryable<Receiver> GetAllActiveReceivers()
         {
-            throw new NotImplementedException();
+            var allActiveReceiver = _context.Receivers.Where(p => p.isActive);
+            return allActiveReceiver;
         }
 
         public Receiver GetReceiverById(int receiverId)

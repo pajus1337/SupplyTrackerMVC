@@ -10,7 +10,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
     public interface IReceiverService
     {
         int AddNewReceiver(NewReceiverVm receiver);
-        ListReceiverForListVm GetAllReceiversForList();
+        ListReceiverForListVm GetAllActiveReceiversForList();
         ReceiverDetailsVm GetReceiverDetailsById(int receiverId);
     }
 }
