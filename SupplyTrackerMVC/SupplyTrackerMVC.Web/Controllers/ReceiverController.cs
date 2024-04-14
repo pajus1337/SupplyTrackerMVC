@@ -28,12 +28,13 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public IActionResult AddReceiver()
         {
-            return View();
+            return View(new NewReceiverVm());
         }
 
         [HttpPost]
         public IActionResult AddReceiver(NewReceiverVm newReceiverModel)
         {
+            var id = _receiverService.AddNewReceiver(newReceiverModel);
             return View();
         }
 
