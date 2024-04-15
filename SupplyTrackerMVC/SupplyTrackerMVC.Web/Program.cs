@@ -1,11 +1,16 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Application.DI;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Services;
+using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Infrastructure;
 using SupplyTrackerMVC.Infrastructure.Repositories;
+using System;
+using System.Reflection;
+using static SupplyTrackerMVC.Application.ViewModels.ReceiverVm.NewReceiverVm;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +22,10 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<Context>();
+
+//  Fluent Validation Setup
+builder.Services.AddValidatorsFromAssembly(Assembly.Load("SupplyTrackerMVC.Application"));
+
 builder.Services.AddControllersWithViews();
 
 // DI Configuration

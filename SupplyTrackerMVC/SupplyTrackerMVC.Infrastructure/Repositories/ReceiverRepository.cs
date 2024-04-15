@@ -19,7 +19,8 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
         public int AddReceiver(Receiver receiver)
         {
-            throw new NotImplementedException();
+            _context.Add(receiver);
+            return receiver.Id;
         }
 
         public void DeleteReceiver(int receiverId)
@@ -36,6 +37,11 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         public Receiver GetReceiverById(int receiverId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
         }
 
         public void UpdateReceiver()

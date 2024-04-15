@@ -15,11 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{63641159-D3D4-4655-80DC-2E0C1ABD6A7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupplyTrackerMVC.Application", "SupplyTrackerMVC.Application\SupplyTrackerMVC.Application.csproj", "{6E8F4D33-7CA0-4B3D-845D-346716D6AB74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SupplyTrackerMVC.Application", "SupplyTrackerMVC.Application\SupplyTrackerMVC.Application.csproj", "{6E8F4D33-7CA0-4B3D-845D-346716D6AB74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupplyTrackerMVC.Domain", "SupplyTrackerMVC.Domain\SupplyTrackerMVC.Domain.csproj", "{359BB12D-C5B8-4BA3-8A6A-E455AF428595}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SupplyTrackerMVC.Domain", "SupplyTrackerMVC.Domain\SupplyTrackerMVC.Domain.csproj", "{359BB12D-C5B8-4BA3-8A6A-E455AF428595}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupplyTrackerMVC.Infrastructure", "SupplyTrackerMVC.Infrastructure\SupplyTrackerMVC.Infrastructure.csproj", "{10F52FFE-71E9-4BA5-B46B-9D6398D7C2B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SupplyTrackerMVC.Infrastructure", "SupplyTrackerMVC.Infrastructure\SupplyTrackerMVC.Infrastructure.csproj", "{10F52FFE-71E9-4BA5-B46B-9D6398D7C2B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

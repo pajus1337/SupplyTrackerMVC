@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using SupplyTrackerMVC.Application.Mapping;
 using SupplyTrackerMVC.Application.ViewModels.AddressVm;
 using SupplyTrackerMVC.Domain.Model.Addresses;
@@ -24,6 +25,15 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
                 .ForMember(d => d.Address, opt => opt.MapFrom(s => s.Address));
 
             profile.CreateMap<NewAddressForReceiverVm, Address>();
+        }
+        public class NewReceiverValidator : AbstractValidator<NewReceiverVm>
+        {
+            public NewReceiverValidator()
+            {
+                RuleFor(x => x.Id).NotNull();
+                RuleFor(x => x.Name).Length(0, 5);
+                RuleFor(x => x.Address).SetValidator(new NewAddressForReceiverVmValidator());
+            }
         }
     }
 }
