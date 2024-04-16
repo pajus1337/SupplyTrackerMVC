@@ -23,9 +23,6 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<Context>();
 
-//  Fluent Validation Setup
-builder.Services.AddValidatorsFromAssembly(Assembly.Load("SupplyTrackerMVC.Application"));
-
 builder.Services.AddControllersWithViews();
 
 // DI Configuration

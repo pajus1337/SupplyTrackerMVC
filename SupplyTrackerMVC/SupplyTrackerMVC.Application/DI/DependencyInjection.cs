@@ -18,7 +18,10 @@ namespace SupplyTrackerMVC.Application.DI
         public static IServiceCollection AddApplication(this IServiceCollection serviceDescriptors)
         {
             //Services
+            serviceDescriptors.AddTransient<IDeliveryService, DeliveryService>();
             serviceDescriptors.AddTransient<IReceiverService, ReceiverService>();
+            serviceDescriptors.AddTransient<ISenderService, SenderService>();
+
 
             //AutoMapper
             serviceDescriptors.AddAutoMapper(Assembly.GetExecutingAssembly());

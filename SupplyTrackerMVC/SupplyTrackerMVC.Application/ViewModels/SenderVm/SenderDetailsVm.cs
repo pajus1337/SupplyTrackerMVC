@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
 {
-    public class SenderDetailsVM
+    public class SenderDetailsVm
     {
         public int Id { get; set; }
         public string Name { get; set; }

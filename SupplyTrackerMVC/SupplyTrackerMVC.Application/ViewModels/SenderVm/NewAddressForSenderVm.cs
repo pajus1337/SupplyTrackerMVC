@@ -1,15 +1,8 @@
 ﻿using FluentValidation;
-using SupplyTrackerMVC.Domain.Model.Addresses;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SupplyTrackerMVC.Application.ViewModels.AddressVm
+namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
 {
-    public class NewAddressForReceiverVm
+    public class NewAddressForSenderVm
     {
         public string Street { get; set; }
         public string City { get; set; }
@@ -17,9 +10,9 @@ namespace SupplyTrackerMVC.Application.ViewModels.AddressVm
         public string Country { get; set; }
     }
 
-    public class NewAddressForReceiverVmValidator : AbstractValidator<NewAddressForReceiverVm>
+    public class NewAddressForSenderVmValidator : AbstractValidator<NewAddressForSenderVm>
     {
-        public NewAddressForReceiverVmValidator()
+        public NewAddressForSenderVmValidator()
         {
             RuleFor(p => p.Street).NotNull().MinimumLength(3);
             RuleFor(p => p.City).NotNull().MinimumLength(3);
@@ -28,3 +21,5 @@ namespace SupplyTrackerMVC.Application.ViewModels.AddressVm
         }
     }
 }
+
+

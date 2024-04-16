@@ -25,5 +25,6 @@ namespace SupplyTrackerMVC.Domain.Model.Deliveries
         // 1:N 
         public int ProductID { get; set; }
         public Product Product { get; set; }
+        public int ProductDeliveryWeight { get; set; }
     }
 }

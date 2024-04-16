@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Server.Kestrel.Https;
 using SupplyTrackerMVC.Web.Models;
 using System.Diagnostics;
 

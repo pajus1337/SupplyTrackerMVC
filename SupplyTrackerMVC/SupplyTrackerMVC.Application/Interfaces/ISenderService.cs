@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SupplyTrackerMVC.Application.ViewModels.SenderVm;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,8 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface ISenderService
     {
+        Task<(bool Success, IEnumerable<string>? Errors, int? SenderId)> AddNewSenderAsync(NewSenderVm model);
+        ListSenderForListVm GetAllActiveSendersForList();
+        SenderDetailsVm GetReceiverDetailsById(int senderId);
     }
 }

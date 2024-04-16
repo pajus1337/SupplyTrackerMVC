@@ -1,24 +1,15 @@
-﻿using FluentValidation;
-using SupplyTrackerMVC.Web.Utilities;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc;
 using SupplyTrackerMVC.Application.Interfaces;
-using SupplyTrackerMVC.Application.Services;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
-using SupplyTrackerMVC.Domain.Model.Receivers;
-using System;
-using static SupplyTrackerMVC.Application.ViewModels.ReceiverVm.NewReceiverVm;
 
 namespace SupplyTrackerMVC.Web.Controllers
 {
     public class ReceiverController : Controller
     {
         private readonly IReceiverService _receiverService;
-        private readonly IValidator<NewReceiverVm> _validator;
 
-        public ReceiverController(IReceiverService receiverService, IValidator<NewReceiverVm> validator )
+        public ReceiverController(IReceiverService receiverService)
         {
-            _validator = validator;
             _receiverService = receiverService;
         }
         public IActionResult Index()
@@ -58,6 +49,7 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         public IActionResult ViewReceiver(int receiverId)
         {
+            _receiverService.GetReceiverDetailsById(receiverId);
             return View();
         }
     }

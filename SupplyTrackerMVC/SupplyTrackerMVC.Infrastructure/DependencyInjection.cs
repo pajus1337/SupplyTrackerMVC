@@ -14,7 +14,12 @@ namespace SupplyTrackerMVC.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection serviceDescriptors)
         {
+            serviceDescriptors.AddTransient<IAddressRepository, AddressRepository>();
+            serviceDescriptors.AddTransient<IContactRepository, ContactRepository>();
+            serviceDescriptors.AddTransient<IDeliveryRepository, DeliveryRepository>();
+            serviceDescriptors.AddTransient<IProductRepository, ProductRepository>();
             serviceDescriptors.AddTransient<IReceiverRepository, ReceiverRepository>();
+            serviceDescriptors.AddTransient<ISenderRepository, SenderRepository>();
 
             return serviceDescriptors;
         }
