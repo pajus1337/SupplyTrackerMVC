@@ -10,6 +10,11 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 {
     public class SenderRepository : ISenderRepository
     {
+        private Context _context;
+        public SenderRepository(Context context)
+        {
+            _context = context;
+        }
         public int AddSender(Sender sender)
         {
             throw new NotImplementedException();
@@ -18,6 +23,12 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         public void DeleteSender(int senderId)
         {
             throw new NotImplementedException();
+        }
+
+        public IQueryable<Sender> GetAllActiveSenders()
+        {
+            var senders = _context.Senders.Where(s => s.IsActive);
+            return senders;
         }
 
         public Sender GetSenderById(int senderId)

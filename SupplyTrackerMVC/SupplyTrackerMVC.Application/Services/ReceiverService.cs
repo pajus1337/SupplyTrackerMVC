@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using SupplyTrackerMVC.Application.Interfaces;
@@ -81,6 +82,28 @@ namespace SupplyTrackerMVC.Application.Services
             receiverVm.ZIP = receiver.Address.ZIP;
 
             return receiverVm;
+        }
+
+        public ReceiverSelectListVm GetAllActiveReceiversForSelectList()
+        {
+            var receivers = _receiverRepository.GetAllActiveReceivers().ProjectTo<ReceiverForSelectListVm>(_mapper.ConfigurationProvider);
+            var receiversVm = new ReceiverSelectListVm()
+            {
+                Receivers = receivers
+            };
+
+            return receiversVm;
+        }
+
+        public ReceiverBranchSelectList GetAllActiveReceiverBranchesForSelectList()
+        {
+            var receiverBranches = _receiverRepository.GetAllActiveReceiverBranches().ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider);
+            var receiverBranchesVm = new ReceiverBranchSelectList()
+            {
+                ReceiverBranches = receiverBranches
+            };
+
+            return receiverBranchesVm;
         }
     }
 }

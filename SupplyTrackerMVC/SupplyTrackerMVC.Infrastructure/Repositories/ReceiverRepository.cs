@@ -28,6 +28,17 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public IQueryable<ReceiverBranch> GetAllActiveReceiverBranches(int receiverId)
+        {
+            var activeBranches = _context.DeliveryBranches.Where(b => b.ReceiverId == receiverId && b.isActive);
+            return activeBranches;
+        }
+
+        public IQueryable<ReceiverBranch> GetAllActiveReceiverBranches()
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<Receiver> GetAllActiveReceivers()
         {
             var allActiveReceiver = _context.Receivers.Where(p => p.isActive);

@@ -12,5 +12,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<(bool Success, IEnumerable<string>? Errors, int? ReceiverId)> AddNewReceiverAsync(NewReceiverVm model);
         ListReceiverForListVm GetAllActiveReceiversForList();
         ReceiverDetailsVm GetReceiverDetailsById(int receiverId);
+        ReceiverSelectListVm GetAllActiveReceiversForSelectList();
+        ReceiverBranchSelectList GetAllActiveReceiverBranchesForSelectList();
     }
 }

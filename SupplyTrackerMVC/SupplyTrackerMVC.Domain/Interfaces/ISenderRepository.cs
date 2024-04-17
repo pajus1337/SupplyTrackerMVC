@@ -13,5 +13,6 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         void UpdateSender();
         void DeleteSender(int senderId);
         Sender GetSenderById(int senderId);
+        IQueryable<Sender> GetAllActiveSenders();
     }
 }

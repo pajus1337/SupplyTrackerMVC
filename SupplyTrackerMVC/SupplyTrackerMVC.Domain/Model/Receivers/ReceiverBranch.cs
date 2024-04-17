@@ -13,7 +13,8 @@ namespace SupplyTrackerMVC.Domain.Model.Receivers
         public int Id { get; set; }
         public string Name { get; set; }
         public string BranchInternalID { get; set; }
-
+        public string BranchAlias { get; set; }
+        public bool isActive { get; set; }
         public int AddressId { get; set; }
         public Address Address { get; set; }
 

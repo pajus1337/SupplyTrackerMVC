@@ -11,6 +11,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
     {
         Task<(bool Success, IEnumerable<string>? Errors, int? SenderId)> AddNewSenderAsync(NewSenderVm model);
         ListSenderForListVm GetAllActiveSendersForList();
-        SenderDetailsVm GetReceiverDetailsById(int senderId);
+        SenderDetailsVm GetSenderDetailsById(int senderId);
+        SenderSelectListVm GetAllActiveSendersForSelectList();
     }
 }
