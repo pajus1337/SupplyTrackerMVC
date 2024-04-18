@@ -24,10 +24,6 @@ namespace SupplyTrackerMVC.Infrastructure.ModelBuilders
                 .WithMany(r => r.Deliveries)
                 .HasForeignKey(d => d.ReceiverId);
 
-            builder
-                .HasOne(d => d.Product)
-                .WithMany(p => p.Deliveries)
-                .HasForeignKey(d => d.ProductID);
         }
     }
 }

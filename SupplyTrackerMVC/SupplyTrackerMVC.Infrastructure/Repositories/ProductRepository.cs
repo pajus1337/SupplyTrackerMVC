@@ -74,5 +74,11 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             var productTypes = _context.ProductTypes;
             return productTypes;
         }
+
+        public IQueryable<Product> GetAllActiveProducts()
+        {
+            var products = _context.Products.Where(p => p.isActive);
+            return products;
+        }
     }
 }

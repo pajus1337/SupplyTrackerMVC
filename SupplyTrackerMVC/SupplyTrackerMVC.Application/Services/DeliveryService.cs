@@ -1,4 +1,6 @@
-﻿using SupplyTrackerMVC.Application.Interfaces;
+﻿using AutoMapper;
+using FluentValidation.Results;
+using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.DeliveryVm;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Domain.Interfaces;
@@ -13,10 +15,12 @@ namespace SupplyTrackerMVC.Application.Services
     public class DeliveryService : IDeliveryService
     {
         private readonly IDeliveryRepository _deliveryRepository;
+        private readonly IMapper _mapper;
 
-        public DeliveryService(IDeliveryRepository deliveryRepository)
+        public DeliveryService(IDeliveryRepository deliveryRepository, IMapper mapper)
         {
             _deliveryRepository = deliveryRepository;
+            _mapper = mapper;
         }
         public int AddNewDelivery(NewDeliveryVm model)
         {
@@ -26,7 +30,10 @@ namespace SupplyTrackerMVC.Application.Services
 
         public DeliveryDetailsVm GetDeliveryDetailsById(int deliveryId)
         {
-            throw new NotImplementedException();
+            var delivery = _deliveryRepository.GetDeliveryById(deliveryId);
+            var deliveryVm = _mapper.Map(delivery, new DeliveryDetailsVm());
+
+            return deliveryVm;
         }
     }
 }

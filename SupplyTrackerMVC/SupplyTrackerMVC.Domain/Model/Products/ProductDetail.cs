@@ -11,7 +11,7 @@ namespace SupplyTrackerMVC.Domain.Model.Products
         public int Id { get; set; }
         public string ChemicalSymbol { get; set; }
         public string ChemicalName { get; set; }
-        public bool IsADRProduct { get; set; }
+        public string ProductDescription { get; set; }
         public int MassFraction { get; set; }
 
         public int ProductRef { get; set; }
