@@ -9,7 +9,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface IReceiverService
     {
-        Task<(bool Success, IEnumerable<string>? Errors, int? ReceiverId)> AddNewReceiverAsync(NewReceiverVm model);
+        Task<(bool Success, IEnumerable<string>? Errors, int? ReceiverId)> AddNewReceiverAsync(NewReceiverVm model, CancellationToken cancellationToken);
         ListReceiverForListVm GetAllActiveReceiversForList();
         ReceiverDetailsVm GetReceiverDetailsById(int receiverId);
         ReceiverSelectListVm GetAllActiveReceiversForSelectList();

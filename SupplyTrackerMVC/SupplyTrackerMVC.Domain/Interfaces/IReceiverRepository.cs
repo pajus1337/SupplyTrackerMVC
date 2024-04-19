@@ -15,7 +15,7 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         Receiver GetReceiverById(int receiverId);
         IQueryable<Receiver> GetAllActiveReceivers();
 
-        Task<int> SaveChangesAsync();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         IQueryable<ReceiverBranch> GetAllActiveReceiverBranches();
     }
 }

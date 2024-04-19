@@ -11,32 +11,32 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.Services
 {
-    public class ProduktService : IProduktService
+    public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
-        public ProduktService(IProductRepository productRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository, IMapper mapper)
         {
             _productRepository = productRepository;
             _mapper = mapper;
         }
 
-        public Task<(bool Success, IEnumerable<string>? Errors, int? ProductId)> AddNewProductAsync(NewProductVm model)
+        public Task<(bool Success, IEnumerable<string>? Errors, int? ProductId)> AddNewProductAsync(NewProductVm model, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<(bool Success, IEnumerable<string>? Errors, int? ProductId)> AddNewReceiverAsync(NewProductVm model)
+        public Task<(bool Success, IEnumerable<string>? Errors, int? ProductId)> AddNewReceiverAsync(NewProductVm model, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<(bool Success, string Error)> DeleteProductASync(int productId)
+        public Task<(bool Success, string Error)> DeleteProductASync(int productId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public ProductSelectListVm GetAllActiveProdcutsForSelectList()
+        public ProductSelectListVm GetAllActiveProductsForSelectList()
         {
             var products = _productRepository.GetAllActiveProducts().ProjectTo<ProductForSelectListVm>(_mapper.ConfigurationProvider);
             var productsVm = new ProductSelectListVm()
@@ -57,7 +57,7 @@ namespace SupplyTrackerMVC.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<(bool Success, string Error)> UpdateProductAsync(int productId)
+        public Task<(bool Success, string Error)> UpdateProductAsync(int productId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

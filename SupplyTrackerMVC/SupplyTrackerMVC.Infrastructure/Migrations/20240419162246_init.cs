@@ -12,6 +12,21 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ZIP = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -69,7 +84,8 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PhysicalState = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PhysicalState = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsADRProduct = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,11 +98,20 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LogoPic = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    isActive = table.Column<bool>(type: "bit", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Receivers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Receivers_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,11 +120,20 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LogoPic = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Senders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Senders_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -215,6 +249,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isActive = table.Column<bool>(type: "bit", nullable: false),
                     ProductTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -234,12 +269,22 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BranchInternalID = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BranchAlias = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isActive = table.Column<bool>(type: "bit", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
                     ReceiverId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DeliveryBranches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeliveryBranches_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DeliveryBranches_Receivers_ReceiverId",
                         column: x => x.ReceiverId,
@@ -254,7 +299,9 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReceiverId = table.Column<int>(type: "int", nullable: false),
                     SenderId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -276,6 +323,41 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Deliveries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DeliveryDataTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SenderId = table.Column<int>(type: "int", nullable: false),
+                    ReceiverId = table.Column<int>(type: "int", nullable: false),
+                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    ProductDeliveryWeight = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Deliveries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Deliveries_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Deliveries_Receivers_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "Receivers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Deliveries_Senders_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "Senders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductDetails",
                 columns: table => new
                 {
@@ -283,7 +365,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ChemicalSymbol = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ChemicalName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsADRProduct = table.Column<bool>(type: "bit", nullable: false),
+                    ProductDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MassFraction = table.Column<int>(type: "int", nullable: false),
                     ProductRef = table.Column<int>(type: "int", nullable: false)
                 },
@@ -304,6 +386,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ContactDetailValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContactDetailTypeId = table.Column<int>(type: "int", nullable: false),
                     ContactId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -383,6 +466,27 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Deliveries_ProductID",
+                table: "Deliveries",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Deliveries_ReceiverId",
+                table: "Deliveries",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Deliveries_SenderId",
+                table: "Deliveries",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryBranches_AddressId",
+                table: "DeliveryBranches",
+                column: "AddressId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DeliveryBranches_ReceiverId",
                 table: "DeliveryBranches",
                 column: "ReceiverId");
@@ -397,6 +501,18 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 name: "IX_Products_ProductTypeId",
                 table: "Products",
                 column: "ProductTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Receivers_AddressId",
+                table: "Receivers",
+                column: "AddressId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Senders_AddressId",
+                table: "Senders",
+                column: "AddressId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -419,6 +535,9 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "ContactDetails");
+
+            migrationBuilder.DropTable(
+                name: "Deliveries");
 
             migrationBuilder.DropTable(
                 name: "DeliveryBranches");
@@ -449,6 +568,9 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductTypes");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
         }
     }
 }

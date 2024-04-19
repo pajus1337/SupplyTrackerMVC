@@ -9,7 +9,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface ISenderService
     {
-        Task<(bool Success, IEnumerable<string>? Errors, int? SenderId)> AddNewSenderAsync(NewSenderVm model);
+        Task<(bool Success, IEnumerable<string>? Errors, int? SenderId)> AddNewSenderAsync(NewSenderVm model, CancellationToken cancellationToken);
         ListSenderForListVm GetAllActiveSendersForList();
         SenderDetailsVm GetSenderDetailsById(int senderId);
         SenderSelectListVm GetAllActiveSendersForSelectList();

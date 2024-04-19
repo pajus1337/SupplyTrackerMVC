@@ -32,9 +32,9 @@ namespace SupplyTrackerMVC.Web.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddReceiver(NewReceiverVm model)
+        public async Task<IActionResult> AddReceiver(NewReceiverVm model, CancellationToken cancellationToken)
         {
-            var (success, errors, receiverId) = await _receiverService.AddNewReceiverAsync(model);
+            var (success, errors, receiverId) = await _receiverService.AddNewReceiverAsync(model, cancellationToken);
             if (!success)
             {
                 foreach (var error in errors)

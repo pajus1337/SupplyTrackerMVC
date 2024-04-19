@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Services;
@@ -20,6 +21,7 @@ namespace SupplyTrackerMVC.Application.DI
             //Services
             serviceDescriptors.AddTransient<IDeliveryService, DeliveryService>();
             serviceDescriptors.AddTransient<IReceiverService, ReceiverService>();
+            serviceDescriptors.AddTransient<IProductService, ProductService>();
             serviceDescriptors.AddTransient<ISenderService, SenderService>();
 
 

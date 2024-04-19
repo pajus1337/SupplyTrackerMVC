@@ -246,7 +246,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address");
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Contacts.Contact", b =>
@@ -339,6 +339,9 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.Property<DateTime>("DeliveryDataTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ProductDeliveryWeight")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
@@ -356,7 +359,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Delivery");
+                    b.ToTable("Deliveries");
                 });
 
             modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Products.Product", b =>
@@ -373,6 +376,9 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
                     b.Property<int>("ProductTypeId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -397,11 +403,12 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsADRProduct")
-                        .HasColumnType("bit");
-
                     b.Property<int>("MassFraction")
                         .HasColumnType("int");
+
+                    b.Property<string>("ProductDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductRef")
                         .HasColumnType("int");
@@ -421,6 +428,9 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsADRProduct")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PhysicalState")
                         .IsRequired()
@@ -442,8 +452,8 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
 
-                    b.Property<byte>("LogoPic")
-                        .HasColumnType("tinyint");
+                    b.Property<byte[]>("LogoPic")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -471,6 +481,10 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
 
+                    b.Property<string>("BranchAlias")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("BranchInternalID")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -481,6 +495,9 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
                     b.Property<int>("ReceiverId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -500,17 +517,23 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<byte>("LogoPic")
-                        .HasColumnType("tinyint");
+                    b.Property<byte[]>("LogoPic")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId")
+                        .IsUnique();
 
                     b.ToTable("Senders");
                 });
@@ -599,7 +622,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
             modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Deliveries.Delivery", b =>
                 {
                     b.HasOne("SupplyTrackerMVC.Domain.Model.Products.Product", "Product")
-                        .WithMany("Deliveries")
+                        .WithMany()
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -675,6 +698,17 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.Navigation("Receiver");
                 });
 
+            modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Senders.Sender", b =>
+                {
+                    b.HasOne("SupplyTrackerMVC.Domain.Model.Addresses.Address", "Address")
+                        .WithOne()
+                        .HasForeignKey("SupplyTrackerMVC.Domain.Model.Senders.Sender", "AddressId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+                });
+
             modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Contacts.Contact", b =>
                 {
                     b.Navigation("ContactDetails");
@@ -682,8 +716,6 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
             modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Products.Product", b =>
                 {
-                    b.Navigation("Deliveries");
-
                     b.Navigation("ProductDetail")
                         .IsRequired();
                 });

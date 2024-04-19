@@ -18,8 +18,9 @@ namespace SupplyTrackerMVC.Application.Services
         public SenderService(ISenderRepository senderRepository, IMapper mapper)
         {
             _senderRepository = senderRepository;
+            _mapper = mapper;
         }
-        public Task<(bool Success, IEnumerable<string>? Errors, int? SenderId)> AddNewSenderAsync(NewSenderVm model)
+        public Task<(bool Success, IEnumerable<string>? Errors, int? SenderId)> AddNewSenderAsync(NewSenderVm model, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

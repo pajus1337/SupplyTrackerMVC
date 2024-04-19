@@ -32,7 +32,7 @@ namespace SupplyTrackerMVC.Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<(bool Success, IEnumerable<string>? Errors, int? ReceiverId)> AddNewReceiverAsync(NewReceiverVm model)
+        public async Task<(bool Success, IEnumerable<string>? Errors, int? ReceiverId)> AddNewReceiverAsync(NewReceiverVm model, CancellationToken cancellationToken)
         {
             var validator = _serviceProvider.GetService<IValidator<NewReceiverVm>>();
             if (validator == null)
@@ -48,7 +48,7 @@ namespace SupplyTrackerMVC.Application.Services
 
             var receiver = _mapper.Map<Receiver>(model);
             var receiverId = _receiverRepository.AddReceiver(receiver);
-            await _receiverRepository.SaveChangesAsync();
+            await _receiverRepository.SaveChangesAsync(cancellationToken);
 
             return (true, null, receiverId);
         }
@@ -61,11 +61,12 @@ namespace SupplyTrackerMVC.Application.Services
 
             foreach (var receiver in receivers)
             {
-                var receiverForListVm = new ReceiverForListVm();
+                var receiverForListVm = new ReceiverForListVm()
                 {
-                    receiverForListVm.Id = receiver.Id;
-                    receiverForListVm.Name = receiver.Name;
-                }
+                    Id = receiver.Id,
+                    Name = receiver.Name,                    
+                };
+
                 result.Receivers.Add(receiverForListVm);
             }
             return result;
@@ -89,7 +90,7 @@ namespace SupplyTrackerMVC.Application.Services
             var receivers = _receiverRepository.GetAllActiveReceivers().ProjectTo<ReceiverForSelectListVm>(_mapper.ConfigurationProvider);
             var receiversVm = new ReceiverSelectListVm()
             {
-                Receivers = receivers
+                Receivers = receivers,
             };
 
             return receiversVm;
@@ -100,7 +101,7 @@ namespace SupplyTrackerMVC.Application.Services
             var receiverBranches = _receiverRepository.GetAllActiveReceiverBranches().ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider);
             var receiverBranchesVm = new ReceiverBranchSelectList()
             {
-                ReceiverBranches = receiverBranches
+                ReceiverBranches = receiverBranches,
             };
 
             return receiverBranchesVm;

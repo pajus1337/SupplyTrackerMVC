@@ -17,7 +17,8 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
         public void Mapping(Profile profile)
         {
             profile.CreateMap<ProductForSelectListVm, Product>()
-                .ForMember(x => x.ProductDetail.ChemicalSymbol, opt => opt.MapFrom(s => s.ChemicalSymbol));
+                .ForPath(d => d.ProductDetail.ChemicalSymbol, opt => opt.MapFrom(s => s.ChemicalSymbol));
+            profile.CreateMap<Product, ProductForSelectListVm>();
         }
     }
 }

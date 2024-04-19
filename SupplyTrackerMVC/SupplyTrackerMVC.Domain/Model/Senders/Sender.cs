@@ -13,7 +13,7 @@ namespace SupplyTrackerMVC.Domain.Model.Senders
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public byte[] LogoPic { get; set; }
+        public byte[]? LogoPic { get; set; }
         public bool IsActive { get; set; }
 
         // 1:1 

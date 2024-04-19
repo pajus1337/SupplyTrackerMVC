@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
+using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
+using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Model.Products;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 using System;
@@ -15,12 +17,14 @@ namespace SupplyTrackerMVC.Application.ViewModels.DeliveryVm
     {
         public int Id { get; set; }
         public DateTime DeliveryDataTime { get; set; }
+        public int SelectedSenderId { get; set; }
+        public SenderSelectListVm Senders { get; set; }
         public int SelectedReceiverId { get; set; }
-        public IEnumerable<ReceiverForSelectListVm> Receivers { get; set; }
+        public ReceiverSelectListVm Receivers { get; set; }
         public int SelectedReceiverBranchId { get; set; }
-        public IEnumerable<ReceiverBranch> ReceiverBranches { get; set; }
-        public int SelectedPProductId { get; set; }
-        public IEnumerable<Product> Products { get; set; }
+        public ReceiverBranchSelectList ReceiverBranches { get; set; }
+        public int SelectedProductId { get; set; }
+        public ProductSelectListVm Products { get; set; }
 
         public int ProductDeliveryWeight { get; set; }
 
