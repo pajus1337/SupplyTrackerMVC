@@ -1,4 +1,5 @@
 ﻿using SupplyTrackerMVC.Application.ViewModels.DeliveryVm;
+using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
     {
         int AddNewDelivery(NewDeliveryVm model);
         DeliveryDetailsVm GetDeliveryDetailsById(int deliveryId);
+        NewDeliveryVm PrepareNewDeliveryViewModel();
+        ReceiverBranchSelectListVm GetReceiverBranchesByReceiverId(int receiverId);
     }
 }

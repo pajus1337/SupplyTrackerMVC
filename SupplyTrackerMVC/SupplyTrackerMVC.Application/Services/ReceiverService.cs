@@ -96,10 +96,10 @@ namespace SupplyTrackerMVC.Application.Services
             return receiversVm;
         }
 
-        public ReceiverBranchSelectList GetAllActiveReceiverBranchesForSelectList()
+        public ReceiverBranchSelectListVm GetAllActiveReceiverBranchesForSelectList()
         {
             var receiverBranches = _receiverRepository.GetAllActiveReceiverBranches().ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider);
-            var receiverBranchesVm = new ReceiverBranchSelectList()
+            var receiverBranchesVm = new ReceiverBranchSelectListVm()
             {
                 ReceiverBranches = receiverBranches,
             };

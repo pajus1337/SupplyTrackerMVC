@@ -13,6 +13,6 @@ namespace SupplyTrackerMVC.Application.Interfaces
         ListReceiverForListVm GetAllActiveReceiversForList();
         ReceiverDetailsVm GetReceiverDetailsById(int receiverId);
         ReceiverSelectListVm GetAllActiveReceiversForSelectList();
-        ReceiverBranchSelectList GetAllActiveReceiverBranchesForSelectList();
+        ReceiverBranchSelectListVm GetAllActiveReceiverBranchesForSelectList();
     }
 }

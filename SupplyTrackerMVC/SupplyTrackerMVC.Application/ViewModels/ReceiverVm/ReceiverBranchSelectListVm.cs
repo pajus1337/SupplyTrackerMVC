@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
 {
-    public class ReceiverBranchSelectList
+    public class ReceiverBranchSelectListVm
     {
         public IQueryable<ReceiverBranchForSelectListVm> ReceiverBranches { get; set; }
     }

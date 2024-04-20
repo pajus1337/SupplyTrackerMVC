@@ -16,13 +16,13 @@ namespace SupplyTrackerMVC.Application.ViewModels.DeliveryVm
     public class NewDeliveryVm
     {
         public int Id { get; set; }
-        public DateTime DeliveryDataTime { get; set; }
+        public DateTime DeliveryDataTime { get; set; } = DateTime.Now;
         public int SelectedSenderId { get; set; }
         public SenderSelectListVm Senders { get; set; }
         public int SelectedReceiverId { get; set; }
         public ReceiverSelectListVm Receivers { get; set; }
         public int SelectedReceiverBranchId { get; set; }
-        public ReceiverBranchSelectList ReceiverBranches { get; set; }
+        public ReceiverBranchSelectListVm ReceiverBranches { get; set; }
         public int SelectedProductId { get; set; }
         public ProductSelectListVm Products { get; set; }
 

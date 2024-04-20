@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.DeliveryVm;
 using SupplyTrackerMVC.Application.ViewModels.ProductVm;
+using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 
 namespace SupplyTrackerMVC.Web.Controllers
 {
     public class DeliveryController : Controller
     {
         private readonly IDeliveryService _deliveryService;
-        private readonly IServiceProvider _serviceProvider;
-        public DeliveryController(IDeliveryService deliveryService, IServiceProvider serviceProvider)
+        public DeliveryController(IDeliveryService deliveryService)
         {
             _deliveryService = deliveryService;
-            _serviceProvider = serviceProvider;
         }
 
         public IActionResult Index()
@@ -23,25 +23,26 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public IActionResult NewDelivery()
         {
-            var receiverService = ActivatorUtilities.GetServiceOrCreateInstance<IReceiverService>(_serviceProvider);
-            var senderService = ActivatorUtilities.GetServiceOrCreateInstance<ISenderService>(_serviceProvider);
-            var productService = ActivatorUtilities.GetServiceOrCreateInstance<IProductService>(_serviceProvider);
-
-            var model = new NewDeliveryVm()
-            {
-                Products = productService.GetAllActiveProductsForSelectList(),
-                Senders = senderService.GetAllActiveSendersForSelectList(),
-                Receivers = receiverService.GetAllActiveReceiversForSelectList(),
-               // ReceiverBranches = receiverService.GetAllActiveReceiverBranchesForSelectList(),
-            };
-
+            var model = _deliveryService.PrepareNewDeliveryViewModel();
             return View(model); 
         }
 
         [HttpPost]
         public IActionResult NewDelivery(NewDeliveryVm model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                return View("TestOK");
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult GetReceiverBranches(int receiverId)
+        {
+            var branches = _deliveryService.GetReceiverBranchesByReceiverId(receiverId);
+            return Json(branches);
         }
     }
 }
