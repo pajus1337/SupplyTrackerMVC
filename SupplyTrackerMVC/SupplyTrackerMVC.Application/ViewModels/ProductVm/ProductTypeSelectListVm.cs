@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
 {
-    public class ProductDetailsVm
+    public class ProductTypeSelectListVm
     {
+        public IEnumerable<ProductTypeForSelectListVm> ProductTypes { get; set; }
     }
 }

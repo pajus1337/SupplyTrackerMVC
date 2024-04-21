@@ -69,6 +69,11 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             return product; 
         }
 
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            return await _context.SaveChangesAsync(cancellationToken);
+        }
+
         public IQueryable<ProductType> GetAllProductTypes()
         {
             var productTypes = _context.ProductTypes;

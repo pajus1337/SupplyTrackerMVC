@@ -3,9 +3,12 @@ using AutoMapper.QueryableExtensions;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 using SupplyTrackerMVC.Domain.Interfaces;
+using SupplyTrackerMVC.Domain.Model.Products;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,20 +18,32 @@ namespace SupplyTrackerMVC.Application.Services
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
-        public ProductService(IProductRepository productRepository, IMapper mapper)
+        private readonly IFluentValidatorFactory _validatorFactory;
+        public ProductService(IProductRepository productRepository, IMapper mapper, IFluentValidatorFactory validatorFactory)
         {
             _productRepository = productRepository;
             _mapper = mapper;
+            _validatorFactory = validatorFactory;
         }
 
-        public Task<(bool Success, IEnumerable<string>? Errors, int? ProductId)> AddNewProductAsync(NewProductVm model, CancellationToken cancellationToken)
+        public async Task<(bool Success, IEnumerable<string>? Errors, int? ProductId)> AddNewProductAsync(NewProductVm model, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-        }
+            var validator = _validatorFactory.GetValidator<NewProductVm>();
+            var result = await validator.ValidateAsync(model, cancellationToken);
+            if (!result.IsValid)
+            {
+                return (false, result.Errors.Select(e => e.ErrorMessage), null);
+            }
 
-        public Task<(bool Success, IEnumerable<string>? Errors, int? ProductId)> AddNewReceiverAsync(NewProductVm model, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
+            var product = _mapper.Map<Product>(model);
+            var newProductId = _productRepository.AddProduct(product);
+            int saved = await _productRepository.SaveChangesAsync(cancellationToken);
+            if (saved == 0)
+            {
+                return (false, null, null);
+            }
+
+            return (true, null, newProductId);
         }
 
         public Task<(bool Success, string Error)> DeleteProductASync(int productId, CancellationToken cancellationToken)
@@ -52,7 +67,7 @@ namespace SupplyTrackerMVC.Application.Services
             throw new NotImplementedException();
         }
 
-        public ProductDetailsVm GetProductDetailsById(int productId)
+        public ProductDetailVm GetProductDetailsById(int productId)
         {
             throw new NotImplementedException();
         }
@@ -61,5 +76,21 @@ namespace SupplyTrackerMVC.Application.Services
         {
             throw new NotImplementedException();
         }
+
+        public NewProductVm PrepareNewProductViewModel()
+        {
+            var model = new NewProductVm
+            {
+                isActive = true,
+                ProductType = GetProductTypes()
+            };
+
+            return model;
+        }
+
+        private ProductTypeSelectListVm GetProductTypes() => new ProductTypeSelectListVm()
+        {
+            ProductTypes = _productRepository.GetAllProductTypes().ProjectTo<ProductTypeForSelectListVm>(_mapper.ConfigurationProvider)
+        };
     }
 }
