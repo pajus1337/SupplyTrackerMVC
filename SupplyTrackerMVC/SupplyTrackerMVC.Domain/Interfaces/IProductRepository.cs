@@ -16,6 +16,7 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         Product GetProductById(int productId);
         IQueryable<Product> GetAllActiveProducts();
         IQueryable<Product> GetProductsByProductTypeId(int productTypeId);
+        Task<int> AddProductTypeAsync(ProductType productType, CancellationToken cancellationToken);
         IQueryable<ProductType> GetAllProductTypes();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

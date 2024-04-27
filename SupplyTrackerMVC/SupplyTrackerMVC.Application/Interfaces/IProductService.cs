@@ -14,9 +14,13 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<(bool Success, IEnumerable<string>? Errors, int? ProductId)> AddNewProductAsync(NewProductVm model,CancellationToken cancellationToken);
         Task<(bool Success, string Error)> UpdateProductAsync(int productId, CancellationToken cancellationToken);
         Task<(bool Success, string Error)> DeleteProductASync(int productId, CancellationToken cancellationToken);
+        Task<(bool Success, IEnumerable<string>? Errors, int? ProductTypeId)> AddNewProductTypeAsync(NewProductTypeVm model, CancellationToken cancellationToken);
+        Task<ProductTypeVm> GetProductTypById(int productTypeId);
         ListProductForList GetAllActiveProductsForList();
         ProductDetailVm GetProductDetailsById(int productId);
         ProductSelectListVm GetAllActiveProductsForSelectList();
         NewProductVm PrepareNewProductViewModel();
+
+
     }
 }

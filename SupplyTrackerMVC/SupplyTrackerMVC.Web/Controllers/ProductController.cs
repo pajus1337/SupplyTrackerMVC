@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Migrations.Internal;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 
@@ -30,16 +31,32 @@ namespace SupplyTrackerMVC.Web.Controllers
             return View();
         }
 
-        [HttpGet] 
+        [HttpGet]
         public IActionResult NewProductType()
         {
             return View(new NewProductTypeVm());
         }
 
-        [HttpPost] 
-        public IActionResult NewProductType(NewProductTypeVm newProductTypeVm)
+        [HttpPost]
+        public async Task<IActionResult> NewProductType(NewProductTypeVm model, CancellationToken cancellationToken)
         {
+            var (success, errors, productTypeId) = await _productService.AddNewProductTypeAsync(model, cancellationToken);
+            if (!success)
+            {
+                foreach (var error in errors)
+                {
+                    ModelState.AddModelError(string.Empty, error);
+                }
+                return View("NewProductType", model);
+            }
+
+            //Add details info about successfully add of new product.
             return View();
+        }
+
+        public async Task<IActionResult> ViewProductType(int productTypeId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

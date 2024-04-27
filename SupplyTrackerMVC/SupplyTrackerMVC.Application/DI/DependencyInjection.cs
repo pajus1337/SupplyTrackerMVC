@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static SupplyTrackerMVC.Application.ViewModels.ProductVm.NewProductTypeVm;
 using static SupplyTrackerMVC.Application.ViewModels.ProductVm.NewProductVm;
 using static SupplyTrackerMVC.Application.ViewModels.ReceiverVm.NewReceiverVm;
 
@@ -35,6 +36,7 @@ namespace SupplyTrackerMVC.Application.DI
             serviceDescriptors.AddTransient<IFluentValidatorFactory, FluentValidatorFactory>();
             serviceDescriptors.AddTransient<IValidator<NewReceiverVm>, NewReceiverValidator>();
             serviceDescriptors.AddTransient<IValidator<NewProductVm>, NewProductValidator>();
+            serviceDescriptors.AddTransient<IValidator<NewProductTypeVm>, NewProductTypeValidator>();
             serviceDescriptors.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             return serviceDescriptors;

@@ -85,5 +85,15 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             var products = _context.Products.Where(p => p.isActive);
             return products;
         }
+
+        public async Task<int> AddProductTypeAsync(ProductType productType, CancellationToken cancellationToken)
+        {
+            if (productType == null)
+            {
+                throw new ArgumentNullException(nameof(productType), "ProductType to add can't be null");
+            }
+            await _context.ProductTypes.AddAsync(productType, cancellationToken);
+            return productType.Id;
+        }
     }
 }

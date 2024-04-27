@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,14 +37,14 @@ namespace SupplyTrackerMVC.Application.Services
             }
 
             var product = _mapper.Map<Product>(model);
-            var newProductId = _productRepository.AddProduct(product);
+            var productId = _productRepository.AddProduct(product);
             int saved = await _productRepository.SaveChangesAsync(cancellationToken);
             if (saved == 0)
             {
                 return (false, null, null);
             }
 
-            return (true, null, newProductId);
+            return (true, null, productId);
         }
 
         public Task<(bool Success, string Error)> DeleteProductASync(int productId, CancellationToken cancellationToken)
@@ -86,6 +87,31 @@ namespace SupplyTrackerMVC.Application.Services
             };
 
             return model;
+        }
+
+        public async Task<(bool Success, IEnumerable<string>? Errors, int? ProductTypeId)> AddNewProductTypeAsync(NewProductTypeVm model, CancellationToken cancellationToken)
+        {
+            var validator = _validatorFactory.GetValidator<NewProductTypeVm>();
+            var result = await validator.ValidateAsync(model, cancellationToken);
+            if (!result.IsValid)
+            {
+                return (false, result.Errors.Select(e => e.ErrorMessage), null);
+            }
+
+            var productType = _mapper.Map<ProductType>(model);
+            var productTypeId = await _productRepository.AddProductTypeAsync(productType, cancellationToken);
+            var saved = await _productRepository.SaveChangesAsync(cancellationToken);
+            if (saved == 0)
+            {
+               // Add Logic for Fail save db
+            }
+
+            return (true, null, productTypeId);
+        }
+
+        public async Task<ProductTypeVm> GetProductTypById(int productTypeId)
+        {
+            throw new NotImplementedException();
         }
 
         private ProductTypeSelectListVm GetProductTypes() => new ProductTypeSelectListVm()

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using SupplyTrackerMVC.Application.Mapping;
 using SupplyTrackerMVC.Domain.Model.Products;
 using System;
@@ -19,6 +20,14 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
         {
             profile.CreateMap<ProductType, NewProductTypeVm>();
             profile.CreateMap<NewProductTypeVm, ProductType>();
+        }
+
+        public class NewProductTypeValidator : AbstractValidator<NewProductTypeVm>
+        {
+            public NewProductTypeValidator()
+            {
+                RuleFor(x => x.Id).NotNull();
+            }
         }
     }
 }
