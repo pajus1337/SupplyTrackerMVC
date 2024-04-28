@@ -1,4 +1,5 @@
-﻿using SupplyTrackerMVC.Domain.Exceptions;
+﻿using Microsoft.EntityFrameworkCore;
+using SupplyTrackerMVC.Domain.Exceptions;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Products;
 using System;
@@ -93,7 +94,15 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
                 throw new ArgumentNullException(nameof(productType), "ProductType to add can't be null");
             }
             await _context.ProductTypes.AddAsync(productType, cancellationToken);
+            var id = await _context.SaveChangesAsync(cancellationToken);
             return productType.Id;
+        }
+
+        public async Task<ProductType> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken)
+        {
+            var productType = await _context.ProductTypes.FirstOrDefaultAsync(p => p.Id == productTypeId, cancellationToken);
+
+            return productType;           
         }
     }
 }

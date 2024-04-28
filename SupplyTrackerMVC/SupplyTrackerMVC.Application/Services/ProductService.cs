@@ -100,18 +100,20 @@ namespace SupplyTrackerMVC.Application.Services
 
             var productType = _mapper.Map<ProductType>(model);
             var productTypeId = await _productRepository.AddProductTypeAsync(productType, cancellationToken);
-            var saved = await _productRepository.SaveChangesAsync(cancellationToken);
-            if (saved == 0)
-            {
-               // Add Logic for Fail save db
-            }
 
             return (true, null, productTypeId);
         }
 
-        public async Task<ProductTypeVm> GetProductTypById(int productTypeId)
+        public async Task<(bool Success, ProductTypeVm)> GetProductTypeById(int productTypeId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var productType = await _productRepository.GetProductTypeByIdAsync(productTypeId, cancellationToken);
+            if (productType == null)
+            {
+                return (false, null);
+            }
+            var productTypeVm = _mapper.Map<ProductTypeVm>(productType);
+
+            return (true, productTypeVm);  
         }
 
         private ProductTypeSelectListVm GetProductTypes() => new ProductTypeSelectListVm()

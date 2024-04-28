@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.UI.V5.Pages.Internal;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Migrations.Internal;
+using Microsoft.VisualBasic;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 
@@ -47,16 +49,26 @@ namespace SupplyTrackerMVC.Web.Controllers
                 {
                     ModelState.AddModelError(string.Empty, error);
                 }
+                TempData["Header"] = "Add new product type";
+
                 return View("NewProductType", model);
             }
 
-            //Add details info about successfully add of new product.
-            return View();
+            TempData["Header"] = "Successfully added new product type";
+            return RedirectToAction("ViewProductType", new { productTypeId = productTypeId });
         }
 
-        public async Task<IActionResult> ViewProductType(int productTypeId)
+        [HttpGet]
+        public async Task<IActionResult> ViewProductType(int productTypeId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var (success, model) = await _productService.GetProductTypeById(productTypeId, cancellationToken);
+            if (!success)
+            {
+                // Add unsuccess case 
+                return View();
+            }
+
+            return View(model);
         }
     }
 }
