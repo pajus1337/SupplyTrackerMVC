@@ -28,8 +28,35 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult NewProduct(NewProductVm newProductVm)
+        public async Task<IActionResult> NewProduct(NewProductVm model, CancellationToken cancellationToken)
         {
+           var (success, errors, productId) = await _productService.AddNewProductAsync(model, cancellationToken);
+            if (!success)
+            {
+                foreach (var error in errors)
+                {
+                    ModelState.AddModelError(string.Empty, error);
+                }
+
+                return View("NewProduct", model);
+            }
+
+            // Add Action if successfully added.
+            // return RedirectToAction()
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateProduct(int productId, CancellationToken cancellationToken)
+        {
+            var model = await _productService.PrepareUpdateProductViewModel(productId, cancellationToken);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct(UpdateProductVm model, CancellationToken cancellationToken)
+        {
+            await _productService.UpdateProductAsync(model, cancellationToken);
             return View();
         }
 

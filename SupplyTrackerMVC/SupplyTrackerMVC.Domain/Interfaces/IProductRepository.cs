@@ -10,10 +10,10 @@ namespace SupplyTrackerMVC.Domain.Interfaces
 {
     public interface IProductRepository
     {
-        int AddProduct(Product product);
-        void UpdateProduct();
-        void DeleteProduct(int productId);
-        Product GetProductById(int productId);
+        Task<(int ProductId, bool Success)> AddProductAsync(Product product, CancellationToken cancellationToken);
+        Task<bool> UpdateProductAsync(Product product, CancellationToken cancellationToken);
+        Task<bool> DeleteProductAsync(int productId, CancellationToken cancellationToken);
+        Task<Product> GetProductByIdAsync(int productId, CancellationToken cancellationToken);
         IQueryable<Product> GetAllActiveProducts();
         IQueryable<Product> GetProductsByProductTypeId(int productTypeId);
         Task<int> AddProductTypeAsync(ProductType productType, CancellationToken cancellationToken);

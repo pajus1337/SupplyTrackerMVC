@@ -4,6 +4,7 @@ using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Products;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,31 +19,70 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context = context;
         }
 
-        public int AddProduct(Product product)
+
+        public async Task<(int ProductId, bool Success)> AddProductAsync(Product product, CancellationToken cancellationToken)
         {
-            if (product == null)
+            try
             {
-                throw new ArgumentNullException(nameof(product), "Product to add can't be null");
+                await _context.Products.AddAsync(product, cancellationToken);
+                int success = await SaveChangesAsync(cancellationToken);
+                if (success < 1)
+                {
+                    throw new InvalidOperationException("Failed to add the product.");
+                }
+
+                return (product.Id, true);
             }
-            _context.Products.Add(product);
-            _context.SaveChanges();
-            return product.Id;
-        }   
-
-        public void UpdateProduct()
-        {
-
+            catch (DbUpdateException ex)
+            {
+                // Add Log ?
+                throw;
+            }
         }
 
-        public void DeleteProduct(int productId)
+        public async Task<bool> UpdateProductAsync(Product product, CancellationToken cancellationToken)
         {
-            var product = _context.Products.Find(productId);
-            if (product == null)
+            try
             {
-                throw new ArgumentNullException(nameof(product), "Product to delete can't be null");
+                _context.Products.Update(product);
+                int success = await SaveChangesAsync(cancellationToken);
+                if (success != 1)
+                {
+                    throw new InvalidOperationException("Failed to add the product.");
+                }
+                return true;
             }
-            _context.Products.Remove(product);
-            _context.SaveChanges();
+            catch (DbUpdateException ex)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteProductAsync(int productId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var product = await _context.Products.FindAsync(productId);
+
+                if (product == null)
+                {
+                    throw new ProductNotFoundException($"No product with ID {productId} found.", productId);
+                }
+
+                _context.Products.Remove(product);
+                int success = await SaveChangesAsync(cancellationToken);
+                if (success != 1)
+                {
+                    throw new InvalidOperationException("Failed to delete the product.");
+                }
+                return true;
+            }
+            catch (DbUpdateException ex)
+            {
+                // Add log ?
+                throw;
+            }
         }
 
         public IQueryable<Product> GetProductsByProductTypeId(int productTypeId)
@@ -55,7 +95,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             return products;
         }
 
-        public Product GetProductById(int productId)
+        public async Task<Product> GetProductByIdAsync(int productId, CancellationToken cancellationToken)
         {
             if (productId <= 0)
             {
@@ -67,11 +107,12 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             {
                 throw new ProductNotFoundException($"No product with ID {productId} found.", productId);
             }
-            return product; 
+            return product;
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
+
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
@@ -102,7 +143,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         {
             var productType = await _context.ProductTypes.FirstOrDefaultAsync(p => p.Id == productTypeId, cancellationToken);
 
-            return productType;           
+            return productType;
         }
     }
 }

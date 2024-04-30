@@ -4,14 +4,6 @@ using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Products;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.Services
 {
@@ -37,9 +29,8 @@ namespace SupplyTrackerMVC.Application.Services
             }
 
             var product = _mapper.Map<Product>(model);
-            var productId = _productRepository.AddProduct(product);
-            int saved = await _productRepository.SaveChangesAsync(cancellationToken);
-            if (saved == 0)
+            var (productId, isSuccess) = await _productRepository.AddProductAsync(product, cancellationToken);
+            if (!isSuccess)
             {
                 return (false, null, null);
             }
@@ -47,10 +38,19 @@ namespace SupplyTrackerMVC.Application.Services
             return (true, null, productId);
         }
 
-        public Task<(bool Success, string Error)> DeleteProductASync(int productId, CancellationToken cancellationToken)
+        public async Task<(bool Success, string? Error)> UpdateProductAsync(UpdateProductVm updateProductVm, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var product = _mapper.Map<Product>(updateProductVm);
+            var success = await _productRepository.UpdateProductAsync(product, cancellationToken);
+            if (!success)
+            {
+                // Add Error message Handler
+                return (false, null);
+            }
+            return (true, null);
         }
+
+        public async Task<bool> DeleteProductASync(int productId, CancellationToken cancellationToken) => await _productRepository.DeleteProductAsync(productId, cancellationToken);
 
         public ProductSelectListVm GetAllActiveProductsForSelectList()
         {
@@ -71,11 +71,14 @@ namespace SupplyTrackerMVC.Application.Services
         public ProductDetailVm GetProductDetailsById(int productId)
         {
             throw new NotImplementedException();
+
         }
 
-        public Task<(bool Success, string Error)> UpdateProductAsync(int productId, CancellationToken cancellationToken)
+        public async Task<UpdateProductVm> PrepareUpdateProductViewModel(int productId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var product = await _productRepository.GetProductByIdAsync(productId, cancellationToken);
+            var productVm = _mapper.Map<UpdateProductVm>(product);
+            return productVm;
         }
 
         public NewProductVm PrepareNewProductViewModel()
