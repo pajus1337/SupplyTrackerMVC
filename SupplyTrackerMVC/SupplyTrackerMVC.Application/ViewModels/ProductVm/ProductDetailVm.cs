@@ -8,5 +8,6 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
 {
     public class ProductDetailVm
     {
+        public int Id { get; set; }
     }
 }
