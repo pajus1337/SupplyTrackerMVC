@@ -68,10 +68,13 @@ namespace SupplyTrackerMVC.Application.Services
             throw new NotImplementedException();
         }
 
-        public ProductDetailVm GetProductDetailsById(int productId)
+        public async Task<(bool Success, ProductDetailVm)> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var product = await _productRepository.GetProductByIdAsync(productId, cancellationToken);
+            var productVm = _mapper.Map<ProductDetailVm>(product);
 
+            // success ? 
+            return (true, productVm);
         }
 
         public async Task<UpdateProductVm> PrepareUpdateProductViewModel(int productId, CancellationToken cancellationToken)

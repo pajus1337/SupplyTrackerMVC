@@ -9,7 +9,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
 {
     public class ListProductForList
     {
-        public List<ReceiverForListVm> Receivers { get; set; }
+        public List<ProductForListVm> Products { get; set; }
         public int Count { get; set; }
     }
 }

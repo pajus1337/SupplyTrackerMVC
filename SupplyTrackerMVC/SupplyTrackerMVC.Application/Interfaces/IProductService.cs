@@ -18,10 +18,8 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<(bool Success, IEnumerable<string>? Errors, int? ProductTypeId)> AddNewProductTypeAsync(NewProductTypeVm model, CancellationToken cancellationToken);
         Task<(bool Success, ProductTypeVm)> GetProductTypeById(int productTypeId, CancellationToken cancellationToken);
         ListProductForList GetAllActiveProductsForList();
-        ProductDetailVm GetProductDetailsById(int productId);
+        Task<(bool Success, ProductDetailVm)> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken);
         ProductSelectListVm GetAllActiveProductsForSelectList();
         NewProductVm PrepareNewProductViewModel();
-
-
     }
 }
