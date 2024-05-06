@@ -1,0 +1,40 @@
+﻿@model SupplyTrackerMVC.Application.ViewModels.ProductVm.ListProductForList
+
+@{
+    ViewData["Title"] = "ViewProductList";
+}
+
+<h1>ViewProductList</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Product Name
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Products) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -37,13 +37,12 @@ namespace SupplyTrackerMVC.Web.Controllers
                 {
                     ModelState.AddModelError(string.Empty, error);
                 }
-
+                TempData["Header"] = "Add new product";
                 return View("NewProduct", model);
             }
 
-            // Add Action if successfully added.
-            // return RedirectToAction()
-            return View();
+            TempData["Header"] = "Successfully added new product";
+            return RedirectToAction("ViewProductDetails", new { productId = productId });
         }
 
         [HttpGet]
@@ -88,13 +87,33 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewProductType(int productTypeId, CancellationToken cancellationToken)
         {
-            var (success, model) = await _productService.GetProductTypeById(productTypeId, cancellationToken);
+            var (success, model) = await _productService.GetProductTypeByIdAsync(productTypeId, cancellationToken);
             if (!success)
             {
                 // Add unsuccess case 
                 return View();
             }
 
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewProductDetails(int productId, CancellationToken cancellationToken)
+        {
+            var (success, model) = await _productService.GetProductDetailsByIdAsync(productId, cancellationToken);
+            if (!success)
+            {
+                // Add !success handler 
+                return View();
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewProductList(CancellationToken cancellationToken)
+        {
+           var model = await _productService.GetAllActiveProductsForListAsync(cancellationToken);
             return View(model);
         }
     }

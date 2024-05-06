@@ -1,4 +1,5 @@
-﻿using SupplyTrackerMVC.Application.Mapping;
+﻿using AutoMapper;
+using SupplyTrackerMVC.Application.Mapping;
 using SupplyTrackerMVC.Domain.Model.Products;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,10 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<Product, ProductForListVm>();
+        }
     }
 }

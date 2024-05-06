@@ -63,9 +63,19 @@ namespace SupplyTrackerMVC.Application.Services
             return productsVm;
         }
 
-        public ListProductForList GetAllActiveProductsForList()
+        public async Task<ListProductForList> GetAllActiveProductsForListAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            // Refactor, only test version.
+            var products = _productRepository.GetAllActiveProducts().ProjectTo<ProductForListVm>(_mapper.ConfigurationProvider);
+
+            var ProductListVm = new ListProductForList
+            {
+                Products = products.ToList(),
+                Count = products.Count()
+            };
+
+            return ProductListVm;
+
         }
 
         public async Task<(bool Success, ProductDetailVm)> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken)
@@ -110,7 +120,7 @@ namespace SupplyTrackerMVC.Application.Services
             return (true, null, productTypeId);
         }
 
-        public async Task<(bool Success, ProductTypeVm)> GetProductTypeById(int productTypeId, CancellationToken cancellationToken)
+        public async Task<(bool Success, ProductTypeVm)> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken)
         {
             var productType = await _productRepository.GetProductTypeByIdAsync(productTypeId, cancellationToken);
             if (productType == null)

@@ -19,7 +19,6 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context = context;
         }
 
-
         public async Task<(int ProductId, bool Success)> AddProductAsync(Product product, CancellationToken cancellationToken)
         {
             try
