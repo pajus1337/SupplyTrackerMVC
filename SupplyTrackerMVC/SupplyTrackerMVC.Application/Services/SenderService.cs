@@ -20,7 +20,12 @@ namespace SupplyTrackerMVC.Application.Services
             _senderRepository = senderRepository;
             _mapper = mapper;
         }
-        public Task<(bool Success, IEnumerable<string>? Errors, int? SenderId)> AddNewSenderAsync(NewSenderVm model, CancellationToken cancellationToken)
+        public async Task<(bool Success, IEnumerable<string>? Errors, int? SenderId)> AddNewSenderAsync(NewSenderVm model, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> DeleteSenderAsync(int senderId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -42,6 +47,11 @@ namespace SupplyTrackerMVC.Application.Services
         }
 
         public SenderDetailsVm GetSenderDetailsById(int senderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<(bool Success, IEnumerable<string>? Errors)> UpdateSenderByIdAsync(int senderId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
