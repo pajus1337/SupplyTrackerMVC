@@ -13,7 +13,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<(bool Success, IEnumerable<string>? Errors)> UpdateSenderByIdAsync(int senderId, CancellationToken cancellationToken);
         Task<bool> DeleteSenderAsync(int senderId, CancellationToken cancellationToken);
         ListSenderForListVm GetAllActiveSendersForList();
-        SenderDetailsVm GetSenderDetailsById(int senderId);
+        Task<(bool Success, SenderDetailsVm)> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken);
         SenderSelectListVm GetAllActiveSendersForSelectList();
     }
 }
