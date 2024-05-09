@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Application.DI;
 using SupplyTrackerMVC.Application.Interfaces;
@@ -8,6 +9,7 @@ using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Infrastructure;
 using SupplyTrackerMVC.Infrastructure.Repositories;
+using SupplyTrackerMVC.Web.Middleware;
 using System;
 using System.Reflection;
 using static SupplyTrackerMVC.Application.ViewModels.ReceiverVm.NewReceiverVm;
@@ -32,7 +34,14 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 // * End of DI Configuration
 
+//- Exception  Handler 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
+
+// HACK: Remember 
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

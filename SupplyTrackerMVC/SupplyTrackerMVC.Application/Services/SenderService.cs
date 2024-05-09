@@ -60,9 +60,16 @@ namespace SupplyTrackerMVC.Application.Services
             return senderSelectListVm;
         }
 
-        public Task<(bool Success, SenderDetailsVm)> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken)
+        public async Task<(bool Success, SenderDetailsVm)> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var (success, sender) = await _senderRepository.GetSenderByIdAsync(senderId, cancellationToken);
+            if (!success)
+            {
+                return (false, null);
+            }
+
+            var senderVm = _mapper.Map<SenderDetailsVm>(sender);
+            return (true, senderVm);
         }
 
         public Task<(bool Success, IEnumerable<string>? Errors)> UpdateSenderByIdAsync(int senderId, CancellationToken cancellationToken)

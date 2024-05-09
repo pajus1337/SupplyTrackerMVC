@@ -49,7 +49,11 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewSender(int senderId,CancellationToken cancellationToken)
         {
-            var model = await _senderService.GetSenderDetailsByIdAsync(senderId, cancellationToken);
+            var (success, model) = await _senderService.GetSenderDetailsByIdAsync(senderId, cancellationToken);
+            if (!success)
+            {
+                return NotFound();
+            }
             return View(model);
         }
 

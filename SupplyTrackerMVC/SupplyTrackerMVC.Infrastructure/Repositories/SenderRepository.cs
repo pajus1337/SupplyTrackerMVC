@@ -63,24 +63,13 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             }
         }
 
-        public async Task<(bool Success, Sender SenderObject)> GetSenderByIdAsync(int senderId, CancellationToken cancellationToken)
+        public async Task<(bool Success, Sender? SenderObject)> GetSenderByIdAsync(int senderId, CancellationToken cancellationToken)
         {
-            try
-            {
-                var sender = await _context.Senders.FindAsync(senderId, cancellationToken);
-                if (sender == null)
-                {
-                    throw new InvalidOperationException($"Failed to get sender with ID {senderId}");
-                }
+            var sender = await _context.Senders.FindAsync(senderId, cancellationToken);
 
-                return (true, sender);
-            }
-            catch (Exception)
-            {
-                // TODO: Add better Exception handler
-                throw;
-            }
+            return (sender != null, sender);
         }
+
 
         public async Task<bool> UpdateSenderAsync(Sender sender, CancellationToken cancellationToken)
         {

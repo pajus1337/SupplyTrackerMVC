@@ -15,10 +15,8 @@ namespace SupplyTrackerMVC.Domain.Model.Senders
         public string Name { get; set; }
         public byte[]? LogoPic { get; set; }
         public bool IsActive { get; set; }
-
-        // 1:1 
         public int AddressId { get; set; }
-        public Address Address { get; set; }
+        public virtual Address Address { get; set; }
 
         public ICollection<Contact> Contacts { get; set; }
         public ICollection<Delivery> Deliveries { get; set; }
