@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
 {
-    public class ListSenderForListVm
+    public class UpdateSenderVm
     {
-        public List<SenderForListVm> Senders { get; set; }
-        public int Count { get; set; }
+        public int Id { get; set; }
+
     }
 }

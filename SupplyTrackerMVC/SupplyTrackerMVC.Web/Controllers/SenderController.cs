@@ -15,21 +15,22 @@ namespace SupplyTrackerMVC.Web.Controllers
             _senderService = senderService;
         }
 
+        [HttpGet]
         [Route("")]
         public IActionResult Index()
         {
             return View();
         }
 
-        [Route("new-sender")]
         [HttpGet]
+        [Route("new-sender")]
         public IActionResult AddSender()
         {
             return View(new NewSenderVm());
         }
 
-        [Route("new-sender")]
         [HttpPost]
+        [Route("new-sender")]
         public async Task<IActionResult> AddSender(NewSenderVm model, CancellationToken cancellationToken)
         {
             var (success, errors, senderId) = await _senderService.AddNewSenderAsync(model, cancellationToken);
@@ -45,8 +46,8 @@ namespace SupplyTrackerMVC.Web.Controllers
             return RedirectToAction("ViewSender", new { senderId = senderId });
         }
 
-        [Route("sender-details")]
         [HttpGet]
+        [Route("sender-details")]
         public async Task<IActionResult> ViewSender(int senderId,CancellationToken cancellationToken)
         {
             var (success, model) = await _senderService.GetSenderDetailsByIdAsync(senderId, cancellationToken);
@@ -57,11 +58,11 @@ namespace SupplyTrackerMVC.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
         [Route("list-of-senders")]
-        [HttpGet] 
-        public IActionResult ListOfSenders()
+        public IActionResult ListOfSenders(CancellationToken cancellationToken)
         {
-            var model = _senderService.GetAllActiveSendersForList();
+            var model = _senderService.GetAllActiveSendersForListAsync(cancellationToken);
 
             return View(model);
         }

@@ -46,7 +46,8 @@ namespace SupplyTrackerMVC.Application.Services
 
         public ListSenderForListVm GetAllActiveSendersForList()
         {
-            throw new NotImplementedException();
+            var senders = _senderRepository.GetAllActiveSenders();
+
         }
 
         public SenderSelectListVm GetAllActiveSendersForSelectList()
