@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SupplyTrackerMVC.Domain.Interfaces;
+using SupplyTrackerMVC.Infrastructure.Interceptors;
 using SupplyTrackerMVC.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,9 @@ namespace SupplyTrackerMVC.Infrastructure
             serviceDescriptors.AddTransient<IProductRepository, ProductRepository>();
             serviceDescriptors.AddTransient<IReceiverRepository, ReceiverRepository>();
             serviceDescriptors.AddTransient<ISenderRepository, SenderRepository>();
+
+            // Interceptors
+            serviceDescriptors.AddSingleton<SoftDeleteInterceptor>();
 
             return serviceDescriptors;
         }

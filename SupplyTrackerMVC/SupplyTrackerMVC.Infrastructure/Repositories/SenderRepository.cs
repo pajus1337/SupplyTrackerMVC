@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,29 +38,51 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             }
         }
 
-        public async Task<bool> DeleteSenderAsync(int senderId, CancellationToken cancellationToken)
+        public async Task<(bool Success, string? Error)> DeleteSenderAsync(int senderId, CancellationToken cancellationToken)
         {
+
             try
             {
                 var sender = await _context.Senders.FindAsync(senderId, cancellationToken);
                 if (sender == null)
                 {
-                    throw new InvalidOperationException($"Failed to find sender with ID {senderId}");
+                    return (false, "null object error");
                 }
 
-                _context.Senders.Remove(sender);
-                int success = await SaveChangesAsync(cancellationToken);
-                if (success == 0)
+                if (sender is ISoftDeletable deletable)
                 {
-                    throw new InvalidOperationException($"Failed to save changes in DataBase");
+                    deletable.IsDeleted = true;
+                    deletable.DeletedOnUtc = DateTime.UtcNow;
+                    _context.Update(sender);
+                }
+                else
+                {
+                    _context.Senders.Remove(sender);
                 }
 
-                return true;
+                int success = await _context.SaveChangesAsync(cancellationToken);
+                if (success > 1)
+                {
+                    return (true, sender is ISoftDeletable ? "Sender is soft deleted" : "Sender is hard removed.");
+                }
+                else
+                {
+                    return (false, "Failed to save changes in DB");
+                }
             }
-            catch (Exception)
+
+            // TODO: Test Exception , Add logs ?
+            catch (DbUpdateConcurrencyException ex)
             {
-                // TODO: Add better Exception handler
-                throw;
+                return (false, "Failed to delete sender due to a concurrency issue.");
+            }
+            catch (DbUpdateException ex)
+            {
+                return(false, "Failed to delete sender due to database update error.");
+            }
+            catch (Exception ex)
+            {
+                return (false, "An unexpected error occurred.");
             }
         }
 

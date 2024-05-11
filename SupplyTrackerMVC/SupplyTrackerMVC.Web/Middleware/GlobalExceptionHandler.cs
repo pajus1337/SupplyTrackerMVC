@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SupplyTrackerMVC.Web.Middleware
 {
-    internal sealed class GlobalExceptionHandler : IExceptionHandler
+    public sealed class GlobalExceptionHandler : IExceptionHandler
     {
         private readonly ILogger<GlobalExceptionHandler> _logger;
 
