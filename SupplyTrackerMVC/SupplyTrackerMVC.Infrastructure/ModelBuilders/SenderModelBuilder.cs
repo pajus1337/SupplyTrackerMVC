@@ -5,6 +5,7 @@ using SupplyTrackerMVC.Domain.Model.Senders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,12 @@ namespace SupplyTrackerMVC.Infrastructure.ModelBuilders
     {
         public void Configure(EntityTypeBuilder<Sender> builder)
         {
+            builder.HasQueryFilter(r => !r.IsDeleted);
+
+            builder
+                .HasIndex(r => r.IsDeleted)
+                .HasFilter("IsDeleted = 0");
+
             builder
                 .HasOne(r => r.Address)
                 .WithOne()

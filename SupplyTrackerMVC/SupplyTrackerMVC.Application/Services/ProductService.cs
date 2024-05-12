@@ -54,7 +54,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public ProductSelectListVm GetAllActiveProductsForSelectList()
         {
-            var products = _productRepository.GetAllActiveProducts().ProjectTo<ProductForSelectListVm>(_mapper.ConfigurationProvider);
+            var products = _productRepository.GetAllProducts().ProjectTo<ProductForSelectListVm>(_mapper.ConfigurationProvider);
             var productsVm = new ProductSelectListVm()
             {
                 Products = products
@@ -66,7 +66,7 @@ namespace SupplyTrackerMVC.Application.Services
         public async Task<ListProductForList> GetAllActiveProductsForListAsync(CancellationToken cancellationToken)
         {
             // Refactor, only test version.
-            var products = _productRepository.GetAllActiveProducts().ProjectTo<ProductForListVm>(_mapper.ConfigurationProvider);
+            var products = _productRepository.GetAllProducts().ProjectTo<ProductForListVm>(_mapper.ConfigurationProvider);
 
             var ProductListVm = new ListProductForList
             {

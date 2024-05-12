@@ -1,4 +1,5 @@
-﻿using SupplyTrackerMVC.Domain.Model.Products;
+﻿using SupplyTrackerMVC.Domain.Interfaces.Common;
+using SupplyTrackerMVC.Domain.Model.Products;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 using SupplyTrackerMVC.Domain.Model.Senders;
 using System;
@@ -9,9 +10,11 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Domain.Model.Deliveries
 {
-    public class Delivery
+    public class Delivery : ISoftDeletable
     {
         public int Id { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedOnUtc { get; set; }
         public DateTime DeliveryDataTime { get; set; }
 
         // 1:N

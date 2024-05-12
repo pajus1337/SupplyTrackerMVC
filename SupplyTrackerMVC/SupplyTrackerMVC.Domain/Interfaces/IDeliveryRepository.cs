@@ -9,9 +9,9 @@ namespace SupplyTrackerMVC.Domain.Interfaces
 {
     public interface IDeliveryRepository
     {
-        int AddDelivery(Delivery delivery);
-        void UpdateDelivery();
-        void DeleteDelivery(int deliveryId);
-        Delivery GetDeliveryById(int deliveryId);
+        Task<int> AddDeliveryAsync(Delivery delivery, CancellationToken cancellationToken);
+        Task<bool> UpdateDeliveryAsync(Delivery delivery, CancellationToken cancellationToken);
+        Task<bool> DeleteDeliveryAsync(int deliveryId, CancellationToken cancellationToken);
+        Task<Delivery> GetDeliveryByIdAsync(int deliveryId, CancellationToken cancellationToken);
     }
 }

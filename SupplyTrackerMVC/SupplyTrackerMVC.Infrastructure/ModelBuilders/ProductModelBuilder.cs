@@ -14,6 +14,12 @@ namespace SupplyTrackerMVC.Infrastructure.ModelBuilders
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
+            builder.HasQueryFilter(r => !r.IsDeleted);
+
+            builder
+                .HasIndex(r => r.IsDeleted)
+                .HasFilter("IsDeleted = 0");
+
             builder
                 .HasOne(p => p.ProductDetail)
                 .WithOne(pd => pd.Product)

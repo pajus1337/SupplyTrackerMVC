@@ -1,8 +1,12 @@
-﻿using SupplyTrackerMVC.Domain.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using SupplyTrackerMVC.Domain.Interfaces;
+using SupplyTrackerMVC.Domain.Interfaces.Common;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,9 +27,35 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             return receiver.Id;
         }
 
-        public void DeleteReceiver(int receiverId)
+        public async Task<bool> DeleteReceiverAsync(int receiverId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var receiver = await _context.Receivers.FirstOrDefaultAsync(p => p.Id == receiverId, cancellationToken);
+                if (receiver == null)
+                {
+                    return false;
+                }
+
+                if (receiver is ISoftDeletable softDeletable)
+                {
+                    softDeletable.IsDeleted = true;
+                    softDeletable.DeletedOnUtc = DateTime.UtcNow; 
+                }
+                else
+                {
+                    _context.Receivers.Remove(receiver);
+                }
+
+                int success = await SaveChangesAsync(cancellationToken);
+
+                return success > 0 ? true : false;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public IQueryable<ReceiverBranch> GetAllActiveReceiverBranches(int receiverId)
@@ -40,15 +70,29 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             return activeBranches;
         }
 
-        public IQueryable<Receiver> GetAllActiveReceivers()
+        public IQueryable<Receiver> GetAllReceivers()
         {
-            var allActiveReceiver = _context.Receivers.Where(p => p.isActive);
+            var allActiveReceiver = _context.Receivers;
             return allActiveReceiver;
         }
 
-        public Receiver GetReceiverById(int receiverId)
+        public async Task<(bool Success, Receiver? Receiver)> GetReceiverByIdAsync(int receiverId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (receiverId == 0)
+            {
+                return (false, null);
+            }
+
+            try
+            {
+                var receiver = await _context.Receivers.FirstOrDefaultAsync(p => p.Id == receiverId, cancellationToken);
+                return receiver is null ? (false, null) : (true, receiver);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
@@ -56,9 +100,23 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public void UpdateReceiver()
+        public async Task<bool> UpdateReceiverAsync(Receiver receiver, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (receiver == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                _context.Receivers.Update(receiver);
+                int success = await SaveChangesAsync(cancellationToken);
+                return success > 0 ? true : false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

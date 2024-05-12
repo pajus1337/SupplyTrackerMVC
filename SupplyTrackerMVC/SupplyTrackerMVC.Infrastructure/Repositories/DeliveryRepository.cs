@@ -10,22 +10,22 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 {
     public class DeliveryRepository : IDeliveryRepository
     {
-        public int AddDelivery(Delivery delivery)
+        public Task<int> AddDeliveryAsync(Delivery delivery, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteDelivery(int deliveryId)
+        public Task<bool> DeleteDeliveryAsync(int deliveryId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Delivery GetDeliveryById(int deliveryId)
+        public Task<Delivery> GetDeliveryByIdAsync(int deliveryId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateDelivery()
+        public Task<bool> UpdateDeliveryAsync(Delivery delivery, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupplyTrackerMVC.Domain.Interfaces
+namespace SupplyTrackerMVC.Domain.Interfaces.Common
 {
     public interface ISoftDeletable
     {

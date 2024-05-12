@@ -1,4 +1,4 @@
-﻿using SupplyTrackerMVC.Domain.Interfaces;
+﻿using SupplyTrackerMVC.Domain.Interfaces.Common;
 using SupplyTrackerMVC.Domain.Model.Deliveries;
 using System;
 using System.Collections.Generic;
@@ -15,8 +15,6 @@ namespace SupplyTrackerMVC.Domain.Model.Products
         public bool IsDeleted { get; set; }
         public DateTime? DeletedOnUtc { get; set; }
 
-        // TODO : Remove isActive since we implementing SoftDelet via EF Interceptor
-        public bool isActive { get; set; }
         // N:1
         public int ProductTypeId { get; set; }
         public ProductType ProductType { get; set; }

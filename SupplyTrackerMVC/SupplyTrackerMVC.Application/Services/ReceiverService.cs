@@ -55,7 +55,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public ListReceiverForListVm GetAllActiveReceiversForList()
         {
-            var receivers = _receiverRepository.GetAllActiveReceivers();
+            var receivers = _receiverRepository.GetAllReceivers();
             ListReceiverForListVm result = new ListReceiverForListVm();
             result.Receivers = new List<ReceiverForListVm>();
 
@@ -74,7 +74,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public ReceiverDetailsVm GetReceiverDetailsById(int receiverId)
         {
-            var receiver = _receiverRepository.GetReceiverById(receiverId);
+            var receiver = _receiverRepository.GetReceiverByIdAsync(receiverId);
             var receiverVm = new ReceiverDetailsVm();
             receiverVm.Id = receiver.Id;
             receiverVm.Name = receiver.Name;
@@ -87,7 +87,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public ReceiverSelectListVm GetAllActiveReceiversForSelectList()
         {
-            var receivers = _receiverRepository.GetAllActiveReceivers().ProjectTo<ReceiverForSelectListVm>(_mapper.ConfigurationProvider);
+            var receivers = _receiverRepository.GetAllReceivers().ProjectTo<ReceiverForSelectListVm>(_mapper.ConfigurationProvider);
             var receiversVm = new ReceiverSelectListVm()
             {
                 Receivers = receivers,

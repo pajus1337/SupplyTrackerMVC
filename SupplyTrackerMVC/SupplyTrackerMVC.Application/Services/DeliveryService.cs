@@ -40,7 +40,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public DeliveryDetailsVm GetDeliveryDetailsById(int deliveryId)
         {
-            var delivery = _deliveryRepository.GetDeliveryById(deliveryId);
+            var delivery = _deliveryRepository.GetDeliveryByIdAsync(deliveryId);
             var deliveryVm = _mapper.Map(delivery, new DeliveryDetailsVm());
 
             return deliveryVm;
@@ -66,7 +66,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         private ReceiverSelectListVm GetActiveReceivers() => new ReceiverSelectListVm()
         {
-            Receivers = _receiverRepository.GetAllActiveReceivers().ProjectTo<ReceiverForSelectListVm>(_mapper.ConfigurationProvider)
+            Receivers = _receiverRepository.GetAllReceivers().ProjectTo<ReceiverForSelectListVm>(_mapper.ConfigurationProvider)
         };
 
         private ReceiverBranchSelectListVm GetActiveReceiverBranches() => new ReceiverBranchSelectListVm
@@ -76,7 +76,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         private ProductSelectListVm GetActiveProducts() => new ProductSelectListVm()
         {
-            Products = _productRepository.GetAllActiveProducts().ProjectTo<ProductForSelectListVm>(_mapper.ConfigurationProvider)
+            Products = _productRepository.GetAllProducts().ProjectTo<ProductForSelectListVm>(_mapper.ConfigurationProvider)
         };
 
         public ReceiverBranchSelectListVm GetReceiverBranchesByReceiverId(int receiverId) => new ReceiverBranchSelectListVm()

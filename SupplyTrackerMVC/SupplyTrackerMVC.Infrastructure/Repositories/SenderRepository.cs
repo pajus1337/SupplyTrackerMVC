@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Domain.Interfaces;
+using SupplyTrackerMVC.Domain.Interfaces.Common;
 using SupplyTrackerMVC.Domain.Model.Senders;
 using System;
 using System.Collections.Generic;
@@ -93,7 +94,6 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             return (sender != null, sender);
         }
 
-
         public async Task<bool> UpdateSenderAsync(Sender sender, CancellationToken cancellationToken)
         {
             if (sender == null)
@@ -121,9 +121,10 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
         public IQueryable<Sender> GetAllActiveSenders()
         {
-            var senders = _context.Senders.Where(s => s.IsActive);
+            var senders = _context.Senders;
             return senders;
         }
+
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             return await _context.SaveChangesAsync(cancellationToken);

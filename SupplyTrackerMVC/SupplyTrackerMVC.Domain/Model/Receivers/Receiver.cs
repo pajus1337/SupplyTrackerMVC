@@ -1,4 +1,4 @@
-﻿using SupplyTrackerMVC.Domain.Interfaces;
+﻿using SupplyTrackerMVC.Domain.Interfaces.Common;
 using SupplyTrackerMVC.Domain.Model.Addresses;
 using SupplyTrackerMVC.Domain.Model.Contacts;
 using SupplyTrackerMVC.Domain.Model.Deliveries;
@@ -17,9 +17,6 @@ namespace SupplyTrackerMVC.Domain.Model.Receivers
         public byte[]? LogoPic { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime? DeletedOnUtc { get; set; }
-
-        // TODO : Remove isActive since we implementing SoftDelet via EF Interceptor
-        public bool isActive { get; set; }
 
         // 1:1 
         public int AddressId { get; set; }
