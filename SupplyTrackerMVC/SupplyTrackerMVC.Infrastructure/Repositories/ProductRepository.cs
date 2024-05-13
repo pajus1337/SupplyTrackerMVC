@@ -101,7 +101,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
                 throw new ArgumentException("Product Id must be '> 0'", nameof(productId));
             }
 
-            var product = _context.Products.FirstOrDefault(p => p.Id == productId);
+            var product = await _context.Products.FindAsync(productId, cancellationToken);
             if (product == null)
             {
                 throw new ProductNotFoundException($"No product with ID {productId} found.", productId);
