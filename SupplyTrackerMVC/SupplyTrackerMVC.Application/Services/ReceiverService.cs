@@ -47,7 +47,7 @@ namespace SupplyTrackerMVC.Application.Services
             }
 
             var receiver = _mapper.Map<Receiver>(model);
-            var receiverId = _receiverRepository.AddReceiver(receiver);
+            var receiverId = _receiverRepository.AddReceiverAsync(receiver);
             await _receiverRepository.SaveChangesAsync(cancellationToken);
 
             return (true, null, receiverId);

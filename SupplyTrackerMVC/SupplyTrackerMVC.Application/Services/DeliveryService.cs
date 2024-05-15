@@ -61,7 +61,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         private SenderSelectListVm GetActiveSenders() => new SenderSelectListVm()
         {
-            Senders = _senderRepository.GetAllActiveSenders().ProjectTo<SenderForSelectListVm>(_mapper.ConfigurationProvider)
+            Senders = _senderRepository.GetAllSenders().ProjectTo<SenderForSelectListVm>(_mapper.ConfigurationProvider)
         };
 
         private ReceiverSelectListVm GetActiveReceivers() => new ReceiverSelectListVm()

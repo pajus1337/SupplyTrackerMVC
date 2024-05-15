@@ -122,7 +122,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<(bool Success, ProductTypeVm)> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken)
         {
-            var productType = await _productRepository.GetProductTypeByIdAsync(productTypeId, cancellationToken);
+            var productType = await _productRepository.GetProductTypeById(productTypeId, cancellationToken);
             if (productType == null)
             {
                 return (false, null);

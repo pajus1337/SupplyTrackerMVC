@@ -63,7 +63,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
                     _context.Senders.Remove(sender);
                 }
 
-                int success = await _context.SaveChangesAsync(cancellationToken);
+                int success = await SaveChangesAsync(cancellationToken);
                 if (success > 1)
                 {
                     return (true, sender is ISoftDeletable ? "Sender is soft deleted" : "Sender is hard removed.");
@@ -87,13 +87,6 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             {
                 return (false, "An unexpected error occurred.");
             }
-        }
-
-        public async Task<(bool Success, Sender? SenderObject)> GetSenderByIdAsync(int senderId, CancellationToken cancellationToken)
-        {
-            var sender = await _context.Senders.FindAsync(senderId, cancellationToken);
-
-            return (sender != null, sender);
         }
 
         public async Task<bool> UpdateSenderAsync(Sender sender, CancellationToken cancellationToken)
@@ -121,11 +114,8 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             }
         }
 
-        public IQueryable<Sender> GetAllActiveSenders()
-        {
-            var senders = _context.Senders;
-            return senders;
-        }
+        public IQueryable<Sender> GetSenderById(int senderId) => _context.Senders.Where(p => p.Id == senderId);
+        public IQueryable<Sender> GetAllSenders() => _context.Senders;
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {

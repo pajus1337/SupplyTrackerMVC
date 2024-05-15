@@ -41,7 +41,7 @@ namespace SupplyTrackerMVC.Web.Controllers
                 {
                     ModelState.AddModelError(string.Empty, error);
                 }
-                return View("AddReceiver", model);
+                return View("AddReceiverAsync", model);
             }
 
             return RedirectToAction("ViewReceiver", new { receiverId = receiverId });

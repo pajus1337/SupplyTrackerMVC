@@ -39,23 +39,15 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             }
         }
 
-        public async Task<bool> UpdateProductAsync(Product product, CancellationToken cancellationToken)
+        public async Task<int> AddProductTypeAsync(ProductType productType, CancellationToken cancellationToken)
         {
-            try
+            if (productType == null)
             {
-                _context.Products.Update(product);
-                int success = await SaveChangesAsync(cancellationToken);
-                if (success != 1)
-                {
-                    throw new InvalidOperationException("Failed to add the product.");
-                }
-                return true;
+                throw new ArgumentNullException(nameof(productType), "ProductType to add can't be null");
             }
-            catch (DbUpdateException ex)
-            {
-
-                throw;
-            }
+            await _context.ProductTypes.AddAsync(productType, cancellationToken);
+            var id = await _context.SaveChangesAsync(cancellationToken);
+            return productType.Id;
         }
 
         public async Task<bool> DeleteProductAsync(int productId, CancellationToken cancellationToken)
@@ -84,65 +76,28 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             }
         }
 
-        public IQueryable<Product> GetProductsByProductTypeId(int productTypeId)
+        public async Task<bool> UpdateProductAsync(Product product, CancellationToken cancellationToken)
         {
-            if (productTypeId <= 0)
+            try
             {
-                throw new ArgumentException("Product TypeId must be '> 0'", nameof(productTypeId));
+                _context.Products.Update(product);
+                int success = await SaveChangesAsync(cancellationToken);
+                if (success != 1)
+                {
+                    throw new InvalidOperationException("Failed to add the product.");
+                }
+                return true;
             }
-            var products = _context.Products.Where(p => p.ProductTypeId == productTypeId);
-            return products;
-        }
-
-        public async Task<Product> GetProductByIdAsync(int productId, CancellationToken cancellationToken)
-        {
-            if (productId <= 0)
+            catch (DbUpdateException ex)
             {
-                throw new ArgumentException("Product Id must be '> 0'", nameof(productId));
+
+                throw;
             }
-
-            var product = await _context.Products.FindAsync(productId, cancellationToken);
-            if (product == null)
-            {
-                throw new ProductNotFoundException($"No product with ID {productId} found.", productId);
-            }
-            return product;
         }
-
-        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        {
-
-            return await _context.SaveChangesAsync(cancellationToken);
-        }
-
-        public IQueryable<ProductType> GetAllProductTypes()
-        {
-            var productTypes = _context.ProductTypes;
-            return productTypes;
-        }
-
-        public IQueryable<Product> GetAllProducts()
-        {
-            var products = _context.Products;
-            return products;
-        }
-
-        public async Task<int> AddProductTypeAsync(ProductType productType, CancellationToken cancellationToken)
-        {
-            if (productType == null)
-            {
-                throw new ArgumentNullException(nameof(productType), "ProductType to add can't be null");
-            }
-            await _context.ProductTypes.AddAsync(productType, cancellationToken);
-            var id = await _context.SaveChangesAsync(cancellationToken);
-            return productType.Id;
-        }
-
-        public async Task<ProductType> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken)
-        {
-            var productType = await _context.ProductTypes.FirstOrDefaultAsync(p => p.Id == productTypeId, cancellationToken);
-
-            return productType;
-        }
+        public IQueryable<Product> GetAllProducts() => _context.Products;
+        public IQueryable<ProductType> GetAllProductTypes() => _context.ProductTypes;
+        public IQueryable<Product> GetProductById(int productId) => _context.Products.Where(p => p.Id == productId);
+        public IQueryable<ProductType> GetProductTypeById(int productTypeId) => _context.ProductTypes.Where(p => p.Id == productTypeId);
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken) => await _context.SaveChangesAsync(cancellationToken);
     }
 }

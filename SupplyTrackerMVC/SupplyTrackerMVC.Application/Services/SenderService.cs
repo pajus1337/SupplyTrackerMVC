@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Application.Interfaces;
+using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Senders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,16 +46,14 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<bool> DeleteSenderAsync(int senderId, CancellationToken cancellationToken) => await _senderRepository.DeleteSenderAsync(senderId, cancellationToken);
 
-
-        public ListSenderForListVm GetAllActiveSendersForList()
+        public Task<(bool Success, ListSenderForListVm Model)> GetAllActiveSendersForListAsync(CancellationToken cancellationToken)
         {
-            var senders = _senderRepository.GetAllActiveSenders();
-
+            throw new NotImplementedException();
         }
 
         public SenderSelectListVm GetAllActiveSendersForSelectList()
         {
-            var senders = _senderRepository.GetAllActiveSenders().ProjectTo<SenderForSelectListVm>(_mapper.ConfigurationProvider);
+            var senders = _senderRepository.GetAllSenders().ProjectTo<SenderForSelectListVm>(_mapper.ConfigurationProvider);
             var senderSelectListVm = new SenderSelectListVm()
             {
                 Senders = senders
@@ -61,19 +62,32 @@ namespace SupplyTrackerMVC.Application.Services
             return senderSelectListVm;
         }
 
-        public async Task<(bool Success, SenderDetailsVm)> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken)
+        public async Task<SenderResponse<SenderDetailsVm>> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken)
         {
-            var (success, sender) = await _senderRepository.GetSenderByIdAsync(senderId, cancellationToken);
-            if (!success)
+            var senderQuery = _senderRepository.GetSenderById(senderId).ProjectTo<SenderDetailsVm>(_mapper.ConfigurationProvider);
+            try
             {
-                return (false, null);
-            }
+                var senderVm = await senderQuery.SingleOrDefaultAsync(cancellationToken);
 
-            var senderVm = _mapper.Map<SenderDetailsVm>(sender);
-            return (true, senderVm);
+                if (senderVm == null)
+                {
+                   return SenderResponse<SenderDetailsVm>.CreateFail("Sender not found in Db");
+                }
+
+                return SenderResponse<SenderDetailsVm>.CreateSuccess(senderVm);
+            }
+            catch (Exception ex)
+            {
+                return SenderResponse<SenderDetailsVm>.CreateFail($"Error occured -> {ex}");
+            }
         }
 
         public Task<(bool Success, IEnumerable<string>? Errors)> UpdateSenderByIdAsync(int senderId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<(bool Success, SenderSelectListVm Model)> ISenderService.GetAllActiveSendersForSelectList()
         {
             throw new NotImplementedException();
         }

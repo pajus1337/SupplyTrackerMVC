@@ -71,7 +71,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             }
         }
 
-        public async Task<Delivery> GetDeliveryByIdAsync(int deliveryId, CancellationToken cancellationToken)
+        public async Task<Delivery> GetDeliveryById(int deliveryId, CancellationToken cancellationToken)
         {
             if (deliveryId == 0)
             {

@@ -21,6 +21,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context = context;
         }
 
+        // TODO: Change into Async AddReceiver
         public int AddReceiver(Receiver receiver)
         {
             _context.Add(receiver);
@@ -58,6 +59,25 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             }
         }
 
+        public async Task<bool> UpdateReceiverAsync(Receiver receiver, CancellationToken cancellationToken)
+        {
+            if (receiver == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                _context.Receivers.Update(receiver);
+                int success = await SaveChangesAsync(cancellationToken);
+                return success > 0 ? true : false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public IQueryable<ReceiverBranch> GetAllActiveReceiverBranches(int receiverId)
         {
             var activeBranches = _context.DeliveryBranches.Where(b => b.ReceiverId == receiverId && b.isActive);
@@ -76,47 +96,11 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             return allActiveReceiver;
         }
 
-        public async Task<(bool Success, Receiver? Receiver)> GetReceiverByIdAsync(int receiverId, CancellationToken cancellationToken)
-        {
-            if (receiverId == 0)
-            {
-                return (false, null);
-            }
-
-            try
-            {
-                var receiver = await _context.Receivers.FirstOrDefaultAsync(p => p.Id == receiverId, cancellationToken);
-                return receiver is null ? (false, null) : (true, receiver);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
+        public IQueryable<Receiver> GetReceiverById(int receiverId) => _context.Receivers.Where(p => p.Id == receiverId);
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             return await _context.SaveChangesAsync(cancellationToken);
-        }
-
-        public async Task<bool> UpdateReceiverAsync(Receiver receiver, CancellationToken cancellationToken)
-        {
-            if (receiver == null)
-            {
-                return false;
-            }
-
-            try
-            {
-                _context.Receivers.Update(receiver);
-                int success = await SaveChangesAsync(cancellationToken);
-                return success > 0 ? true : false;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
         }
     }
 }

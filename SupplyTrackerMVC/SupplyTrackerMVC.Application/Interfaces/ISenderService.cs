@@ -1,4 +1,5 @@
-﻿using SupplyTrackerMVC.Application.ViewModels.SenderVm;
+﻿using SupplyTrackerMVC.Application.Responses;
+using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<(bool Success, IEnumerable<string>? Errors, int? SenderId)> AddNewSenderAsync(NewSenderVm model, CancellationToken cancellationToken);
         Task<(bool Success, IEnumerable<string>? Errors)> UpdateSenderByIdAsync(int senderId, CancellationToken cancellationToken);
         Task<bool> DeleteSenderAsync(int senderId, CancellationToken cancellationToken);
-        Task<(bool Success, ListSenderForListVm ListOfActiveSenders)> GetAllActiveSendersForListAsync(CancellationToken cancellationToken);
-        Task<(bool Success, SenderDetailsVm)> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken);
-        Task<(bool Success, SenderSelectListVm)> GetAllActiveSendersForSelectList();
+        Task<SenderResponse<ListSenderForListVm>> GetAllActiveSendersForListAsync(CancellationToken cancellationToken);
+        Task<SenderResponse<SenderDetailsVm>> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken);
+        Task<(bool Success, SenderSelectListVm Model)> GetAllActiveSendersForSelectList();
     }
 }

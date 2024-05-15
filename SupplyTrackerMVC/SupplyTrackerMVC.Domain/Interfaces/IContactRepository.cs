@@ -12,7 +12,7 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         Task<bool> AddContactAsync(Contact contact, CancellationToken cancellationToken);
         Task<bool> DeleteAddressAsync(int contact, CancellationToken cancellationToken);
         Task<bool> UpdateAddressAsync(Contact contact, CancellationToken cancellationToken);
-        Task<Contact> GetContactAsync(int contactId, CancellationToken cancellationToken);
+        IQueryable<Contact> GetContactById(int contactId);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

@@ -12,8 +12,8 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         Task<(int SenderId, bool Success)> AddSenderAsync(Sender sender, CancellationToken cancellationToken);
         Task<bool> UpdateSenderAsync(Sender sender, CancellationToken cancellationToken);
         Task<(bool Success, string? Error)> DeleteSenderAsync(int senderId, CancellationToken cancellationToken);
-        Task<(bool Success, Sender SenderObject)> GetSenderByIdAsync(int senderId,CancellationToken cancellationToken);
-        IQueryable<Sender> GetAllActiveSenders();
+        IQueryable<Sender> GetSenderById(int senderId);
+        IQueryable<Sender> GetAllSenders();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
