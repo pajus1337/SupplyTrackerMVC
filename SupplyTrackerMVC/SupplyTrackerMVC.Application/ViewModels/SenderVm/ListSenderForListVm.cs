@@ -8,7 +8,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
 {
     public class ListSenderForListVm
     {
-        public List<SenderForListVm> Senders { get; set; }
+        public List<SenderForListVm>? Senders { get; set; }
         public int Count { get; set; }
     }
 }

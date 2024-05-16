@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using SupplyTrackerMVC.Application.Interfaces;
+using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Products;
@@ -78,8 +79,14 @@ namespace SupplyTrackerMVC.Application.Services
 
         }
 
-        public async Task<(bool Success, ProductDetailVm)> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ProductDetailVm>> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken)
         {
+            if (productId == 0)
+            {
+                return (false,null)
+            }
+            var productQuery = 
+
             var product = await _productRepository.GetProductByIdAsync(productId, cancellationToken);
             var productVm = _mapper.Map<ProductDetailVm>(product);
 

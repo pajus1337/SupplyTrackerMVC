@@ -1,4 +1,5 @@
-﻿using SupplyTrackerMVC.Application.ViewModels.ProductVm;
+﻿using SupplyTrackerMVC.Application.Responses;
+using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 using System;
@@ -18,7 +19,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<(bool Success, IEnumerable<string>? Errors, int? ProductTypeId)> AddNewProductTypeAsync(NewProductTypeVm model, CancellationToken cancellationToken);
         Task<(bool Success, ProductTypeVm)> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken);
         Task<ListProductForList> GetAllActiveProductsForListAsync(CancellationToken cancellationToken);
-        Task<(bool Success, ProductDetailVm)> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken);
+        Task<ServiceResponse<ProductDetailVm>> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken);
         ProductSelectListVm GetAllActiveProductsForSelectList();
         NewProductVm PrepareNewProductViewModel();
     }

@@ -10,11 +10,11 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface ISenderService
     {
-        Task<(bool Success, IEnumerable<string>? Errors, int? SenderId)> AddNewSenderAsync(NewSenderVm model, CancellationToken cancellationToken);
-        Task<(bool Success, IEnumerable<string>? Errors)> UpdateSenderByIdAsync(int senderId, CancellationToken cancellationToken);
-        Task<bool> DeleteSenderAsync(int senderId, CancellationToken cancellationToken);
-        Task<SenderResponse<ListSenderForListVm>> GetAllActiveSendersForListAsync(CancellationToken cancellationToken);
-        Task<SenderResponse<SenderDetailsVm>> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken);
-        Task<(bool Success, SenderSelectListVm Model)> GetAllActiveSendersForSelectList();
+        Task<ServiceResponse<NewSenderVm>> AddNewSenderAsync(NewSenderVm model, CancellationToken cancellationToken);
+        Task<ServiceResponse<SenderDetailsVm>> UpdateSenderByIdAsync(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken);
+        Task<ServiceResponse<VoidValue>> DeleteSenderAsync(int senderId, CancellationToken cancellationToken);
+        Task<ServiceResponse<ListSenderForListVm>> GetAllSendersForListAsync(CancellationToken cancellationToken);
+        Task<ServiceResponse<SenderDetailsVm>> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken);
+        Task<ServiceResponse<SenderSelectListVm>> GetAllSendersForSelectListAsync(CancellationToken cancellationToken);
     }
 }

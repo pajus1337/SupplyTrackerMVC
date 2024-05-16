@@ -62,7 +62,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [Route("list-of-senders")]
         public IActionResult ListOfSenders(CancellationToken cancellationToken)
         {
-            var model = _senderService.GetAllActiveSendersForListAsync(cancellationToken);
+            var model = _senderService.GetAllSendersForListAsync(cancellationToken);
 
             return View(model);
         }

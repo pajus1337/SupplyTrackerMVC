@@ -41,15 +41,18 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
 
         // TODO: TO Refactoring
-        public async Task<(bool Success, string? Error)> DeleteSenderAsync(int senderId, CancellationToken cancellationToken)
+        public async Task<(bool Success, string? Error, string? AdditionalMessage)> DeleteSenderAsync(int senderId, CancellationToken cancellationToken)
         {
-
+            if (senderId == 0)
+            {
+                return (false, "Error: Wrong Id", string.Empty);
+            }
             try
             {
                 var sender = await _context.Senders.FindAsync(senderId, cancellationToken);
                 if (sender == null)
                 {
-                    return (false, "null object error");
+                    return (false, "Error : Object is null", string.Empty);
                 }
 
                 if (sender is ISoftDeletable deletable)
@@ -64,28 +67,21 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
                 }
 
                 int success = await SaveChangesAsync(cancellationToken);
-                if (success > 1)
+                if (success > 0)
                 {
-                    return (true, sender is ISoftDeletable ? "Sender is soft deleted" : "Sender is hard removed.");
+                    return (true, string.Empty, sender is ISoftDeletable ? "Sender is soft deleted" : "Sender is hard removed.");
                 }
                 else
                 {
-                    return (false, "Failed to save changes in DB");
+                    return (false, "Failed to save changes in DB", string.Empty);
                 }
             }
 
             // TODO: Test Exception , Add logs ?
-            catch (DbUpdateConcurrencyException ex)
-            {
-                return (false, "Failed to delete sender due to a concurrency issue.");
-            }
-            catch (DbUpdateException ex)
-            {
-                return(false, "Failed to delete sender due to database update error.");
-            }
+            
             catch (Exception ex)
             {
-                return (false, "An unexpected error occurred.");
+                return (false, $"An unexpected error occurred. {ex}", string.Empty);
             }
         }
 
