@@ -40,7 +40,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public DeliveryDetailsVm GetDeliveryDetailsById(int deliveryId)
         {
-            var delivery = _deliveryRepository.GetDeliveryByIdAsync(deliveryId);
+            var delivery = _deliveryRepository.GetDeliveryById(deliveryId);
             var deliveryVm = _mapper.Map(delivery, new DeliveryDetailsVm());
 
             return deliveryVm;

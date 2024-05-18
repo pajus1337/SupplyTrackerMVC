@@ -30,25 +30,29 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> NewProduct(NewProductVm model, CancellationToken cancellationToken)
         {
-           var (success, errors, productId) = await _productService.AddNewProductAsync(model, cancellationToken);
-            if (!success)
+           var serviceResponse = await _productService.AddNewProductAsync(model, cancellationToken);
+            if (!serviceResponse.Success)
             {
-                foreach (var error in errors)
+                if (serviceResponse.ErrorMessage != null)
                 {
-                    ModelState.AddModelError(string.Empty, error);
+                    foreach (var error in serviceResponse.ErrorMessage)
+                    {
+                        ModelState.AddModelError(string.Empty, error);
+                    }
                 }
+
                 TempData["Header"] = "Add new product";
                 return View("NewProduct", model);
             }
 
             TempData["Header"] = "Successfully added new product";
-            return RedirectToAction("ViewProductDetails", new { productId = productId });
+            return RedirectToAction("ViewProductDetails", new { productId = serviceResponse.ObjectId });
         }
 
         [HttpGet]
         public async Task<IActionResult> UpdateProduct(int productId, CancellationToken cancellationToken)
         {
-            var model = await _productService.PrepareUpdateProductViewModel(productId, cancellationToken);
+            var model = await _productService.GetPreparedUpdateProductVmAsync(productId, cancellationToken);
             return View(model);
         }
 
@@ -87,27 +91,27 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewProductType(int productTypeId, CancellationToken cancellationToken)
         {
-            var (success, model) = await _productService.GetProductTypeByIdAsync(productTypeId, cancellationToken);
-            if (!success)
+            var serviceResponse = await _productService.GetProductTypeByIdAsync(productTypeId, cancellationToken);
+            if (!serviceResponse.Success)
             {
-                // Add unsuccess case 
+                // TODO: Add unsuccess case 
                 return View();
             }
 
-            return View(model);
+            return View(serviceResponse.Data);
         }
 
         [HttpGet]
         public async Task<IActionResult> ViewProductDetails(int productId, CancellationToken cancellationToken)
         {
-            var (success, model) = await _productService.GetProductDetailsByIdAsync(productId, cancellationToken);
-            if (!success)
+            var serviceResponse = await _productService.GetProductDetailsByIdAsync(productId, cancellationToken);
+            if (!serviceResponse.Success)
             {
-                // Add !success handler 
+                // TODO: Add !success handler 
                 return View();
             }
 
-            return View(model);
+            return View(serviceResponse.Data);
         }
 
         [HttpGet]
