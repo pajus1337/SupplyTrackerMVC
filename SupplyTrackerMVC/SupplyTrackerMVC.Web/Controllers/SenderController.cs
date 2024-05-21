@@ -33,29 +33,33 @@ namespace SupplyTrackerMVC.Web.Controllers
         [Route("new-sender")]
         public async Task<IActionResult> AddSender(NewSenderVm model, CancellationToken cancellationToken)
         {
-            var (success, errors, senderId) = await _senderService.AddNewSenderAsync(model, cancellationToken);
-            if (!success)
+            var serviceResponse = await _senderService.AddNewSenderAsync(model, cancellationToken);
+            if (!serviceResponse.Success)
             {
-                foreach (var error in errors)
+                if (serviceResponse.ErrorMessage != null)
                 {
-                    ModelState.AddModelError(string.Empty, error);
+                    foreach (var error in serviceResponse.ErrorMessage)
+                    {
+                        ModelState.AddModelError(string.Empty, error);
+                    }
                 }
+
                 return View(model);
             }
 
-            return RedirectToAction("ViewSender", new { senderId = senderId });
+            return RedirectToAction("ViewSender", new { senderId = serviceResponse.ObjectId });
         }
 
         [HttpGet]
         [Route("sender-details")]
         public async Task<IActionResult> ViewSender(int senderId,CancellationToken cancellationToken)
         {
-            var (success, model) = await _senderService.GetSenderDetailsByIdAsync(senderId, cancellationToken);
-            if (!success)
+            var serviceResponse = await _senderService.GetSenderDetailsByIdAsync(senderId, cancellationToken);
+            if (!serviceResponse.Success)
             {
                 return NotFound();
             }
-            return View(model);
+            return View(serviceResponse.Data);
         }
 
         [HttpGet]

@@ -47,9 +47,9 @@ namespace SupplyTrackerMVC.Web.Controllers
             return RedirectToAction("ViewReceiver", new { receiverId = receiverId });
         }
 
-        public IActionResult ViewReceiver(int receiverId)
+        public async Task<IActionResult> ViewReceiver(int receiverId, CancellationToken cancellationToken)
         {
-            _receiverService.GetReceiverDetailsById(receiverId);
+            await _receiverService.GetReceiverDetailsByIdAsync(receiverId, cancellationToken);
             return View();
         }
     }

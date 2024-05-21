@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SupplyTrackerMVC.Application.Interfaces;
+using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
+using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 using System;
@@ -47,7 +50,7 @@ namespace SupplyTrackerMVC.Application.Services
             }
 
             var receiver = _mapper.Map<Receiver>(model);
-            var receiverId = _receiverRepository.AddReceiverAsync(receiver);
+            var (isSuccess, receiverId) = await _receiverRepository.AddReceiverAsync(receiver, cancellationToken);
             await _receiverRepository.SaveChangesAsync(cancellationToken);
 
             return (true, null, receiverId);
@@ -64,7 +67,7 @@ namespace SupplyTrackerMVC.Application.Services
                 var receiverForListVm = new ReceiverForListVm()
                 {
                     Id = receiver.Id,
-                    Name = receiver.Name,                    
+                    Name = receiver.Name,
                 };
 
                 result.Receivers.Add(receiverForListVm);
@@ -72,18 +75,32 @@ namespace SupplyTrackerMVC.Application.Services
             return result;
         }
 
-        public ReceiverDetailsVm GetReceiverDetailsById(int receiverId)
+        public async Task<ServiceResponse<ReceiverDetailsVm>> GetReceiverDetailsByIdAsync(int receiverId, CancellationToken cancellationToken)
         {
-            var receiver = _receiverRepository.GetReceiverByIdAsync(receiverId);
-            var receiverVm = new ReceiverDetailsVm();
-            receiverVm.Id = receiver.Id;
-            receiverVm.Name = receiver.Name;
-            receiverVm.Street = receiver.Address.Street;
-            receiverVm.City = receiver.Address.City;
-            receiverVm.ZIP = receiver.Address.ZIP;
+            if (receiverId == 0)
+            {
+                return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { "Wrong receiver Id" });
+            }
 
-            return receiverVm;
+            var receiverQuery = _receiverRepository.GetReceiverById(receiverId);
+            try
+            {
+                var receiver = await receiverQuery.SingleOrDefaultAsync(cancellationToken);
+                if (receiver == null)
+                {
+                    ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { "receiver is null" });
+                }
+
+                var receiverVm = _mapper.Map<ReceiverDetailsVm>(receiver);
+
+                return ServiceResponse<ReceiverDetailsVm>.CreateSuccess(receiverVm);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
+
 
         public ReceiverSelectListVm GetAllActiveReceiversForSelectList()
         {
