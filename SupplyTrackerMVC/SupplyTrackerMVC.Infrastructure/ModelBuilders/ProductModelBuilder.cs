@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using SupplyTrackerMVC.Domain.Model.Products;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,12 @@ namespace SupplyTrackerMVC.Infrastructure.ModelBuilders
             builder
                 .HasOne(p => p.ProductDetail)
                 .WithOne(pd => pd.Product)
-                .HasForeignKey<ProductDetail>(pd => pd.ProductRef);
+                .HasForeignKey<ProductDetail>(pd => pd.ProductRef)
+                // TODO: Test Casscade delete behavior
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Global query filter for product detail 
+
         }
     }
 }

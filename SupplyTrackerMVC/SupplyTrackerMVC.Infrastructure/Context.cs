@@ -38,10 +38,11 @@ namespace SupplyTrackerMVC.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // modelBuilder.ApplyConfiguration(new AddressModelBuilder());
+            modelBuilder.ApplyConfiguration(new AddressModelBuilder());
             // modelBuilder.ApplyConfiguration(new ContactModelBuilder());
             modelBuilder.ApplyConfiguration(new DeliveryModelBuilder());
             modelBuilder.ApplyConfiguration(new ProductModelBuilder());
+            modelBuilder.ApplyConfiguration(new ProductDetailModelBuilder());
             modelBuilder.ApplyConfiguration(new ReceiverBranchModelBuilder());
             modelBuilder.ApplyConfiguration(new ReceiverModelBuilder());
             modelBuilder.ApplyConfiguration(new SenderModelBuilder());

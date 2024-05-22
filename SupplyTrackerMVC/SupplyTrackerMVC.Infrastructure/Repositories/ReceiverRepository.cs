@@ -21,11 +21,26 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context = context;
         }
 
-        // TODO: Change into Async AddReceiver
-        public int AddReceiver(Receiver receiver)
+        // TODO: Change into Async AddReceiverAsync
+        public async Task<(bool Success, int? ReceiverId)> AddReceiverAsync(Receiver receiver, CancellationToken cancellationToken)
         {
-            _context.Add(receiver);
-            return receiver.Id;
+            if (receiver == null)
+            {
+                return (false, null);
+            }
+
+            try
+            {
+                await _context.AddAsync(receiver, cancellationToken);
+                int success = await SaveChangesAsync(cancellationToken);
+
+                return success > 0 ? (true, receiver.Id) : (false, null);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<bool> DeleteReceiverAsync(int receiverId, CancellationToken cancellationToken)
@@ -41,7 +56,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
                 if (receiver is ISoftDeletable softDeletable)
                 {
                     softDeletable.IsDeleted = true;
-                    softDeletable.DeletedOnUtc = DateTime.UtcNow; 
+                    softDeletable.DeletedOnUtc = DateTime.UtcNow;
                 }
                 else
                 {
@@ -80,32 +95,19 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
         public IQueryable<ReceiverBranch> GetAllActiveReceiverBranches(int receiverId)
         {
-            var activeBranches = _context.DeliveryBranches.Where(b => b.ReceiverId == receiverId && b.isActive);
+            var activeBranches = _context.DeliveryBranches.Where(b => b.ReceiverId == receiverId && !b.IsDeleted);
             return activeBranches;
         }
 
-        public IQueryable<ReceiverBranch> GetAllActiveReceiverBranches()
-        {
-            var activeBranches = _context.DeliveryBranches.Where(b => b.isActive);
-            return activeBranches;
-        }
+        public IQueryable<ReceiverBranch> GetAllReceiverBranches() => _context.DeliveryBranches;
 
-        public IQueryable<Receiver> GetAllReceivers()
-        {
-            var allActiveReceiver = _context.Receivers;
-            return allActiveReceiver;
-        }
+        public IQueryable<Receiver> GetAllReceivers() => _context.Receivers;
 
         public IQueryable<Receiver> GetReceiverById(int receiverId) => _context.Receivers.Where(p => p.Id == receiverId);
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             return await _context.SaveChangesAsync(cancellationToken);
-        }
-
-        public Task<(bool Success, int ReceiverId)> AddReceiverAsync(Receiver receiver, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -34,14 +34,14 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddReceiver(NewReceiverVm model, CancellationToken cancellationToken)
         {
-            var (success, errors, receiverId) = await _receiverService.AddNewReceiverAsync(model, cancellationToken);
+            var (success, errors, receiverId) = await _receiverService.AddReceiverAsync(model, cancellationToken);
             if (!success)
             {
                 foreach (var error in errors)
                 {
                     ModelState.AddModelError(string.Empty, error);
                 }
-                return View("AddReceiverAsync", model);
+                return View("AddReceiver", model);
             }
 
             return RedirectToAction("ViewReceiver", new { receiverId = receiverId });
@@ -49,8 +49,8 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         public async Task<IActionResult> ViewReceiver(int receiverId, CancellationToken cancellationToken)
         {
-            await _receiverService.GetReceiverDetailsByIdAsync(receiverId, cancellationToken);
-            return View();
+            var serviceResponse = await _receiverService.GetReceiverDetailsByIdAsync(receiverId, cancellationToken);
+            return View(serviceResponse.Data);
         }
     }
 }

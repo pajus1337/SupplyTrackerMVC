@@ -13,6 +13,8 @@ namespace SupplyTrackerMVC.Infrastructure.ModelBuilders
     {
         public void Configure(EntityTypeBuilder<ReceiverBranch> builder)
         {
+            builder.HasQueryFilter(rb => !rb.IsDeleted);
+
             builder
                 .HasOne(rb => rb.Address)
                 .WithOne()

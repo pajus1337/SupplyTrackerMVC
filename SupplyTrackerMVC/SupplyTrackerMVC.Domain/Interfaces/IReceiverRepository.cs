@@ -9,12 +9,12 @@ namespace SupplyTrackerMVC.Domain.Interfaces
 {
     public interface IReceiverRepository
     {
-        Task<(bool Success, int ReceiverId)> AddReceiverAsync(Receiver receiver, CancellationToken cancellationToken);
+        Task<(bool Success, int? ReceiverId)> AddReceiverAsync(Receiver receiver, CancellationToken cancellationToken);
         Task<bool> UpdateReceiverAsync(Receiver receiver, CancellationToken cancellationToken);
         Task<bool> DeleteReceiverAsync(int receiverId, CancellationToken cancellationToken);
         IQueryable<Receiver> GetReceiverById(int receiverId);
         IQueryable<Receiver> GetAllReceivers();
-        IQueryable<ReceiverBranch> GetAllActiveReceiverBranches();
+        IQueryable<ReceiverBranch> GetAllReceiverBranches();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

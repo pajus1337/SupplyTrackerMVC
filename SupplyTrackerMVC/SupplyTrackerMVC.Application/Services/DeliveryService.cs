@@ -71,7 +71,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         private ReceiverBranchSelectListVm GetActiveReceiverBranches() => new ReceiverBranchSelectListVm
         {
-            ReceiverBranches = _receiverRepository.GetAllActiveReceiverBranches().ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider)
+            ReceiverBranches = _receiverRepository.GetAllReceiverBranches().ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider)
         };
 
         private ProductSelectListVm GetActiveProducts() => new ProductSelectListVm()
@@ -81,7 +81,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public ReceiverBranchSelectListVm GetReceiverBranchesByReceiverId(int receiverId) => new ReceiverBranchSelectListVm()
         {
-            ReceiverBranches = _receiverRepository.GetAllActiveReceiverBranches().Where(rb => rb.ReceiverId == receiverId).ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider)
+            ReceiverBranches = _receiverRepository.GetAllReceiverBranches().Where(rb => rb.ReceiverId == receiverId).ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider)
         };
     }
 }

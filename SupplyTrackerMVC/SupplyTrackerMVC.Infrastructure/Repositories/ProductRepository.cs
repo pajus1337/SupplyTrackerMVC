@@ -50,6 +50,8 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             return productType.Id;
         }
 
+
+        // TODO: Add soft delete for product and ProductDetail
         public async Task<bool> DeleteProductAsync(int productId, CancellationToken cancellationToken)
         {
             try

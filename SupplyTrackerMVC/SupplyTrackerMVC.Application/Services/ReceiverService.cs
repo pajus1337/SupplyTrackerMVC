@@ -35,7 +35,7 @@ namespace SupplyTrackerMVC.Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<(bool Success, IEnumerable<string>? Errors, int? ReceiverId)> AddNewReceiverAsync(NewReceiverVm model, CancellationToken cancellationToken)
+        public async Task<(bool Success, IEnumerable<string>? Errors, int? ReceiverId)> AddReceiverAsync(NewReceiverVm model, CancellationToken cancellationToken)
         {
             var validator = _serviceProvider.GetService<IValidator<NewReceiverVm>>();
             if (validator == null)
@@ -51,9 +51,8 @@ namespace SupplyTrackerMVC.Application.Services
 
             var receiver = _mapper.Map<Receiver>(model);
             var (isSuccess, receiverId) = await _receiverRepository.AddReceiverAsync(receiver, cancellationToken);
-            await _receiverRepository.SaveChangesAsync(cancellationToken);
 
-            return (true, null, receiverId);
+            return isSuccess ? (true, null, receiverId) : (false, new string[] { "Failed to add receiver" }, null);
         }
 
         public ListReceiverForListVm GetAllActiveReceiversForList()
@@ -115,7 +114,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public ReceiverBranchSelectListVm GetAllActiveReceiverBranchesForSelectList()
         {
-            var receiverBranches = _receiverRepository.GetAllActiveReceiverBranches().ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider);
+            var receiverBranches = _receiverRepository.GetAllReceiverBranches().ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider);
             var receiverBranchesVm = new ReceiverBranchSelectListVm()
             {
                 ReceiverBranches = receiverBranches,
