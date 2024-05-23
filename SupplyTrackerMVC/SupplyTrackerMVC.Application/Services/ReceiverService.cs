@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
-using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 using System;
@@ -30,12 +29,7 @@ namespace SupplyTrackerMVC.Application.Services
             _serviceProvider = serviceProvider;
         }
 
-        public int AddNewReceiver(NewReceiverVm receiver)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<(bool Success, IEnumerable<string>? Errors, int? ReceiverId)> AddReceiverAsync(NewReceiverVm model, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<VoidValue>> AddReceiverAsync(NewReceiverVm model, CancellationToken cancellationToken)
         {
             var validator = _serviceProvider.GetService<IValidator<NewReceiverVm>>();
             if (validator == null)
@@ -46,32 +40,44 @@ namespace SupplyTrackerMVC.Application.Services
             var result = await validator.ValidateAsync(model);
             if (!result.IsValid)
             {
-                return (false, result.Errors.Select(e => e.ErrorMessage), null);
+                return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage));
             }
 
             var receiver = _mapper.Map<Receiver>(model);
             var (isSuccess, receiverId) = await _receiverRepository.AddReceiverAsync(receiver, cancellationToken);
 
-            return isSuccess ? (true, null, receiverId) : (false, new string[] { "Failed to add receiver" }, null);
+            return isSuccess ? ServiceResponse<VoidValue>.CreateSuccess(null, receiverId) : ServiceResponse<VoidValue>.CreateFailed(new string[] { "Failed to add receiver" });
         }
 
-        public ListReceiverForListVm GetAllActiveReceiversForList()
+        public async Task<ServiceResponse<ListReceiverForListVm>> GetReceiversForListAsysnc(CancellationToken cancellationToken)
         {
-            var receivers = _receiverRepository.GetAllReceivers();
-            ListReceiverForListVm result = new ListReceiverForListVm();
-            result.Receivers = new List<ReceiverForListVm>();
+            var receiversQuery = _receiverRepository.GetAllReceivers();
 
-            foreach (var receiver in receivers)
+            try
             {
-                var receiverForListVm = new ReceiverForListVm()
-                {
-                    Id = receiver.Id,
-                    Name = receiver.Name,
-                };
+                var receivers = await receiversQuery.ToListAsync(cancellationToken);
 
-                result.Receivers.Add(receiverForListVm);
+                ListReceiverForListVm result = new ListReceiverForListVm();
+                result.Receivers = new List<ReceiverForListVm>();
+
+                foreach (var receiver in receivers)
+                {
+                    var receiverForListVm = new ReceiverForListVm()
+                    {
+                        Id = receiver.Id,
+                        Name = receiver.Name,
+                    };
+
+                    result.Receivers.Add(receiverForListVm);
+                }
+
+                return ServiceResponse<ListReceiverForListVm>.CreateSuccess(result);
             }
-            return result;
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<ServiceResponse<ReceiverDetailsVm>> GetReceiverDetailsByIdAsync(int receiverId, CancellationToken cancellationToken)
@@ -101,26 +107,54 @@ namespace SupplyTrackerMVC.Application.Services
         }
 
 
-        public ReceiverSelectListVm GetAllActiveReceiversForSelectList()
+        public async Task<ServiceResponse<ReceiverSelectListVm>> GetReceiversForSelectListAsync(CancellationToken cancellationToken)
         {
-            var receivers = _receiverRepository.GetAllReceivers().ProjectTo<ReceiverForSelectListVm>(_mapper.ConfigurationProvider);
-            var receiversVm = new ReceiverSelectListVm()
-            {
-                Receivers = receivers,
-            };
+            var receiversQuery = _receiverRepository.GetAllReceivers().ProjectTo<ReceiverForSelectListVm>(_mapper.ConfigurationProvider);
 
-            return receiversVm;
+            try
+            {
+                var receivers = await receiversQuery.ToListAsync(cancellationToken);
+                if (receivers == null)
+                {
+                    return ServiceResponse<ReceiverSelectListVm>.CreateFailed(new string[] { "receiver is null" });
+                }
+                var receiversVm = new ReceiverSelectListVm()
+                {
+                    Receivers = receiversQuery,
+                };
+
+                return ServiceResponse<ReceiverSelectListVm>.CreateSuccess(receiversVm);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public ReceiverBranchSelectListVm GetAllActiveReceiverBranchesForSelectList()
+        public async Task<ServiceResponse<ReceiverBranchSelectListVm>> GetReceiverBranchesForSelectListAsync(CancellationToken cancellationToken)
         {
-            var receiverBranches = _receiverRepository.GetAllReceiverBranches().ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider);
-            var receiverBranchesVm = new ReceiverBranchSelectListVm()
-            {
-                ReceiverBranches = receiverBranches,
-            };
+            var receiverBranchesQuery = _receiverRepository.GetAllReceiverBranches().ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider);
 
-            return receiverBranchesVm;
+            try
+            {
+                var receiverBranches = await receiverBranchesQuery.ToListAsync(cancellationToken);
+                if (receiverBranches == null)
+                {
+                    return ServiceResponse<ReceiverBranchSelectListVm>.CreateFailed(new string[] { "receiver is null" });
+                }
+                var receiverBranchesVm = new ReceiverBranchSelectListVm()
+                {
+                    ReceiverBranches = receiverBranchesQuery,
+                };
+
+                return ServiceResponse<ReceiverBranchSelectListVm>.CreateSuccess(receiverBranchesVm);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<ReceiverBranchSelectListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
     }
 }

@@ -18,11 +18,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Receiver, ReceiverDetailsVm>()
-                .ForMember(d => d.City, opt => opt.MapFrom(s => s.Address.City))
-                .ForMember(d => d.Street, opt => opt.MapFrom(s => s.Address.Street))
-                .ForMember(d => d.ZIP, opt => opt.MapFrom(s => s.Address.ZIP));
-
+            profile.CreateMap<Receiver, ReceiverDetailsVm>();
             profile.CreateMap<Address, AddressVm>();
         }
     }

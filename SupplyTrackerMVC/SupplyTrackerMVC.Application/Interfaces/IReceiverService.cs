@@ -10,10 +10,10 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface IReceiverService
     {
-        Task<(bool Success, IEnumerable<string>? Errors, int? ReceiverId)> AddReceiverAsync(NewReceiverVm model, CancellationToken cancellationToken);
-        ListReceiverForListVm GetAllActiveReceiversForList();
+        Task<ServiceResponse<VoidValue>> AddReceiverAsync(NewReceiverVm model, CancellationToken cancellationToken);
+        Task<ServiceResponse<ListReceiverForListVm>> GetReceiversForListAsysnc(CancellationToken cancellationToken);
         Task<ServiceResponse<ReceiverDetailsVm>> GetReceiverDetailsByIdAsync(int receiverId, CancellationToken cancellationToken);
-        ReceiverSelectListVm GetAllActiveReceiversForSelectList();
-        ReceiverBranchSelectListVm GetAllActiveReceiverBranchesForSelectList();
+        Task<ServiceResponse<ReceiverSelectListVm>> GetReceiversForSelectListAsync(CancellationToken cancellationToken);
+        Task<ServiceResponse<ReceiverBranchSelectListVm>> GetReceiverBranchesForSelectListAsync(CancellationToken cancellationToken);
     }
 }

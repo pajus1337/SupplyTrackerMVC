@@ -21,9 +21,9 @@ namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Sender, SenderDetailsVm>();
-            profile.CreateMap<SenderDetailsVm, Address>();
-            profile.CreateMap<SenderDetailsVm, Contact>();
+            profile.CreateMap<SenderDetailsVm, Sender>();
+            profile.CreateMap<AddressVm, Address>();
+            profile.CreateMap<ContactVm, Contact>();
         }
     }
 }

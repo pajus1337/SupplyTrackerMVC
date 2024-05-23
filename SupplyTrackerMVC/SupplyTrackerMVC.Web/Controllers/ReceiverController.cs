@@ -18,10 +18,11 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult ListOfActiveReceivers()
+        public async Task<IActionResult> ListOfActiveReceivers(CancellationToken cancellationToken)
         {
-            var model = _receiverService.GetAllActiveReceiversForList();
-            return View(model);
+            var serviceResponse = await _receiverService.GetReceiversForListAsysnc(cancellationToken);
+
+            return View(serviceResponse.Data);
         }
 
         [HttpGet]
@@ -34,17 +35,20 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddReceiver(NewReceiverVm model, CancellationToken cancellationToken)
         {
-            var (success, errors, receiverId) = await _receiverService.AddReceiverAsync(model, cancellationToken);
-            if (!success)
+            var serviceResponse = await _receiverService.AddReceiverAsync(model, cancellationToken);
+            if (!serviceResponse.Success)
             {
-                foreach (var error in errors)
+                if (serviceResponse.ErrorMessage != null)
                 {
-                    ModelState.AddModelError(string.Empty, error);
+                    foreach (var error in serviceResponse.ErrorMessage)
+                    {
+                        ModelState.AddModelError(string.Empty, error);
+                    }
                 }
                 return View("AddReceiver", model);
             }
 
-            return RedirectToAction("ViewReceiver", new { receiverId = receiverId });
+            return RedirectToAction("ViewReceiver", new { receiverId = serviceResponse.ObjectId });
         }
 
         public async Task<IActionResult> ViewReceiver(int receiverId, CancellationToken cancellationToken)
