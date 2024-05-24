@@ -7,6 +7,7 @@ using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Products;
+using System.Net.Http.Headers;
 
 namespace SupplyTrackerMVC.Application.Services
 {
@@ -81,20 +82,26 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public async Task<bool> DeleteProductASync(int productId, CancellationToken cancellationToken) => await _productRepository.DeleteProductAsync(productId, cancellationToken);
+        public async Task<ServiceResponse<VoidValue>> DeleteProductASync(int productId, CancellationToken cancellationToken) => await _productRepository.DeleteProductAsync(productId, cancellationToken);
 
-        public ProductSelectListVm GetAllActiveProductsForSelectList()
+        public async Task<ServiceResponse<ProductSelectListVm>> GetAllActiveProductsForSelectList(CancellationToken cancellationToken)
         {
-            var products = _productRepository.GetAllProducts().ProjectTo<ProductForSelectListVm>(_mapper.ConfigurationProvider);
+            var productsQuery = _productRepository.GetAllProducts().ProjectTo<ProductForSelectListVm>(_mapper.ConfigurationProvider);
+            var products = await productsQuery.SingleOrDefaultAsync(cancellationToken);
+            if (products == null)
+            {
+
+            }
+
             var productsVm = new ProductSelectListVm()
             {
                 Products = products
             };
 
-            return productsVm;
+            return ServiceResponse<ProductSelectListVm>.CreateSuccess(productsVm);
         }
 
-        public async Task<ListProductForList> GetAllActiveProductsForListAsync(CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ListProductForList>> GetAllActiveProductsForListAsync(CancellationToken cancellationToken)
         {
             // HACK: Refactor, only test version.
             var products = _productRepository.GetAllProducts().ProjectTo<ProductForListVm>(_mapper.ConfigurationProvider);
@@ -175,19 +182,19 @@ namespace SupplyTrackerMVC.Application.Services
             return model;
         }
 
-        public async Task<(bool Success, IEnumerable<string>? Errors, int? ProductTypeId)> AddNewProductTypeAsync(NewProductTypeVm model, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<VoidValue>> AddNewProductTypeAsync(NewProductTypeVm model, CancellationToken cancellationToken)
         {
             var validator = _validatorFactory.GetValidator<NewProductTypeVm>();
             var result = await validator.ValidateAsync(model, cancellationToken);
             if (!result.IsValid)
             {
-                return (false, result.Errors.Select(e => e.ErrorMessage), null);
+                return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage));
             }
 
             var productType = _mapper.Map<ProductType>(model);
             var productTypeId = await _productRepository.AddProductTypeAsync(productType, cancellationToken);
 
-            return (true, null, productTypeId);
+            return ServiceResponse<VoidValue>.CreateSuccess(null,productTypeId);
         }
 
         public async Task<ServiceResponse<ProductTypeVm>> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken)

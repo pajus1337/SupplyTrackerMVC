@@ -80,11 +80,11 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public async Task<ServiceResponse<ReceiverDetailsVm>> GetReceiverDetailsByIdAsync(int receiverId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ReceiverDetailsAfterCreateVm>> GetReceiverDetailsByIdAsync(int receiverId, CancellationToken cancellationToken)
         {
             if (receiverId == 0)
             {
-                return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { "Wrong receiver Id" });
+                return ServiceResponse<ReceiverDetailsAfterCreateVm>.CreateFailed(new string[] { "Wrong receiver Id" });
             }
 
             var receiverQuery = _receiverRepository.GetReceiverById(receiverId);
@@ -93,16 +93,16 @@ namespace SupplyTrackerMVC.Application.Services
                 var receiver = await receiverQuery.SingleOrDefaultAsync(cancellationToken);
                 if (receiver == null)
                 {
-                    ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { "receiver is null" });
+                    ServiceResponse<ReceiverDetailsAfterCreateVm>.CreateFailed(new string[] { "receiver is null" });
                 }
 
-                var receiverVm = _mapper.Map<ReceiverDetailsVm>(receiver);
+                var receiverVm = _mapper.Map<ReceiverDetailsAfterCreateVm>(receiver);
 
-                return ServiceResponse<ReceiverDetailsVm>.CreateSuccess(receiverVm);
+                return ServiceResponse<ReceiverDetailsAfterCreateVm>.CreateSuccess(receiverVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ServiceResponse<ReceiverDetailsAfterCreateVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
