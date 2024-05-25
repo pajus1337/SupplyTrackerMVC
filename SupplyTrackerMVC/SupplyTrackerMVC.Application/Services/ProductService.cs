@@ -40,11 +40,11 @@ namespace SupplyTrackerMVC.Application.Services
             var product = _mapper.Map<Product>(model);
             try
             {
-            var (productId, isSuccess) = await _productRepository.AddProductAsync(product, cancellationToken);
-            if (!isSuccess)
-            {
+                var (productId, isSuccess) = await _productRepository.AddProductAsync(product, cancellationToken);
+                if (!isSuccess)
+                {
                     return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Failed to add new product" });
-            }
+                }
 
                 return ServiceResponse<VoidValue>.CreateSuccess(null, productId);
             }
@@ -82,38 +82,67 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public async Task<ServiceResponse<VoidValue>> DeleteProductASync(int productId, CancellationToken cancellationToken) => await _productRepository.DeleteProductAsync(productId, cancellationToken);
+        public async Task<ServiceResponse<VoidValue>> DeleteProductASync(int productId, CancellationToken cancellationToken)
+        {
+            if (productId == 0)
+            {
+                return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Wrong product Id" });
+            }
+
+            var isSuccess = await _productRepository.DeleteProductAsync(productId, cancellationToken);
+
+            return isSuccess ? ServiceResponse<VoidValue>.CreateSuccess(null) : ServiceResponse<VoidValue>.CreateFailed(new string[] { "An error occurred while deleting" });
+        }
 
         public async Task<ServiceResponse<ProductSelectListVm>> GetAllActiveProductsForSelectList(CancellationToken cancellationToken)
         {
             var productsQuery = _productRepository.GetAllProducts().ProjectTo<ProductForSelectListVm>(_mapper.ConfigurationProvider);
-            var products = await productsQuery.SingleOrDefaultAsync(cancellationToken);
-            if (products == null)
+            try
             {
+                // TODO: Make manual test
+                var products = await productsQuery.ToListAsync(cancellationToken);
+                if (products == null)
+                {
+                    return ServiceResponse<ProductSelectListVm>.CreateFailed(new string[] { "Products call returned null" });
+                }
+
+                var productsVm = new ProductSelectListVm()
+                {
+                    Products = products
+                };
+
+                return ServiceResponse<ProductSelectListVm>.CreateSuccess(productsVm);
 
             }
-
-            var productsVm = new ProductSelectListVm()
+            catch (Exception ex)
             {
-                Products = products
-            };
-
-            return ServiceResponse<ProductSelectListVm>.CreateSuccess(productsVm);
+                return ServiceResponse<ProductSelectListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
 
-        public async Task<ServiceResponse<ListProductForList>> GetAllActiveProductsForListAsync(CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ListProductForListVm>> GetAllActiveProductsForListAsync(CancellationToken cancellationToken)
         {
             // HACK: Refactor, only test version.
-            var products = _productRepository.GetAllProducts().ProjectTo<ProductForListVm>(_mapper.ConfigurationProvider);
+            var productsQuery = _productRepository.GetAllProducts().ProjectTo<ProductForListVm>(_mapper.ConfigurationProvider);
 
-            var ProductListVm = new ListProductForList
+            try
             {
-                Products = products.ToList(),
-                Count = products.Count()
-            };
+                var products = await productsQuery.ToListAsync(cancellationToken);
 
-            return ProductListVm;
+                // TODO: Add null check ? 
 
+                ListProductForListVm listProductForListVm = new ListProductForListVm()
+                {
+                    Products = products,
+                    Count = products.Count
+                };
+
+                return ServiceResponse<ListProductForListVm>.CreateSuccess(listProductForListVm);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<ListProductForListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
 
         public async Task<ServiceResponse<ProductDetailVm>> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken)
@@ -194,12 +223,12 @@ namespace SupplyTrackerMVC.Application.Services
             var productType = _mapper.Map<ProductType>(model);
             var productTypeId = await _productRepository.AddProductTypeAsync(productType, cancellationToken);
 
-            return ServiceResponse<VoidValue>.CreateSuccess(null,productTypeId);
+            return ServiceResponse<VoidValue>.CreateSuccess(null, productTypeId);
         }
 
         public async Task<ServiceResponse<ProductTypeVm>> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken)
         {
-            if ( productTypeId <= 0)
+            if (productTypeId <= 0)
             {
                 return ServiceResponse<ProductTypeVm>.CreateFailed(new string[] { "Error: Invalid product type Id" });
             }

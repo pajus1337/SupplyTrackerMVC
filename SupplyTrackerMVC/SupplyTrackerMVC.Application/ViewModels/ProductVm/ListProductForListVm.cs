@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
 {
-    public class ListProductForList
+    public class ListProductForListVm
     {
         public List<ProductForListVm> Products { get; set; }
         public int Count { get; set; }

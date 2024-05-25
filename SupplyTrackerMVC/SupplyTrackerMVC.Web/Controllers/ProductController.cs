@@ -30,7 +30,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> NewProduct(NewProductVm model, CancellationToken cancellationToken)
         {
-           var serviceResponse = await _productService.AddNewProductAsync(model, cancellationToken);
+            var serviceResponse = await _productService.AddNewProductAsync(model, cancellationToken);
             if (!serviceResponse.Success)
             {
                 if (serviceResponse.ErrorMessage != null)
@@ -72,12 +72,15 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> NewProductType(NewProductTypeVm model, CancellationToken cancellationToken)
         {
-            var (success, errors, productTypeId) = await _productService.AddNewProductTypeAsync(model, cancellationToken);
-            if (!success)
+            var serviceResponse = await _productService.AddNewProductTypeAsync(model, cancellationToken);
+            if (!serviceResponse.Success)
             {
-                foreach (var error in errors)
+                if (serviceResponse.ErrorMessage != null)
                 {
-                    ModelState.AddModelError(string.Empty, error);
+                    foreach (var error in serviceResponse.ErrorMessage)
+                    {
+                        ModelState.AddModelError(string.Empty, error);
+                    }
                 }
                 TempData["Header"] = "Add new product type";
 
@@ -85,7 +88,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             }
 
             TempData["Header"] = "Successfully added new product type";
-            return RedirectToAction("ViewProductType", new { productTypeId = productTypeId });
+            return RedirectToAction("ViewProductType", new { productTypeId = serviceResponse.ObjectId });
         }
 
         [HttpGet]
@@ -117,7 +120,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewProductList(CancellationToken cancellationToken)
         {
-           var model = await _productService.GetAllActiveProductsForListAsync(cancellationToken);
+            var model = await _productService.GetAllActiveProductsForListAsync(cancellationToken);
             return View(model);
         }
     }
