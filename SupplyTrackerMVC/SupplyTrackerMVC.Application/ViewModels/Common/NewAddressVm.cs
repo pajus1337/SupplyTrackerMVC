@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class AddressVm : IMapFrom<Address>
+    public class NewAddressVm : IMapFrom<Address>
     {
         public int Id { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
         public string ZIP { get; set; }
 
-        public void Mapping(Profile profile)
+        public void Mappng(Profile profile)
         {
-            profile.CreateMap<Address, AddressVm>();
+            profile.CreateMap<NewAddressVm, Address>();
         }
     }
 }

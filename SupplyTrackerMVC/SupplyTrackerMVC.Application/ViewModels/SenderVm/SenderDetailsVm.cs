@@ -16,14 +16,14 @@ namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public AddressVm Address { get; set; }
-        public ContactVm Contacts { get; set; }
+        public AddressDetailsVm Address { get; set; }
+        public ContactDetailsVm Contacts { get; set; }
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<SenderDetailsVm, Sender>();
-            profile.CreateMap<AddressVm, Address>();
-            profile.CreateMap<ContactVm, Contact>();
+            profile.CreateMap<AddressDetailsVm, Address>();
+            profile.CreateMap<ContactDetailsVm, Contact>();
         }
     }
 }

@@ -4,6 +4,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
 {
     public class NewAddressForReceiverBranchVm
     {
+        public int Id { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
         public string ZIP { get; set; }

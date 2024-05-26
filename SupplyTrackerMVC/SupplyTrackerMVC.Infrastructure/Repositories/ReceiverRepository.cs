@@ -109,5 +109,10 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         {
             return await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public Task<bool> AddReceiverBranchAsync(ReceiverBranch receiverBranch, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

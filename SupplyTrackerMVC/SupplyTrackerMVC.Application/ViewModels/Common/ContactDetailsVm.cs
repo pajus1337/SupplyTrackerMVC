@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class ContactVm : IMapFrom<Contact>
+    public class ContactDetailsVm : IMapFrom<Contact>
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -18,7 +18,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 
         public void Mappig(Profile profile)
         {
-            profile.CreateMap<Contact, ContactVm>();
+            profile.CreateMap<Contact, ContactDetailsVm>();
         }
     }
 }

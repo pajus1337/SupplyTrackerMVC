@@ -14,12 +14,12 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
         public string City { get; set; }
         public string Street { get; set; }
         public string ZIP { get; set; }
-        public AddressVm Address { get; set; }
+        public AddressDetailsVm Address { get; set; }
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Receiver, ReceiverDetailsAfterCreateVm>();
-            profile.CreateMap<Address, AddressVm>();
+            profile.CreateMap<Address, AddressDetailsVm>();
         }
     }
 }

@@ -16,5 +16,6 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         IQueryable<Receiver> GetAllReceivers();
         IQueryable<ReceiverBranch> GetAllReceiverBranches();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        Task<bool> AddReceiverBranchAsync(ReceiverBranch receiverBranch, CancellationToken cancellationToken);
     }
 }

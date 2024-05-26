@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
+using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 using System;
@@ -154,6 +155,28 @@ namespace SupplyTrackerMVC.Application.Services
             catch (Exception ex)
             {
                 return ServiceResponse<ReceiverBranchSelectListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
+        }
+
+        public async Task<ServiceResponse<VoidValue>> AddReceiverBranchAsync(NewReceiverBranchVm model, CancellationToken cancellationToken)
+        {
+            if (model == null)
+            {
+                return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
+            }
+
+            var receiverBranch = _mapper.Map<ReceiverBranch>(model);
+
+            try
+            {
+                var isSuccess = await _receiverRepository.AddReceiverBranchAsync(receiverBranch, cancellationToken);
+
+                return isSuccess ? ServiceResponse<VoidValue>.CreateSuccess(null, receiverBranch.Id) : ServiceResponse<VoidValue>.CreateFailed(new string[] {"Failed to add new Receiver Branch"});
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }

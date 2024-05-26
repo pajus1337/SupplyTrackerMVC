@@ -51,10 +51,26 @@ namespace SupplyTrackerMVC.Web.Controllers
             return RedirectToAction("ViewReceiver", new { receiverId = serviceResponse.ObjectId });
         }
 
+        [HttpGet]
         public async Task<IActionResult> ViewReceiver(int receiverId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _receiverService.GetReceiverDetailsByIdAsync(receiverId, cancellationToken);
             return View(serviceResponse.Data);
+        }
+
+        [HttpGet]
+        public IActionResult AddReceiverBranch()
+        {
+            return View(new NewReceiverBranchVm());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddReceiverBranch(NewReceiverBranchVm model, CancellationToken cancellationToken)
+        {
+            // HACK: WIP AddReceiverBranch Prototype
+            var serviceResponse  = _receiverService.AddReceiverBranchAsync(model, cancellationToken);
+
+            return View();
         }
     }
 }
