@@ -16,5 +16,6 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<ServiceResponse<ReceiverSelectListVm>> GetReceiversForSelectListAsync(CancellationToken cancellationToken);
         Task<ServiceResponse<ReceiverBranchSelectListVm>> GetReceiverBranchesForSelectListAsync(CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> AddReceiverBranchAsync(NewReceiverBranchVm model, CancellationToken cancellationToken);
+        Task<NewReceiverBranchVm> PrepareNewReceiverBranchVm(CancellationToken cancellationToken);
     }
 }

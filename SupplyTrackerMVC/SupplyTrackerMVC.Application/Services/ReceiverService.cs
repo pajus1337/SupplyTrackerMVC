@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
+using SupplyTrackerMVC.Application.ViewModels.DeliveryVm;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
@@ -178,6 +179,18 @@ namespace SupplyTrackerMVC.Application.Services
 
                 throw;
             }
+        }
+
+
+        // TODO: Create better implementation of this prototype metod
+        public async Task<NewReceiverBranchVm> PrepareNewReceiverBranchVm(CancellationToken cancellationToken)
+        {
+            var receivers = await GetReceiversForSelectListAsync(cancellationToken);
+        
+            var model = new NewReceiverBranchVm();
+            model.ReceiverSelectList = receivers.Data;
+
+            return model;
         }
     }
 }

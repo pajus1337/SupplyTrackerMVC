@@ -45,7 +45,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="ReceiverSelectedId" class="control-label"></label>
-                <input asp-for="ReceiverSelectedId" class="form-control" />
+                <select asp-for="ReceiverSelectedId" class="form-control" asp-items="@(new SelectList(Model.ReceiverSelectList.Receivers, "Id", "Name"))">
+                    <option value="">--- Select Receiver ---</option>
+                </select>
                 <span asp-validation-for="ReceiverSelectedId" class="text-danger"></span>
             </div>
             <div class="form-group">

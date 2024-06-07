@@ -22,6 +22,6 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
         public int ContactId { get; set; }
         public NewContactVm NewContactForReceiverBranch { get; set; }
         public int ReceiverSelectedId { get; set; }
-        ReceiverSelectListVm receiverSelectList { get; set; }
+        public ReceiverSelectListVm ReceiverSelectList { get; set; }
     }
 }
