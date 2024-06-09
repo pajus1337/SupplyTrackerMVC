@@ -22,11 +22,13 @@ namespace SupplyTrackerMVC.Application.Services
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IReceiverRepository _receiverRepository;
+        private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
 
-        public ReceiverService(IReceiverRepository receiverRepository, IMapper mapper, IServiceProvider serviceProvider)
+        public ReceiverService(IReceiverRepository receiverRepository, IContactRepository contactRepository, IMapper mapper, IServiceProvider serviceProvider)
         {
             _receiverRepository = receiverRepository;
+            _contactRepository = contactRepository;
             _mapper = mapper;
             _serviceProvider = serviceProvider;
         }
@@ -186,6 +188,7 @@ namespace SupplyTrackerMVC.Application.Services
         public async Task<NewReceiverBranchVm> PrepareNewReceiverBranchVm(CancellationToken cancellationToken)
         {
             var receivers = await GetReceiversForSelectListAsync(cancellationToken);
+            var contactTypes = 
         
             var model = new NewReceiverBranchVm();
             model.ReceiverSelectList = receivers.Data;

@@ -25,6 +25,11 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public IQueryable<ContactDetailType> GetContactDetailTypes()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();

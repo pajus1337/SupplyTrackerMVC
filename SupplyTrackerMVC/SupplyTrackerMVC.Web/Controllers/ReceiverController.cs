@@ -70,9 +70,21 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> AddReceiverBranch(NewReceiverBranchVm model, CancellationToken cancellationToken)
         {
             // HACK: WIP AddReceiverBranch Prototype
-            var serviceResponse  = _receiverService.AddReceiverBranchAsync(model, cancellationToken);
+            var serviceResponse  = await _receiverService.AddReceiverBranchAsync(model, cancellationToken);
 
-            return View();
+            if (!serviceResponse.Success)
+            {
+                if (serviceResponse.ErrorMessage != null)
+                {
+                    foreach (var error in serviceResponse.ErrorMessage)
+                    {
+                        ModelState.AddModelError(string.Empty, error);
+                    }
+                }
+                return View("AddReceiverBranch", model);
+            }
+
+            return RedirectToAction("ViewReceiverBranch", new { receiverBranchId = serviceResponse.ObjectId });
         }
     }
 }

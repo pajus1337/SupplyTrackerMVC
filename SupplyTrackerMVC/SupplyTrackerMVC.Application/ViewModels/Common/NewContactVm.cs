@@ -16,6 +16,8 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
         public string LastName { get; set; }
         public string Role { get; set; }
 
+        public NewContactDetailVm ContactDetailVm { get; set; }
+
 
         public void Mapping(Profile profile)
         {

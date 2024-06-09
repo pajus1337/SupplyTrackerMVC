@@ -44,6 +44,43 @@
                 <span asp-validation-for="ContactId" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="NewContactForReceiverBranch.FirstName" class="control-label"></label>
+                <input asp-for="NewContactForReceiverBranch.FirstName" class="form-control" />
+                <span asp-validation-for="NewContactForReceiverBranch.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewContactForReceiverBranch.LastName" class="control-label"></label>
+                <input asp-for="NewContactForReceiverBranch.LastName" class="form-control" />
+                <span asp-validation-for="NewContactForReceiverBranch.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewContactForReceiverBranch.Role" class="control-label"></label>
+                <input asp-for="NewContactForReceiverBranch.Role" class="form-control" />
+                <span asp-validation-for="NewContactForReceiverBranch.Role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewContactForReceiverBranch.ContactDetailVm.Id" class="control-label"></label>
+                <input asp-for="NewContactForReceiverBranch.ContactDetailVm.Id" class="form-control" />
+                <span asp-validation-for="NewContactForReceiverBranch.ContactDetailVm.Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewContactForReceiverBranch.ContactDetailVm.SelectedContactDetailTypeId" class="control-label"></label>
+                <select asp-for="NewContactForReceiverBranch.ContactDetailVm.SelectedContactDetailTypeId" class="form-control" asp-items="@(new SelectList(Model.NewContactForReceiverBranch.ContactDetailVm.ContactDetailTypeSelectList.ContactDetailTypes, "Id", "Name"))">
+                    <option value="">--- Select New Contact Type ---</option>
+                </select>
+                <span asp-validation-for="NewContactForReceiverBranch.ContactDetailVm.SelectedContactDetailTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewContactForReceiverBranch.ContactDetailVm.ContactDetailValue" class="control-label"></label>
+                <input asp-for="NewContactForReceiverBranch.ContactDetailVm.ContactDetailValue" class="form-control" />
+                <span asp-validation-for="NewContactForReceiverBranch.ContactDetailVm.ContactDetailValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewAddressForReceiverBranch.Street" class="control-label"></label>
+                <input asp-for="NewAddressForReceiverBranch.Street" class="form-control" />
+                <span asp-validation-for="NewAddressForReceiverBranch.Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="ReceiverSelectedId" class="control-label"></label>
                 <select asp-for="ReceiverSelectedId" class="form-control" asp-items="@(new SelectList(Model.ReceiverSelectList.Receivers, "Id", "Name"))">
                     <option value="">--- Select Receiver ---</option>
