@@ -10,6 +10,13 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 {
     public class ContactRepository : IContactRepository
     {
+        private readonly Context _context;
+
+        public ContactRepository(Context context)
+        {
+            _context = context;
+        }
+
         public Task<bool> AddContactAsync(Contact contact, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
@@ -25,10 +32,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public IQueryable<ContactDetailType> GetContactDetailTypes()
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<ContactDetailType> GetContactDetailTypes() => _context.ContactDetailTypes;
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {

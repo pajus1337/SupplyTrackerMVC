@@ -3,6 +3,7 @@ using SupplyTrackerMVC.Application.Mapping;
 using SupplyTrackerMVC.Domain.Model.Contacts;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

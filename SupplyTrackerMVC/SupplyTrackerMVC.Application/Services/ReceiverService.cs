@@ -5,16 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
-using SupplyTrackerMVC.Application.ViewModels.DeliveryVm;
+using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
-using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Receivers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.Services
 {
@@ -110,7 +104,6 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-
         public async Task<ServiceResponse<ReceiverSelectListVm>> GetReceiversForSelectListAsync(CancellationToken cancellationToken)
         {
             var receiversQuery = _receiverRepository.GetAllReceivers().ProjectTo<ReceiverForSelectListVm>(_mapper.ConfigurationProvider);
@@ -184,16 +177,51 @@ namespace SupplyTrackerMVC.Application.Services
         }
 
 
+
+
         // TODO: Create better implementation of this prototype metod
         public async Task<NewReceiverBranchVm> PrepareNewReceiverBranchVm(CancellationToken cancellationToken)
         {
             var receivers = await GetReceiversForSelectListAsync(cancellationToken);
-            var contactTypes = 
+            var contactTypes = await GetContactTypesForSelectListAsync(cancellationToken);
         
             var model = new NewReceiverBranchVm();
+
             model.ReceiverSelectList = receivers.Data;
+            model.NewContactForReceiverBranch = new NewContactVm()
+            {
+                ContactDetailVm = new NewContactDetailVm()
+                {
+                    ContactDetailTypeSelectList = contactTypes.Data
+                }
+            };
 
             return model;
+        }
+
+        private async Task<ServiceResponse<ContactDetailTypeSelectListVm>> GetContactTypesForSelectListAsync(CancellationToken cancellationToken)
+        {
+            var contactTypesQuery = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForSelectList>(_mapper.ConfigurationProvider);
+
+            try
+            {
+                var contactTypes = await contactTypesQuery.ToListAsync(cancellationToken);
+                if (contactTypes.Count == 0)
+                {
+                    return ServiceResponse<ContactDetailTypeSelectListVm>.CreateFailed(new string[] { "Collection is emmpty, Add new elements before use" });
+                }
+
+                var contactTypesVm = new ContactDetailTypeSelectListVm()
+                {
+                    ContactDetailTypes = contactTypes
+                };
+
+                return ServiceResponse<ContactDetailTypeSelectListVm>.CreateSuccess(contactTypesVm);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<ContactDetailTypeSelectListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
     }
 }
