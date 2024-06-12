@@ -105,14 +105,31 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
         public IQueryable<Receiver> GetReceiverById(int receiverId) => _context.Receivers.Where(p => p.Id == receiverId).Include(p => p.Address);
 
+        public async Task<(bool Success, int? ReceiverBranchId)> AddReceiverBranchAsync(ReceiverBranch receiverBranch, CancellationToken cancellationToken)
+        {
+            if (receiverBranch == null)
+            {
+                return (false, null);
+            }
+
+            try
+            {
+                await _context.AddAsync(receiverBranch, cancellationToken);
+                int success = await SaveChangesAsync(cancellationToken);
+
+                return success > 0 ? (true, receiverBranch.Id) : (false, null);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<bool> AddReceiverBranchAsync(ReceiverBranch receiverBranch, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

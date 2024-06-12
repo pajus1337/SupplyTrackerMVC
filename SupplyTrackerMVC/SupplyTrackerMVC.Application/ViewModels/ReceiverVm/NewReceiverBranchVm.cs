@@ -1,4 +1,6 @@
-﻿using SupplyTrackerMVC.Application.ViewModels.Common;
+﻿using AutoMapper;
+using SupplyTrackerMVC.Application.Mapping;
+using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Domain.Model.Addresses;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 using System;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
 {
-    public class NewReceiverBranchVm
+    public class NewReceiverBranchVm : IMapFrom<ReceiverBranch>
     {
         public int Id { get; set; }
         [DisplayName("Name for new branch")]
@@ -29,5 +31,12 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
         [DisplayName("Select Receiver you create new branch for")]
         public int ReceiverSelectedId { get; set; }
         public ReceiverSelectListVm ReceiverSelectList { get; set; }
+
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<NewReceiverBranchVm, ReceiverBranch>()
+                .ForMember(d => d.Address, opt => opt.MapFrom(s => s.NewAddressForReceiverBranch))
+                .ForMember(d => d.ReceiverId, opt => opt.MapFrom(s => s.ReceiverSelectedId));
+        }
     }
 }

@@ -49,9 +49,19 @@
                     <input asp-for="NewAddressForReceiverBranch.Street" class="form-control" />
                     <span asp-validation-for="NewAddressForReceiverBranch.Street" class="text-danger"></span>
                 </div>
+                <div class="form-group">
+                    <label asp-for="NewAddressForReceiverBranch.City" class="control-label"></label>
+                    <input asp-for="NewAddressForReceiverBranch.City" class="form-control" />
+                    <span asp-validation-for="NewAddressForReceiverBranch.City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewAddressForReceiverBranch.ZIP" class="control-label"></label>
+                    <input asp-for="NewAddressForReceiverBranch.ZIP" class="form-control" />
+                    <span asp-validation-for="NewAddressForReceiverBranch.ZIP" class="text-danger"></span>
+                </div>
             </fieldset>
             <fieldset>
-                <legend>Branch First Contact Information</legend>
+                <legend>Branch Contact Information</legend>
                 <input asp-for="ContactId" type="hidden" />
                 <span asp-validation-for="ContactId" class="text-danger"></span>
                 <div class="form-group">

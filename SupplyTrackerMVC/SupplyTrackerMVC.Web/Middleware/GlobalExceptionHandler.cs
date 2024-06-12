@@ -16,13 +16,20 @@ namespace SupplyTrackerMVC.Web.Middleware
         {
             _logger.LogError(exception, "Exception occurred: {Message}", exception.Message);
 
-            var problemDetails = new ProblemDetails
+            var problemDetails = new 
             {
-                Status = StatusCodes.Status500InternalServerError,
-                Title = "Server error"
+                //Status = StatusCodes.Status500InternalServerError,
+                //Title = "Server error",
+                //Detail = $"{exception.Message}\n {exception.InnerException}",
+
+                Message = exception.Message,
+                InnerException = exception.InnerException?.Message,
+                Type = exception.GetType().FullName,
+                StackTrace =  exception.StackTrace 
+
             };
 
-            httpContext.Response.StatusCode = problemDetails.Status.Value;
+           // httpContext.Response.StatusCode = problemDetails.Status.Value;
 
             await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 

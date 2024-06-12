@@ -165,7 +165,7 @@ namespace SupplyTrackerMVC.Application.Services
 
             try
             {
-                var isSuccess = await _receiverRepository.AddReceiverBranchAsync(receiverBranch, cancellationToken);
+                var (isSuccess, receiverBranchId) = await _receiverRepository.AddReceiverBranchAsync(receiverBranch, cancellationToken);
 
                 return isSuccess ? ServiceResponse<VoidValue>.CreateSuccess(null, receiverBranch.Id) : ServiceResponse<VoidValue>.CreateFailed(new string[] {"Failed to add new Receiver Branch"});
             }
