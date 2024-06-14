@@ -86,5 +86,19 @@ namespace SupplyTrackerMVC.Web.Controllers
 
             return RedirectToAction("ViewReceiverBranch", new { receiverBranchId = serviceResponse.ObjectId });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewReceiverBranch(int receiverBranchId, CancellationToken cancellationToken)
+        {
+           var serviceResponse = await _receiverService.GetReceiverBranchDetailsAsync(receiverBranchId, cancellationToken);
+
+            // TODO: Finish !success implementation case
+            if (!serviceResponse.Success)
+            {
+
+            }
+
+            return View(serviceResponse.Data);
+        }
     }
 }

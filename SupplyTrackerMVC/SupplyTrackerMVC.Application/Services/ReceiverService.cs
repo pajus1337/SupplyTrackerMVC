@@ -80,9 +80,9 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<ReceiverDetailsAfterCreateVm>> GetReceiverDetailsByIdAsync(int receiverId, CancellationToken cancellationToken)
         {
-            if (receiverId == 0)
+            if (receiverId <= 0)
             {
-                return ServiceResponse<ReceiverDetailsAfterCreateVm>.CreateFailed(new string[] { "Wrong receiver Id" });
+                return ServiceResponse<ReceiverDetailsAfterCreateVm>.CreateFailed(new string[] { "Invalid receiver ID" });
             }
 
             var receiverQuery = _receiverRepository.GetReceiverById(receiverId);
@@ -91,7 +91,7 @@ namespace SupplyTrackerMVC.Application.Services
                 var receiver = await receiverQuery.SingleOrDefaultAsync(cancellationToken);
                 if (receiver == null)
                 {
-                    ServiceResponse<ReceiverDetailsAfterCreateVm>.CreateFailed(new string[] { "receiver is null" });
+                    ServiceResponse<ReceiverDetailsAfterCreateVm>.CreateFailed(new string[] { "receiver not found" });
                 }
 
                 var receiverVm = _mapper.Map<ReceiverDetailsAfterCreateVm>(receiver);
@@ -113,7 +113,7 @@ namespace SupplyTrackerMVC.Application.Services
                 var receivers = await receiversQuery.ToListAsync(cancellationToken);
                 if (receivers == null)
                 {
-                    return ServiceResponse<ReceiverSelectListVm>.CreateFailed(new string[] { "receiver is null" });
+                    return ServiceResponse<ReceiverSelectListVm>.CreateFailed(new string[] { "receiver not found" });
                 }
                 var receiversVm = new ReceiverSelectListVm()
                 {
@@ -137,6 +137,8 @@ namespace SupplyTrackerMVC.Application.Services
             try
             {
                 var receiverBranches = await receiverBranchesQuery.ToListAsync(cancellationToken);
+
+                // TODO: Remove null checks for collections in services. Lists and IQueryable results are never null, but may be empty
                 if (receiverBranches == null)
                 {
                     return ServiceResponse<ReceiverBranchSelectListVm>.CreateFailed(new string[] { "receiver is null" });
@@ -167,24 +169,20 @@ namespace SupplyTrackerMVC.Application.Services
             {
                 var (isSuccess, receiverBranchId) = await _receiverRepository.AddReceiverBranchAsync(receiverBranch, cancellationToken);
 
-                return isSuccess ? ServiceResponse<VoidValue>.CreateSuccess(null, receiverBranch.Id) : ServiceResponse<VoidValue>.CreateFailed(new string[] {"Failed to add new Receiver Branch"});
+                return isSuccess ? ServiceResponse<VoidValue>.CreateSuccess(null, receiverBranch.Id) : ServiceResponse<VoidValue>.CreateFailed(new string[] { "Failed to add new Receiver Branch" });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return ServiceResponse<VoidValue>.CreateFailed(new string[] { "An error occurred while creating new receiver branch", ex.Message });
             }
         }
-
-
-
 
         // TODO: Create better implementation of this prototype metod
         public async Task<NewReceiverBranchVm> PrepareNewReceiverBranchVm(CancellationToken cancellationToken)
         {
             var receivers = await GetReceiversForSelectListAsync(cancellationToken);
             var contactTypes = await GetContactTypesForSelectListAsync(cancellationToken);
-        
+
             var model = new NewReceiverBranchVm();
 
             model.ReceiverSelectList = receivers.Data;
@@ -197,6 +195,32 @@ namespace SupplyTrackerMVC.Application.Services
             };
 
             return model;
+        }
+
+        public async Task<ServiceResponse<ReceiverBranchDetailsVm>> GetReceiverBranchDetailsAsync(int receiverBranchId, CancellationToken cancellationToken)
+        {
+            if (receiverBranchId <= 0)
+            {
+                return ServiceResponse<ReceiverBranchDetailsVm>.CreateFailed(new string[] { "Invalid receiver branch ID" });
+            }
+
+            try
+            {
+                var receiverBranchQuery = _receiverRepository.GetAllReceiverBranches().Where(rb => rb.Id == receiverBranchId).ProjectTo<ReceiverBranchDetailsVm>(_mapper.ConfigurationProvider);
+                var receiverBranch = await receiverBranchQuery.SingleOrDefaultAsync(cancellationToken);
+
+                if (receiverBranch == null)
+                {
+                    return ServiceResponse<ReceiverBranchDetailsVm>.CreateFailed(new string[] { "Receiver branch not found" });
+                }
+
+                return ServiceResponse<ReceiverBranchDetailsVm>.CreateSuccess(receiverBranch);
+
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<ReceiverBranchDetailsVm>.CreateFailed(new string[] { "An error occurred while retrieving receiver branch details", ex.Message });
+            }
         }
 
         private async Task<ServiceResponse<ContactDetailTypeSelectListVm>> GetContactTypesForSelectListAsync(CancellationToken cancellationToken)
