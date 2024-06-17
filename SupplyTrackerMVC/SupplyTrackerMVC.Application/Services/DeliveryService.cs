@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using FluentValidation.Results;
 using SupplyTrackerMVC.Application.Interfaces;
+using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.DeliveryVm;
 using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
@@ -83,5 +84,10 @@ namespace SupplyTrackerMVC.Application.Services
         {
             ReceiverBranches = _receiverRepository.GetAllReceiverBranches().Where(rb => rb.ReceiverId == receiverId).ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider)
         };
+
+        public async Task<ServiceResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(CancellationToken CancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

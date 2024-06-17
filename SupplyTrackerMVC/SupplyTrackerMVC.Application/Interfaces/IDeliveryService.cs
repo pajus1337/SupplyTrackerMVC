@@ -1,4 +1,5 @@
-﻿using SupplyTrackerMVC.Application.ViewModels.DeliveryVm;
+﻿using SupplyTrackerMVC.Application.Responses;
+using SupplyTrackerMVC.Application.ViewModels.DeliveryVm;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using System;
@@ -15,5 +16,6 @@ namespace SupplyTrackerMVC.Application.Interfaces
         DeliveryDetailsVm GetDeliveryDetailsById(int deliveryId);
         NewDeliveryVm PrepareNewDeliveryViewModel();
         ReceiverBranchSelectListVm GetReceiverBranchesByReceiverId(int receiverId);
+        Task<ServiceResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(CancellationToken CancellationToken);
     }
 }
