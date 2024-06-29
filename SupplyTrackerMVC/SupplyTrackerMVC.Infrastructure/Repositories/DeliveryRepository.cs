@@ -71,12 +71,13 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             }
         }
 
-        public IQueryable<Delivery> GetAlldeliveries()
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<Delivery> GetAllDeliveries() => _context.Deliveries;
 
-        public IQueryable<Delivery> GetDeliveryById(int deliveryId) => _context.Deliveries;
+        public IQueryable<Delivery> GetDeliveryById(int deliveryId)
+        {
+            var delivery = _context.Deliveries.Where(d => d.Id == deliveryId);
+            return delivery;
+        }
 
         public async Task<bool> UpdateDeliveryAsync(Delivery delivery, CancellationToken cancellationToken)
         {

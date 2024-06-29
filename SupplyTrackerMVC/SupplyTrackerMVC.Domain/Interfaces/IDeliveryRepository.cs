@@ -13,6 +13,6 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         Task<bool> UpdateDeliveryAsync(Delivery delivery, CancellationToken cancellationToken);
         Task<bool> DeleteDeliveryAsync(int deliveryId, CancellationToken cancellationToken);
         IQueryable<Delivery> GetDeliveryById(int deliveryId);
-        IQueryable<Delivery> GetAlldeliveries();
+        IQueryable<Delivery> GetAllDeliveries();
     }
 }

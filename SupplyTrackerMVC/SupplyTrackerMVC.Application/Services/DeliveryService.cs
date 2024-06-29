@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.DeliveryVm;
@@ -85,9 +86,30 @@ namespace SupplyTrackerMVC.Application.Services
             ReceiverBranches = _receiverRepository.GetAllReceiverBranches().Where(rb => rb.ReceiverId == receiverId).ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider)
         };
 
-        public async Task<ServiceResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(CancellationToken CancellationToken)
+        public async Task<ServiceResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var deliveriesQuery = _deliveryRepository.GetAllDeliveries().ProjectTo<DeliveryForListVm>(_mapper.ConfigurationProvider);
+
+            try
+            {
+                var deliveries = await deliveriesQuery.ToListAsync(cancellationToken);
+                if (deliveries.Count > 0)
+                {
+                    var result = new ListDeliveryForListVm()
+                    {
+                        Deliveries = deliveries,
+                        Count = deliveries.Count
+                    };
+
+                    return ServiceResponse<ListDeliveryForListVm>.CreateSuccess(result);
+                }
+
+                return ServiceResponse<ListDeliveryForListVm>.CreateFailed(new string[] { "There are no deliveries in Db" });
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<ListDeliveryForListVm>.CreateFailed(new string[] { "An error occurred while getting deliveries", ex.Message });
+            }
         }
     }
 }
