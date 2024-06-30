@@ -26,7 +26,8 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
                 .ForMember(p => p.ChemicalName, opt => opt.MapFrom(src => src.ProductDetail.ChemicalName))
                 .ForMember(p => p.ChemicalSymbol, opt => opt.MapFrom(src => src.ProductDetail.ChemicalName))
                 .ForMember(p => p.MassFraction, opt => opt.MapFrom(src => src.ProductDetail.MassFraction))
-                .ForMember(p => p.ProductType, opt => opt.MapFrom(src => src.ProductType.PhysicalState));
+                .ForMember(p => p.ProductType, opt => opt.MapFrom(src => src.ProductType.PhysicalState))
+                .ForMember(p => p.ProductDescription, opt => opt.MapFrom(src => src.ProductDetail.ProductDescription));
         }
     }
 }

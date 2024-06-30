@@ -28,6 +28,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Product, NewProductVm>();
+            profile.CreateMap<NewProductDetailVm, ProductDetail>();
             profile.CreateMap<NewProductVm, Product>();
         }
 

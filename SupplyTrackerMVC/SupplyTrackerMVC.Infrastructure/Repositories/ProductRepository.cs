@@ -98,7 +98,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         }
         public IQueryable<Product> GetAllProducts() => _context.Products;
         public IQueryable<ProductType> GetAllProductTypes() => _context.ProductTypes;
-        public IQueryable<Product> GetProductById(int productId) => _context.Products.Where(p => p.Id == productId);
+        public IQueryable<Product> GetProductById(int productId) => _context.Products.Where(p => p.Id == productId).Include(p => p.ProductDetail).Include(p => p.ProductType);
         public IQueryable<ProductType> GetProductTypeById(int productTypeId) => _context.ProductTypes.Where(p => p.Id == productTypeId);
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken) => await _context.SaveChangesAsync(cancellationToken);
     }
