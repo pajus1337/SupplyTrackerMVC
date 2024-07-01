@@ -12,7 +12,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface IDeliveryService
     {
-        int AddNewDelivery(NewDeliveryVm model);
+        Task<ServiceResponse<VoidValue>> AddNewDeliveryAsync(NewDeliveryVm model, CancellationToken cancellationToken);
         DeliveryDetailsVm GetDeliveryDetailsById(int deliveryId);
         NewDeliveryVm PrepareNewDeliveryViewModel();
         ReceiverBranchSelectListVm GetReceiverBranchesByReceiverId(int receiverId);

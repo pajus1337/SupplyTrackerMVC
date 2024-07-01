@@ -34,9 +34,9 @@ namespace SupplyTrackerMVC.Application.Services
             _productRepository = productRepository;
             _mapper = mapper;
         }
-        public int AddNewDelivery(NewDeliveryVm model)
-        {
 
+        public Task<ServiceResponse<VoidValue>> AddNewDeliveryAsync(NewDeliveryVm model, CancellationToken cancellationToken)
+        {
             throw new NotImplementedException();
         }
 

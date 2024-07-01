@@ -478,7 +478,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Deliveries_ProductID",
                 table: "Deliveries",
-                column: "ProductID");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Deliveries_ReceiverId",

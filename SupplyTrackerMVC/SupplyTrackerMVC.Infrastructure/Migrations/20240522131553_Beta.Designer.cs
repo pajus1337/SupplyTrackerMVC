@@ -357,7 +357,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.Property<int>("ProductDeliveryWeight")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductID")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("ReceiverId")
@@ -368,7 +368,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductID");
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("ReceiverId");
 
@@ -665,7 +665,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 {
                     b.HasOne("SupplyTrackerMVC.Domain.Model.Products.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductID")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

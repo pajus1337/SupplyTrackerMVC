@@ -25,14 +25,30 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult NewDelivery(NewDeliveryVm model)
+        public async Task<IActionResult> NewDelivery(NewDeliveryVm model, CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
             {
-                return View("TestOK");
+                return View("NewDelivery", model);
             }
 
-            return View(model);
+            var serviceResponse = await _deliveryService.AddNewDeliveryAsync(model, cancellationToken);
+
+            if (!serviceResponse.Success)
+            {
+                if (serviceResponse.ErrorMessage != null)
+                {
+                    foreach (var error in serviceResponse.ErrorMessage)
+                    {
+                        ModelState.AddModelError(string.Empty, error);
+                    }
+                }
+                return View("NewDelivery", model);
+            }
+
+            // TODO: Create DeliveryDetails Metod.
+            return RedirectToAction("DeliveryDetails", new { deliveryId = serviceResponse.ObjectId });
         }
 
         [HttpGet]
