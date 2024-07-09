@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Application.Interfaces;
@@ -9,6 +10,7 @@ using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
+using SupplyTrackerMVC.Domain.Model.Deliveries;
 using SupplyTrackerMVC.Domain.Model.Products;
 using System;
 using System.Collections.Generic;
@@ -24,10 +26,12 @@ namespace SupplyTrackerMVC.Application.Services
         private readonly ISenderRepository _senderRepository;
         private readonly IReceiverRepository _receiverRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IFluentValidatorFactory _validatorFactory;
         private readonly IMapper _mapper;
 
-        public DeliveryService(IDeliveryRepository deliveryRepository, ISenderRepository senderRepository, IReceiverRepository receiverRepository, IProductRepository productRepository, IMapper mapper)
+        public DeliveryService(IFluentValidatorFactory validatorFactory, IDeliveryRepository deliveryRepository, ISenderRepository senderRepository, IReceiverRepository receiverRepository, IProductRepository productRepository, IMapper mapper)
         {
+            _validatorFactory = validatorFactory;
             _deliveryRepository = deliveryRepository;
             _senderRepository = senderRepository;
             _receiverRepository = receiverRepository;
@@ -35,9 +39,36 @@ namespace SupplyTrackerMVC.Application.Services
             _mapper = mapper;
         }
 
-        public Task<ServiceResponse<VoidValue>> AddNewDeliveryAsync(NewDeliveryVm model, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<VoidValue>> AddNewDeliveryAsync(NewDeliveryVm model, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (model == null)
+            {
+                return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
+            }
+
+            var validator = _validatorFactory.GetValidator<NewDeliveryVm>();
+            var result = await validator.ValidateAsync(model, cancellationToken);
+            if (!result.IsValid)
+            {
+                return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage));
+            }
+
+            var delivery = _mapper.Map<Delivery>(model);
+            try
+            {
+                var (isSuccess, delieryId) = await _deliveryRepository.AddDeliveryAsync(delivery, cancellationToken);
+
+                if (!isSuccess)
+                {
+                    return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Failed to add new delivery" });
+                }
+
+                return ServiceResponse<VoidValue>.CreateSuccess(null, delieryId);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<VoidValue>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
 
         public DeliveryDetailsVm GetDeliveryDetailsById(int deliveryId)

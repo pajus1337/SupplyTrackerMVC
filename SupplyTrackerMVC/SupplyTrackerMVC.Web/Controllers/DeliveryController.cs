@@ -27,12 +27,6 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> NewDelivery(NewDeliveryVm model, CancellationToken cancellationToken)
         {
-
-            if (!ModelState.IsValid)
-            {
-                return View("NewDelivery", model);
-            }
-
             var serviceResponse = await _deliveryService.AddNewDeliveryAsync(model, cancellationToken);
 
             if (!serviceResponse.Success)
