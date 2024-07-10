@@ -147,7 +147,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<ProductDetailVm>> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken)
         {
-            if (productId == 0)
+            if (productId <= 0)
             {
                 return ServiceResponse<ProductDetailVm>.CreateFailed(new string[] { "Wrong product Id" });
             }

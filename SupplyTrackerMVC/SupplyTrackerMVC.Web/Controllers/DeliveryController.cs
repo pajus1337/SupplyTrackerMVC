@@ -46,6 +46,16 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> DeliveryDetails(int deliveryId, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _deliveryService.GetDeliveryDetailsByIdAsync(deliveryId, cancellationToken);
+
+            //TODO: Add handling for negative serviceResponse
+
+            return View(serviceResponse.Data);
+        }
+
+        [HttpGet]
         public IActionResult GetReceiverBranches(int receiverId)
         {
             var branches = _deliveryService.GetReceiverBranchesByReceiverId(receiverId);

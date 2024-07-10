@@ -71,12 +71,25 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public DeliveryDetailsVm GetDeliveryDetailsById(int deliveryId)
+        public async Task<ServiceResponse<DeliveryDetailsVm>> GetDeliveryDetailsByIdAsync(int deliveryId, CancellationToken cancellationToken)
         {
-            var delivery = _deliveryRepository.GetDeliveryById(deliveryId);
-            var deliveryVm = _mapper.Map(delivery, new DeliveryDetailsVm());
+            if (deliveryId <= 0)
+            {
+                return ServiceResponse<DeliveryDetailsVm>.CreateFailed(new string[] { "Wrong delivery Id" });
+            }
 
-            return deliveryVm;
+            var deliveryQuery = _deliveryRepository.GetDeliveryById(deliveryId).ProjectTo<DeliveryDetailsVm>(_mapper.ConfigurationProvider);
+
+            try
+            {
+                var deliveryVm = await deliveryQuery.FirstOrDefaultAsync(cancellationToken);
+
+                return ServiceResponse<DeliveryDetailsVm>.CreateSuccess(deliveryVm);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<DeliveryDetailsVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
 
         public NewDeliveryVm PrepareNewDeliveryViewModel()
