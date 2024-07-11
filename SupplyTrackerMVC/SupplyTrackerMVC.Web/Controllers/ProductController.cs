@@ -118,10 +118,32 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ViewProductList(CancellationToken cancellationToken)
+        public async Task<IActionResult> ProductsList(CancellationToken cancellationToken)
         {
-            var model = await _productService.GetAllActiveProductsForListAsync(cancellationToken);
-            return View(model);
+            var serviceResponse = await _productService.GetAllProductsForListAsync(cancellationToken);
+
+            if (!serviceResponse.Success)
+            {
+                // TODO: Add !success handler 
+                return View();
+            }
+
+            return View(serviceResponse.Data);
+        }
+
+        [HttpGet] 
+        // TODO: Create Razor View
+        public async Task<IActionResult> ProductTypesList(CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _productService.GetAllProductTypesForListAsync(cancellationToken);
+
+            if (!serviceResponse.Success)
+            {
+                // TODO: Add !success handler 
+                return View();
+            }
+
+            return View(serviceResponse.Data);
         }
     }
 }

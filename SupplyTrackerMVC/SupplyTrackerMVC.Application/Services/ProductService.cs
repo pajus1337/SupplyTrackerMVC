@@ -103,7 +103,7 @@ namespace SupplyTrackerMVC.Application.Services
                 var products = await productsQuery.ToListAsync(cancellationToken);
                 if (products == null)
                 {
-                    return ServiceResponse<ProductSelectListVm>.CreateFailed(new string[] { "Products call returned null" });
+                    return ServiceResponse<ProductSelectListVm>.CreateFailed(new string[] { "ProductTypes call returned null" });
                 }
 
                 var productsVm = new ProductSelectListVm()
@@ -120,7 +120,7 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public async Task<ServiceResponse<ListProductForListVm>> GetAllActiveProductsForListAsync(CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ListProductForListVm>> GetAllProductsForListAsync(CancellationToken cancellationToken)
         {
             // HACK: Refactor, only test version.
             var productsQuery = _productRepository.GetAllProducts().ProjectTo<ProductForListVm>(_mapper.ConfigurationProvider);
@@ -224,6 +224,11 @@ namespace SupplyTrackerMVC.Application.Services
             var productTypeId = await _productRepository.AddProductTypeAsync(productType, cancellationToken);
 
             return ServiceResponse<VoidValue>.CreateSuccess(null, productTypeId);
+        }
+
+        public Task<ServiceResponse<ListProductTypeForListVm>> GetAllProductTypesForListAsync(CancellationToken )
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<ServiceResponse<ProductTypeVm>> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken)

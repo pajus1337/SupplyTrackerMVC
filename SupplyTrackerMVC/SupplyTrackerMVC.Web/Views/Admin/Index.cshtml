@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <button onclick="location.href='@Url.Action("ProductsList", "Product")'" type="button">
+        Manage Products
+    </button>
+
+    <button onclick="location.href='@Url.Action("Create", "Receiver")'" type="button">
+        Manage Product Types
+    </button>
+</div>

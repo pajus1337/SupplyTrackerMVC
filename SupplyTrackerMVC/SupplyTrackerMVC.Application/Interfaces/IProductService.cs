@@ -18,7 +18,8 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<ServiceResponse<VoidValue>> DeleteProductASync(int productId, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> AddNewProductTypeAsync(NewProductTypeVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<ProductTypeVm>> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken);
-        Task<ServiceResponse<ListProductForListVm>> GetAllActiveProductsForListAsync(CancellationToken cancellationToken);
+        Task<ServiceResponse<ListProductTypeForListVm>> GetAllProductTypesForListAsync(CancellationToken);
+        Task<ServiceResponse<ListProductForListVm>> GetAllProductsForListAsync(CancellationToken cancellationToken);
         Task<ServiceResponse<ProductDetailVm>> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken);
         Task<ServiceResponse<ProductSelectListVm>> GetAllActiveProductsForSelectList(CancellationToken cancellationToken);
         NewProductVm PrepareNewProductViewModel();
