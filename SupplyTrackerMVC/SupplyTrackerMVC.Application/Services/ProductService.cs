@@ -226,7 +226,7 @@ namespace SupplyTrackerMVC.Application.Services
             return ServiceResponse<VoidValue>.CreateSuccess(null, productTypeId);
         }
 
-        public Task<ServiceResponse<ListProductTypeForListVm>> GetAllProductTypesForListAsync(CancellationToken )
+        public Task<ServiceResponse<ListProductTypeForListVm>> GetAllProductTypesForListAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

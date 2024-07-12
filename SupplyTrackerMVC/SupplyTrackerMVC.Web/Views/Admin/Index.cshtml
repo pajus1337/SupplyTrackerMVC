@@ -5,11 +5,19 @@
 <h2>@ViewData["Title"]</h2>
 
 <div>
+    <h3>Manage Products</h3>
     <button onclick="location.href='@Url.Action("ProductsList", "Product")'" type="button">
         Manage Products
     </button>
 
-    <button onclick="location.href='@Url.Action("Create", "Receiver")'" type="button">
+    <button onclick="location.href='@Url.Action("ProductTypesList", "Product")'" type="button">
         Manage Product Types
+    </button>
+</div>
+
+<div>
+    <h3>Manage Receivers</h3>
+    <button onclick="location.href='@Url.Action("ListOfActiveReceivers", "Receiver")'" type="button">
+        Manage Receivers
     </button>
 </div>
