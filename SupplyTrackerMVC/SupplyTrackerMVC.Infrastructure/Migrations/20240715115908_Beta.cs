@@ -339,15 +339,15 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     DeliveryDataTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SenderId = table.Column<int>(type: "int", nullable: false),
                     ReceiverId = table.Column<int>(type: "int", nullable: false),
-                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     ProductDeliveryWeight = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Deliveries", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Deliveries_Products_ProductID",
-                        column: x => x.ProductID,
+                        name: "FK_Deliveries_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -476,7 +476,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Deliveries_ProductID",
+                name: "IX_Deliveries_ProductId",
                 table: "Deliveries",
                 column: "ProductId");
 

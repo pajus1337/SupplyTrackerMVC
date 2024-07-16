@@ -194,7 +194,7 @@ namespace SupplyTrackerMVC.Application.Services
                 }
             };
 
-            return model;
+                return model;
         }
 
         public async Task<ServiceResponse<ReceiverBranchDetailsVm>> GetReceiverBranchDetailsAsync(int receiverBranchId, CancellationToken cancellationToken)

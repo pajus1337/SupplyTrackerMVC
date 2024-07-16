@@ -12,7 +12,7 @@ using SupplyTrackerMVC.Infrastructure;
 namespace SupplyTrackerMVC.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240522131553_Beta")]
+    [Migration("20240715115908_Beta")]
     partial class Beta
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.5")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

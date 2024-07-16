@@ -63,7 +63,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         {
             var model = await _receiverService.PrepareNewReceiverBranchVm(cancellationToken);
 
-            return View(model);
+                return View(model);
         }
 
         [HttpPost]
