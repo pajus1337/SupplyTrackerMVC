@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using SupplyTrackerMVC.Application.Mapping;
 using SupplyTrackerMVC.Domain.Model.Addresses;
 using System;
@@ -19,6 +20,16 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
         public void Mappng(Profile profile)
         {
             profile.CreateMap<NewAddressVm, Address>();
+        }
+
+        public class NewAddressValidator : AbstractValidator<NewAddressVm>
+        {
+            public NewAddressValidator()
+            {
+                RuleFor(x => x.Street).NotNull().Length(3, 20);
+                RuleFor(x => x.City).NotNull().Length(3, 20);
+                RuleFor(x => x.ZIP).NotNull().Length(3, 20);
+            }
         }
     }
 }
