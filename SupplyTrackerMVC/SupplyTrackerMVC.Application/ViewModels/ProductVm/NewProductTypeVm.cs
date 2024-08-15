@@ -27,6 +27,8 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
             public NewProductTypeValidator()
             {
                 RuleFor(x => x.Id).NotNull();
+                RuleFor(x => x.PhysicalState).NotNull().Length(3, 10);
+                RuleFor(x => x.IsADRProduct).Must(x => x.Equals(true) || x.Equals(false)); // TODO: Just for test. ( Remmove or edit in future )
             }
         }
     }
