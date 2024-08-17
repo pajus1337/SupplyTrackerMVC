@@ -63,10 +63,24 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> EditSender(int senderId, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _senderService.GetSenderDetailsByIdAsync(senderId, cancellationToken);
+            return View(serviceResponse.Data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSender(CancellationToken cancellationToken)
+        {
+           
+            return View();
+        }
+
+        [HttpGet]
         [Route("list-of-senders")]
         public IActionResult ListOfSenders(CancellationToken cancellationToken)
         {
-            var model = _senderService.GetAllSendersForListAsync(cancellationToken);
+            var model = _senderService.GetSendersForListAsync(cancellationToken);
 
             return View(model);
         }

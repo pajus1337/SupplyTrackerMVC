@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
+using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Senders;
@@ -87,9 +88,35 @@ namespace SupplyTrackerMVC.Application.Services
             return ServiceResponse<SenderDetailsVm>.CreateSuccess(response.Data);
         }
 
-        public Task<ServiceResponse<ListSenderForListVm>> GetAllSendersForListAsync(CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ListSenderForListVm>> GetSendersForListAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var sendersQuery = _senderRepository.GetAllSenders();
+
+            try
+            {
+                var senders = await sendersQuery.ToListAsync(cancellationToken);
+
+                ListSenderForListVm result = new ListSenderForListVm();
+                result.Senders = new List<SenderForListVm>();
+
+                foreach (var sender in senders)
+                {
+                    var sendersForListVm = new SenderForListVm()
+                    {
+                        Id = sender.Id,
+                        Name = sender.Name,
+                    };
+
+                    result.Senders.Add(sendersForListVm);
+                }
+
+                return ServiceResponse<ListSenderForListVm>.CreateSuccess(result);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<ServiceResponse<SenderSelectListVm>> GetAllSendersForSelectListAsync(CancellationToken cancellationToken)
