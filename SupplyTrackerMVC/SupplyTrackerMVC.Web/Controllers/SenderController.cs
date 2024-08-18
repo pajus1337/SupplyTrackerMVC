@@ -78,11 +78,11 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         [HttpGet]
         [Route("list-of-senders")]
-        public IActionResult ListOfSenders(CancellationToken cancellationToken)
+        public async Task<ActionResult> ListOfSenders(CancellationToken cancellationToken)
         {
-            var model = _senderService.GetSendersForListAsync(cancellationToken);
+            var serviceResponse =  await _senderService.GetSendersForListAsync(cancellationToken);
 
-            return View(model);
+            return View(serviceResponse.Data);
         }
     }
 }
