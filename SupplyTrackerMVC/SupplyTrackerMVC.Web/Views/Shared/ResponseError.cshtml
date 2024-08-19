@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Service Response Error";
+
+    @* Inject dependency ? 
+    var refererUrl = Request.Headers["Referer"].ToString();
+    *@
+
+}
+
+<h1>Error</h1>
+
+<p>@ViewBag.ErrorMessage</p>
+
+@if (!string.IsNullOrEmpty(refererUrl))
+{
+    <a href="@refererUrl">Return to the last page</a>
+}
+else
+{
+    <a href="@Url.Action("Index", "Home")">Go back to Home</a>
+}

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
@@ -55,13 +56,16 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> ViewSender(int senderId,CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.GetSenderDetailsByIdAsync(senderId, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.Success && serviceResponse.ErrorMessage != null)
             {
-                return NotFound();
+                ViewBag.ErrorMessage = string.Join(", ", serviceResponse.ErrorMessage);
+                return View("ResponseError");
             }
             return View(serviceResponse.Data);
         }
 
+
+        // TODO : Finish Edit Sender
         [HttpGet]
         public async Task<IActionResult> EditSender(int senderId, CancellationToken cancellationToken)
         {
@@ -84,5 +88,7 @@ namespace SupplyTrackerMVC.Web.Controllers
 
             return View(serviceResponse.Data);
         }
+
+        // TODO: Create Delete Sender
     }
 }

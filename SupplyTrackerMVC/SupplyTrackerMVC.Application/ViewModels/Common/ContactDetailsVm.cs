@@ -18,7 +18,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 
         public void Mappig(Profile profile)
         {
-            profile.CreateMap<Contact, ContactDetailsVm>();
+            profile.CreateMap<Contact, ContactDetailsVm>().ReverseMap();
         }
     }
 }
