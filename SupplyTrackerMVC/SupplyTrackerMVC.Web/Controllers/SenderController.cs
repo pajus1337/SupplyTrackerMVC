@@ -64,19 +64,22 @@ namespace SupplyTrackerMVC.Web.Controllers
             return View(serviceResponse.Data);
         }
 
-
-        // TODO : Finish Edit Sender
         [HttpGet]
         public async Task<IActionResult> EditSender(int senderId, CancellationToken cancellationToken)
         {
-            var serviceResponse = await _senderService.GetSenderDetailsByIdAsync(senderId, cancellationToken);
+            var serviceResponse = await _senderService.GetSenderForEditAsync(senderId, cancellationToken);
+            if (!serviceResponse.Success && serviceResponse.ErrorMessage != null)
+            {
+                ViewBag.ErrorMessage = string.Join(", ", serviceResponse.ErrorMessage);
+                return View("ResponseError");
+            }
             return View(serviceResponse.Data);
         }
 
+        // TODO : Finish Edit Sender, Part II
         [HttpPost]
-        public async Task<IActionResult> EditSender(CancellationToken cancellationToken)
+        public async Task<IActionResult> EditSender(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken)
         {
-           
             return View();
         }
 

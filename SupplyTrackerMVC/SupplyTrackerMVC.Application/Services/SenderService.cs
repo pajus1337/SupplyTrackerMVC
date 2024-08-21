@@ -6,6 +6,7 @@ using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
+using SupplyTrackerMVC.Domain.Model.Receivers;
 using SupplyTrackerMVC.Domain.Model.Senders;
 using System;
 using System.Collections.Generic;
@@ -67,6 +68,8 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<SenderDetailsVm>> UpdateSenderByIdAsync(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken)
         {
+            // TODO: Add validation
+
             if (updateSenderVm == null)
             {
                 return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
@@ -158,9 +161,27 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public Task<ServiceResponse<UpdateSenderVm>> GetSenderForEditAsync(int senderId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<UpdateSenderVm>> GetSenderForEditAsync(int senderId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (senderId <= 0)
+            {
+                return ServiceResponse<UpdateSenderVm>.CreateFailed(new string[] { "Invalid sender ID" });
+            }
+            var senderQuery = _senderRepository.GetSenderById(senderId).ProjectTo<UpdateSenderVm>(_mapper.ConfigurationProvider);
+            try
+            {
+                var senderVm = await senderQuery.SingleOrDefaultAsync(cancellationToken);
+                if (senderVm == null)
+                {
+                    return ServiceResponse<UpdateSenderVm>.CreateFailed(new string[] { "Sender not found in Db" });
+                }
+
+                return ServiceResponse<UpdateSenderVm>.CreateSuccess(senderVm);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<UpdateSenderVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
     }
 }
