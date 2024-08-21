@@ -1,9 +1,8 @@
-﻿@{
-    ViewData["Title"] = "Service Response Error";
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
-    @* Inject dependency ? 
-    var refererUrl = Request.Headers["Referer"].ToString();
-    *@
+@{
+    ViewData["Title"] = "Service Response Error";
+    var refererUrl = HttpContextAccessor.HttpContext.Request.Headers["Referer"].ToString();
 
 }
 

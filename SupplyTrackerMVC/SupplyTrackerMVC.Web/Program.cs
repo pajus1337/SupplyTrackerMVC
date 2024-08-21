@@ -39,7 +39,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddApplication();
 //- Repositories
 builder.Services.AddInfrastructure();
+//- Razor Pages 
+builder.Services.AddHttpContextAccessor();
 // * End of DI Configuration
+
 
 //- Exception  Handler 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

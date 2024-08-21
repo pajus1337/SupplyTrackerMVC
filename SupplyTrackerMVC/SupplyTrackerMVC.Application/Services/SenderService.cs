@@ -157,5 +157,10 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
+
+        public Task<ServiceResponse<UpdateSenderVm>> GetSenderForEditAsync(int senderId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
