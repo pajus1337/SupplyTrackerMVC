@@ -12,8 +12,9 @@ namespace SupplyTrackerMVC.Application.Responses
         public bool Success { get; private set; }
         public IEnumerable<string>? ErrorMessage { get; private set; }
         public T? Data { get; private set; }
-        public string? AdditionalMessage { get; set; }
+        public string? AdditionalMessage { get; private set; }
         public int? ObjectId { get; private set; }
+        public bool IsValidationError { get; private set; }
 
         private ServiceResponse()
         {
@@ -25,12 +26,14 @@ namespace SupplyTrackerMVC.Application.Responses
             Data = data,
             ObjectId = senderId,
             AdditionalMessage = additionalMessage ?? string.Empty,
+            IsValidationError = false,
         };
 
-        public static ServiceResponse<T> CreateFailed(IEnumerable<string>? errorMessage) => new ServiceResponse<T> 
+        public static ServiceResponse<T> CreateFailed(IEnumerable<string>? errorMessage, bool isValidationErrror = false) => new ServiceResponse<T> 
         { 
             Success = false, 
-            ErrorMessage = errorMessage ?? Enumerable.Empty<string>() 
+            ErrorMessage = errorMessage ?? Enumerable.Empty<string>(),
+            IsValidationError = isValidationErrror,          
         };
     }
 }

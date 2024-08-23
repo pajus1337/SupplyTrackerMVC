@@ -68,27 +68,39 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<SenderDetailsVm>> UpdateSenderByIdAsync(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken)
         {
-            // TODO: Add validation
-
             if (updateSenderVm == null)
             {
                 return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
-            var sender = _mapper.Map<Sender>(updateSenderVm);
-            var success = await _senderRepository.UpdateSenderAsync(sender, cancellationToken);
-            if (!success)
+            try
             {
-                return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { "Failed to update sender" });
-            }
+                var validator = _fluentValidatorFactory.GetValidator<UpdateSenderVm>();
+                var validationResult = await validator.ValidateAsync(updateSenderVm, cancellationToken);
+                if (!validationResult.IsValid)
+                {
+                    return ServiceResponse<SenderDetailsVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
+                }
 
-            var response = await GetSenderDetailsByIdAsync(sender.Id, cancellationToken);
-            if (response.Data == null)
+                var sender = _mapper.Map<Sender>(updateSenderVm);
+                var success = await _senderRepository.UpdateSenderAsync(sender, cancellationToken);
+                if (!success)
+                {
+                    return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { "Failed to update sender" });
+                }
+
+                var response = await GetSenderDetailsByIdAsync(sender.Id, cancellationToken);
+                if (!response.Success)
+                {
+                    return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { "Sender not found in DB after update " });
+                }
+
+                return ServiceResponse<SenderDetailsVm>.CreateSuccess(response.Data);
+            }
+            catch (Exception ex)
             {
-                return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { "Sender not found after update " });
+                return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
-
-            return ServiceResponse<SenderDetailsVm>.CreateSuccess(response.Data);
         }
 
         public async Task<ServiceResponse<ListSenderForListVm>> GetSendersForListAsync(CancellationToken cancellationToken)

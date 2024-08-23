@@ -7,7 +7,7 @@ using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 namespace SupplyTrackerMVC.Web.Controllers
 {
     [Route("Sender")]
-    public class SenderController : Controller
+    public class SenderController : BaseController
     {
         private readonly ISenderService _senderService;
 
@@ -80,6 +80,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> EditSender(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken)
         {
+            var serviceResponse = await _senderService.UpdateSenderByIdAsync(updateSenderVm, cancellationToken);
             return View();
         }
 
