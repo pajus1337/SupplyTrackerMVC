@@ -36,7 +36,7 @@ namespace SupplyTrackerMVC.Application.Services
             var validationResult = await validator.ValidateAsync(model, cancellationToken);
             if (!validationResult.IsValid)
             {
-                return ServiceResponse<NewSenderVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage));
+                return ServiceResponse<NewSenderVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage),true);
             }
 
             var sender = _mapper.Map<Sender>(model);

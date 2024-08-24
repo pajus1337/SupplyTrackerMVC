@@ -35,17 +35,10 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> AddSender(NewSenderVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.AddNewSenderAsync(model, cancellationToken);
+
             if (!serviceResponse.Success)
             {
-                if (serviceResponse.ErrorMessage != null)
-                {
-                    foreach (var error in serviceResponse.ErrorMessage)
-                    {
-                        ModelState.AddModelError(string.Empty, error);
-                    }
-                }
-
-                return View(model);
+                return HandleErrors(serviceResponse, model);
             }
 
             return RedirectToAction("ViewSender", new { senderId = serviceResponse.ObjectId });
@@ -58,8 +51,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             var serviceResponse = await _senderService.GetSenderDetailsByIdAsync(senderId, cancellationToken);
             if (!serviceResponse.Success && serviceResponse.ErrorMessage != null)
             {
-                ViewBag.ErrorMessage = string.Join(", ", serviceResponse.ErrorMessage);
-                return View("ResponseError");
+                return HandleErrors(serviceResponse);
             }
             return View(serviceResponse.Data);
         }
@@ -68,28 +60,33 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> EditSender(int senderId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.GetSenderForEditAsync(senderId, cancellationToken);
-            if (!serviceResponse.Success && serviceResponse.ErrorMessage != null)
+            if (!serviceResponse.Success)
             {
-                ViewBag.ErrorMessage = string.Join(", ", serviceResponse.ErrorMessage);
-                return View("ResponseError");
+                return HandleErrors(serviceResponse);
             }
             return View(serviceResponse.Data);
         }
 
-        // TODO : Finish Edit Sender, Part II
         [HttpPost]
         public async Task<IActionResult> EditSender(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.UpdateSenderByIdAsync(updateSenderVm, cancellationToken);
-            return View();
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse, updateSenderVm);
+            }
+            return View(serviceResponse.Data);
         }
 
         [HttpGet]
         [Route("list-of-senders")]
-        public async Task<ActionResult> ListOfSenders(CancellationToken cancellationToken)
+        public async Task<IActionResult> ListOfSenders(CancellationToken cancellationToken)
         {
             var serviceResponse =  await _senderService.GetSendersForListAsync(cancellationToken);
-
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
             return View(serviceResponse.Data);
         }
 
