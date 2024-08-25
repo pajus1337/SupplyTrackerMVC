@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 
@@ -20,7 +21,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [Route("")]
         public IActionResult Index()
         {
-            return View();
+            return NotFound(new NotFoundResult());
         }
 
         [HttpGet]
@@ -46,7 +47,7 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         [HttpGet]
         [Route("sender-details")]
-        public async Task<IActionResult> ViewSender(int senderId,CancellationToken cancellationToken)
+        public async Task<IActionResult> ViewSender(int senderId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.GetSenderDetailsByIdAsync(senderId, cancellationToken);
             if (!serviceResponse.Success && serviceResponse.ErrorMessage != null)
@@ -57,6 +58,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
+        [Route("edit-sender")]
         public async Task<IActionResult> EditSender(int senderId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.GetSenderForEditAsync(senderId, cancellationToken);
@@ -68,12 +70,13 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditSender(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken)
+        [Route("edit-sender")]
+        public async Task<IActionResult> EditSender(UpdateSenderVm model, CancellationToken cancellationToken)
         {
-            var serviceResponse = await _senderService.UpdateSenderByIdAsync(updateSenderVm, cancellationToken);
+            var serviceResponse = await _senderService.UpdateSenderByIdAsync(model, cancellationToken);
             if (!serviceResponse.Success)
             {
-                return HandleErrors(serviceResponse, updateSenderVm);
+                return HandleErrors(serviceResponse, model);
             }
             return View(serviceResponse.Data);
         }
@@ -82,7 +85,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [Route("list-of-senders")]
         public async Task<IActionResult> ListOfSenders(CancellationToken cancellationToken)
         {
-            var serviceResponse =  await _senderService.GetSendersForListAsync(cancellationToken);
+            var serviceResponse = await _senderService.GetSendersForListAsync(cancellationToken);
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);
@@ -90,6 +93,29 @@ namespace SupplyTrackerMVC.Web.Controllers
             return View(serviceResponse.Data);
         }
 
-        // TODO: Create Delete Sender
+        [HttpGet]
+        [Route("delete-sender")]
+        public async Task<IActionResult> DeleteSender(int senderId, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _senderService.GetSenderForDeleteAsync(senderId, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
+        }
+
+        [HttpPost]
+        [Route("delete-sender")]
+        public async Task<IActionResult> DeleteSender(SenderForDeleteVm model, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _senderService.DeleteSenderAsync(model.Id, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            // TODO: View Confirmation ? 
+            return View(serviceResponse.AdditionalMessage);
+        }
     }
 }

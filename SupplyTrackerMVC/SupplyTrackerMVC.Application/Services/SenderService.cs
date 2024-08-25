@@ -127,10 +127,9 @@ namespace SupplyTrackerMVC.Application.Services
 
                 return ServiceResponse<ListSenderForListVm>.CreateSuccess(result);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return ServiceResponse<ListSenderForListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
@@ -155,44 +154,35 @@ namespace SupplyTrackerMVC.Application.Services
         }
 
         public async Task<ServiceResponse<SenderDetailsVm>> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken)
-        {
-            var senderQuery = _senderRepository.GetSenderById(senderId).ProjectTo<SenderDetailsVm>(_mapper.ConfigurationProvider);
-            try
-            {
-                var senderVm = await senderQuery.SingleOrDefaultAsync(cancellationToken);
-                if (senderVm == null)
-                {
-                    return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { "Sender not found in Db" });
-                }
-
-                return ServiceResponse<SenderDetailsVm>.CreateSuccess(senderVm);
-            }
-            catch (Exception ex)
-            {
-                return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
-            }
-        }
+            => await GetSenderViewModelAsync<SenderDetailsVm>(senderId, cancellationToken);
 
         public async Task<ServiceResponse<UpdateSenderVm>> GetSenderForEditAsync(int senderId, CancellationToken cancellationToken)
+            => await GetSenderViewModelAsync<UpdateSenderVm>(senderId, cancellationToken);
+
+        public async Task<ServiceResponse<SenderForDeleteVm>> GetSenderForDeleteAsync(int senderId, CancellationToken cancellationToken) 
+            => await GetSenderViewModelAsync<SenderForDeleteVm>(senderId, cancellationToken);
+
+        private async Task<ServiceResponse<TViewModel>> GetSenderViewModelAsync<TViewModel>(int senderId, CancellationToken cancellationToken)
         {
             if (senderId <= 0)
             {
-                return ServiceResponse<UpdateSenderVm>.CreateFailed(new string[] { "Invalid sender ID" });
+                return ServiceResponse<TViewModel>.CreateFailed(new string[] { "Invalid sender ID" });
             }
-            var senderQuery = _senderRepository.GetSenderById(senderId).ProjectTo<UpdateSenderVm>(_mapper.ConfigurationProvider);
+
+            var senderQuery = _senderRepository.GetSenderById(senderId).ProjectTo<TViewModel>(_mapper.ConfigurationProvider);
             try
             {
                 var senderVm = await senderQuery.SingleOrDefaultAsync(cancellationToken);
                 if (senderVm == null)
                 {
-                    return ServiceResponse<UpdateSenderVm>.CreateFailed(new string[] { "Sender not found in Db" });
+                    return ServiceResponse<TViewModel>.CreateFailed(new string[] { "Sender not found in Db" });
                 }
 
-                return ServiceResponse<UpdateSenderVm>.CreateSuccess(senderVm);
+                return ServiceResponse<TViewModel>.CreateSuccess(senderVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<UpdateSenderVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ServiceResponse<TViewModel>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
     }
