@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using SupplyTrackerMVC.Application.Mapping;
 using SupplyTrackerMVC.Domain.Model.Addresses;
 using System;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class UpdateAddressVm : IMapFrom<Address>
+    public class UpdateAddressDetailsVm : IMapFrom<Address>
     {
         public int Id { get; set; }
         public string Street { get; set; }
@@ -19,17 +18,9 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<UpdateAddressVm, Address>();
+            profile.CreateMap<Address, AddressDetailsVm>().ReverseMap();
         }
-    }
 
-    public class UpdateAddressValidator : AbstractValidator<UpdateAddressVm>
-    {
-        public UpdateAddressValidator()
-        {
-            RuleFor(x => x.Street).NotNull().Length(3, 20);
-            RuleFor(x => x.City).NotNull().Length(3, 20);
-            RuleFor(x => x.ZIP).NotNull().Length(3, 20);
-        }
+
     }
 }

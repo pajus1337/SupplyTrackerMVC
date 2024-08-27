@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class UpdatedContactVm
+    public class UpdateContactDetailVm
     {
     }
 }
