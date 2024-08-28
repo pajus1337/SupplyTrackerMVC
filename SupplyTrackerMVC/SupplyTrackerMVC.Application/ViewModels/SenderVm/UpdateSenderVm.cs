@@ -19,14 +19,14 @@ namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
         // TODO: Finish VM for Update Sender.
         public int Id { get; set; }
         public string Name { get; set; }
-        public AddressDetailsVm Address { get; set; }
-        public ICollection<ContactDetailsVm> Contacts { get; set; }
+        public UpdateAddressDetailsVm Address { get; set; }
+        public ICollection<UpdateContactVm> Contacts { get; set; }
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<UpdateSenderVm, Sender>().ReverseMap();
-            profile.CreateMap<ContactDetailsVm, Contact>().ReverseMap();
-            profile.CreateMap<AddressDetailsVm, Address>().ReverseMap();
+            profile.CreateMap<UpdateContactVm, Contact>().ReverseMap();
+            profile.CreateMap<UpdateAddressDetailsVm, Address>().ReverseMap();
         }
     }
     public class UpdateSenderValidator : AbstractValidator<UpdateSenderVm>
@@ -35,8 +35,6 @@ namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
         {
             RuleFor(x => x.Id).NotNull();
             RuleFor(x => x.Name).Length(0, 5);
-            RuleFor(x => x.Address).SetValidator(new NewAddressForSenderVmValidator());
-            RuleFor(x => x.Contacts).SetValidator(new NewContactForSenderVmValidator());
         }
     }
 }

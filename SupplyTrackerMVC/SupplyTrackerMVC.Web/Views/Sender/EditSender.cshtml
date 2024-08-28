@@ -22,11 +22,60 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Address.Id" class="control-label"></label>
+                <input asp-for="Address.Id" class="form-control" />
+                <span asp-validation-for="Address.Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.Street" class="control-label"></label>
+                <input asp-for="Address.Street" class="form-control" />
+                <span asp-validation-for="Address.Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.ZIP" class="control-label"></label>
+                <input asp-for="Address.ZIP" class="form-control" />
+                <span asp-validation-for="Address.ZIP" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.City" class="control-label"></label>
+                <input asp-for="Address.City" class="form-control" />
+                <span asp-validation-for="Address.City" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
+    <h2>Contacts</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Rolel</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var contact in Model.Contacts)
+            {
+                <tr>
+                    <td>@contact.FirstName</td>
+                    <td>@contact.LastName</td>
+                    <td>@contact.Role</td>
+                    <td>
+                        <a asp-action="EditContact" asp-route-id="@contact.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="DeleteContact" asp-route-id="@contact.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-action="AddContact" asp-route-senderId="@Model.Id" class="btn btn-success">Add New Contact</a>
+
 </div>
 
 <div>

@@ -110,7 +110,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             }
         }
 
-        public IQueryable<Sender> GetSenderById(int senderId) => _context.Senders.Where(p => p.Id == senderId);
+        public IQueryable<Sender> GetSenderById(int senderId) => _context.Senders.Where(p => p.Id == senderId).Include(s => s.Contacts);
         public IQueryable<Sender> GetAllSenders() => _context.Senders;
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)

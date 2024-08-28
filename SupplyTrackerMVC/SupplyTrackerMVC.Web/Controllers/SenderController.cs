@@ -117,5 +117,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             // TODO: View Confirmation ? 
             return View(serviceResponse.AdditionalMessage);
         }
+
+        // TODO: AddContact, DeleteContact, EditContact - For Sender.
     }
 }
