@@ -1,4 +1,5 @@
 ﻿using SupplyTrackerMVC.Application.Responses;
+using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,8 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<ServiceResponse<UpdateSenderVm>> GetSenderForEditAsync(int senderId, CancellationToken cancellationToken);
         Task<ServiceResponse<SenderForDeleteVm>> GetSenderForDeleteAsync(int senderId, CancellationToken cancellationToken);
         Task<ServiceResponse<SenderSelectListVm>> GetAllSendersForSelectListAsync(CancellationToken cancellationToken);
+        Task<ServiceResponse<NewContactVm>> AddSenderContactAsync(NewContactVm, CancellationToken cancellationToken);
+        Task<ServiceResponse<ContactDetailsVm>> UpdateSenderContactAsync(UpdateContactVm updateContactVm, CancellationToken cancellationToken);
+        Task<ServiceResponse<VoidValue>> DeleteSenderContactAsync(int senderId, int senderContactId, CancellationToken cancellationToken);
     }
 }
