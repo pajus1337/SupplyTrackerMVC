@@ -12,4 +12,5 @@ namespace SupplyTrackerMVC.Application.Interfaces
     {
         Task<ServiceResponse<VoidValue>> AddNewContactDetailTypeAsync(NewContactDetailTypeVm model, CancellationToken cancellationToken);
     }
+
 }

@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class ContactDetailTypeForSelectList : IMapFrom<ContactDetailType>
+    public class ContactDetailTypeForList : IMapFrom<ContactDetailType>
     {
         public int Id { get; set; }
         public string Name { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<ContactDetailType, ContactDetailTypeForSelectList>();
+            profile.CreateMap<ContactDetailType, ContactDetailTypeForList>();
         }
     }
 }

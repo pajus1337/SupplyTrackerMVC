@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class ContactDetailTypeSelectListVm
+    public class ListContactDetailTypesForListVm
     {
-        public IEnumerable<ContactDetailTypeForList> ContactDetailTypes { get; set; }
+        public List<ContactDetailTypeForList> ContactDetailTypes { get; set; }
+        public int Count { get; set; }
     }
 }

@@ -225,7 +225,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         private async Task<ServiceResponse<ContactDetailTypeSelectListVm>> GetContactTypesForSelectListAsync(CancellationToken cancellationToken)
         {
-            var contactTypesQuery = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForSelectList>(_mapper.ConfigurationProvider);
+            var contactTypesQuery = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForList>(_mapper.ConfigurationProvider);
 
             try
             {

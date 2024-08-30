@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
+using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
@@ -187,10 +188,25 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
+        public Task<ServiceResponse<NewContactVm>> AddSenderContactAsync(NewContactVm newContactVm, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
 
-            // TODO: Add, Add , Edit & Delete metod's for Sender Contact's 
+        public Task<ServiceResponse<ContactDetailsVm>> UpdateSenderContactAsync(UpdateContactVm updateContactVm, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ServiceResponse<VoidValue>> DeleteSenderContactAsync(int senderId, int senderContactId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
 
 
-        
+        // TODO: Add, Add , Edit & Delete metod's for Sender Contact's 
+
+
+
     }
 }
