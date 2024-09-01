@@ -1,5 +1,7 @@
-﻿using SupplyTrackerMVC.Domain.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Contacts;
+using SupplyTrackerMVC.Domain.Model.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +19,23 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task<bool> AddContactAsync(Contact contact, CancellationToken cancellationToken)
+        public async Task<(int ContactId, bool Success)> AddContactAsync(Contact contact, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _context.Contacts.AddAsync(contact, cancellationToken);
+                int success = await SaveChangesAsync(cancellationToken);
+                if (success < 1)
+                {
+                    throw new InvalidOperationException("Failed to save new contact.");
+                }
+
+                return (contact.Id, true);
+            }
+            catch (Exception ex)
+            {
+                 throw; 
+            }
         }
 
         public Task<bool> DeleteAddressAsync(int contact, CancellationToken cancellationToken)

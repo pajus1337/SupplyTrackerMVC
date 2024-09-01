@@ -18,9 +18,9 @@ namespace SupplyTrackerMVC.Domain.Model.Senders
         public bool IsDeleted { get; set; }
         public DateTime? DeletedOnUtc { get; set; }
         public int AddressId { get; set; }
-        public virtual Address Address { get; set; }
+        public Address Address { get; set; }
 
-        public ICollection<Contact> Contacts { get; set; }
-        public ICollection<Delivery> Deliveries { get; set; }
+        public virtual ICollection<Contact> Contacts { get; set; }
+        public virtual ICollection<Delivery> Deliveries { get; set; }
     }
 }

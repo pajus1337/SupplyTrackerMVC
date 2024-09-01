@@ -20,11 +20,11 @@ namespace SupplyTrackerMVC.Application.Responses
         {
         }
 
-        public static ServiceResponse<T> CreateSuccess(T? data, int? senderId = null, string? additionalMessage = null ) => new ServiceResponse<T> 
+        public static ServiceResponse<T> CreateSuccess(T? data, int? objectId = null, string? additionalMessage = null ) => new ServiceResponse<T> 
         { 
             Success = true, 
             Data = data,
-            ObjectId = senderId,
+            ObjectId = objectId,
             AdditionalMessage = additionalMessage ?? string.Empty,
             IsValidationError = false,
         };

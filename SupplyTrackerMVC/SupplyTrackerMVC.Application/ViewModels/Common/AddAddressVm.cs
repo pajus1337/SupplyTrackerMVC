@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class NewAddressVm : IMapFrom<Address>
+    public class AddAddressVm : IMapFrom<Address>
     {
         public int Id { get; set; }
         public string Street { get; set; }
@@ -19,10 +19,10 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 
         public void Mappng(Profile profile)
         {
-            profile.CreateMap<NewAddressVm, Address>();
+            profile.CreateMap<AddAddressVm, Address>();
         }
 
-        public class NewAddressValidator : AbstractValidator<NewAddressVm>
+        public class NewAddressValidator : AbstractValidator<AddAddressVm>
         {
             public NewAddressValidator()
             {

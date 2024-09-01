@@ -11,7 +11,7 @@ namespace SupplyTrackerMVC.Application.Services
 {
     public class AdminService : IAdminService
     {
-        public Task<ServiceResponse<VoidValue>> AddNewContactDetailTypeAsync(NewContactDetailTypeVm model, CancellationToken cancellationToken)
+        public Task<ServiceResponse<VoidValue>> AddNewContactDetailTypeAsync(AddContactDetailTypeVm model, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

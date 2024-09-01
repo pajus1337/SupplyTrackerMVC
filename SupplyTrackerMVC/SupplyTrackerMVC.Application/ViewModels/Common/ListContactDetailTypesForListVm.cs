@@ -8,7 +8,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
     public class ListContactDetailTypesForListVm
     {
-        public List<ContactDetailTypeForList> ContactDetailTypes { get; set; }
+        public List<ContactDetailTypeForListVm> ContactDetailTypes { get; set; }
         public int Count { get; set; }
     }
 }

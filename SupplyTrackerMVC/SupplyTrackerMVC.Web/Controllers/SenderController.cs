@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using SupplyTrackerMVC.Application.Interfaces;
+using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 
 namespace SupplyTrackerMVC.Web.Controllers
@@ -36,7 +37,6 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> AddSender(NewSenderVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.AddNewSenderAsync(model, cancellationToken);
-
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse, model);
@@ -59,7 +59,7 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         [HttpGet]
         [Route("edit-sender")]
-        public async Task<IActionResult> EditSender(int senderId, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateSender(int senderId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.GetSenderForEditAsync(senderId, cancellationToken);
             if (!serviceResponse.Success)
@@ -71,7 +71,7 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         [HttpPost]
         [Route("edit-sender")]
-        public async Task<IActionResult> EditSender(UpdateSenderVm model, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateSender(UpdateSenderVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.UpdateSenderByIdAsync(model, cancellationToken);
             if (!serviceResponse.Success)
@@ -83,7 +83,7 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         [HttpGet]
         [Route("list-of-senders")]
-        public async Task<IActionResult> ListOfSenders(CancellationToken cancellationToken)
+        public async Task<IActionResult> ViewSenderList(CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.GetSendersForListAsync(cancellationToken);
             if (!serviceResponse.Success)
@@ -118,6 +118,38 @@ namespace SupplyTrackerMVC.Web.Controllers
             return View(serviceResponse.AdditionalMessage);
         }
 
+
+        // TODO: Refine this AddContactForSender prototype method's
+        [HttpGet]
+        [Route("create-new-contact")]
+        public async Task<IActionResult> AddContactForSender(int senderId)
+        {
+            var serviceResponse = await _senderService.PrepareAddContactVm();
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
+        }
+
+        [HttpPost]
+        [Route("create-new-contact")]
+        public async Task<IActionResult> AddContactForSender(AddContactVm model, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _senderService.AddSenderContactAsync(model, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return RedirectToAction("ViewSenderContact", serviceResponse.ObjectId);
+        }
         // TODO: AddContact, DeleteContact, EditContact - For Sender.
+
+        [HttpGet]
+        [Route("view-sender-contact")]
+        public async Task<IActionResult> ViewSenderContact(int senderId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

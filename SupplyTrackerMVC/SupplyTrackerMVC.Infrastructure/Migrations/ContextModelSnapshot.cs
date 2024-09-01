@@ -17,7 +17,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -236,6 +236,10 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
@@ -271,14 +275,14 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ReceiverId")
+                    b.Property<int?>("ReceiverId")
                         .HasColumnType("int");
 
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SenderId")
+                    b.Property<int?>("SenderId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -305,7 +309,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ContactId")
+                    b.Property<int>("ContactId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -630,30 +634,34 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
             modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Contacts.Contact", b =>
                 {
-                    b.HasOne("SupplyTrackerMVC.Domain.Model.Receivers.Receiver", null)
+                    b.HasOne("SupplyTrackerMVC.Domain.Model.Receivers.Receiver", "Receiver")
                         .WithMany("Contacts")
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReceiverId");
 
-                    b.HasOne("SupplyTrackerMVC.Domain.Model.Senders.Sender", null)
+                    b.HasOne("SupplyTrackerMVC.Domain.Model.Senders.Sender", "Sender")
                         .WithMany("Contacts")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SenderId");
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Contacts.ContactDetail", b =>
                 {
                     b.HasOne("SupplyTrackerMVC.Domain.Model.Contacts.ContactDetailType", "ContactDetailType")
-                        .WithMany()
+                        .WithMany("ContactDetails")
                         .HasForeignKey("ContactDetailTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SupplyTrackerMVC.Domain.Model.Contacts.Contact", null)
+                    b.HasOne("SupplyTrackerMVC.Domain.Model.Contacts.Contact", "Contact")
                         .WithMany("ContactDetails")
-                        .HasForeignKey("ContactId");
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contact");
 
                     b.Navigation("ContactDetailType");
                 });
@@ -749,6 +757,11 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Contacts.Contact", b =>
+                {
+                    b.Navigation("ContactDetails");
+                });
+
+            modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Contacts.ContactDetailType", b =>
                 {
                     b.Navigation("ContactDetails");
                 });

@@ -8,6 +8,6 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
     public class ContactDetailTypeSelectListVm
     {
-        public IEnumerable<ContactDetailTypeForList> ContactDetailTypes { get; set; }
+        public IEnumerable<ContactDetailTypeForSelectListVm> ContactDetailTypes { get; set; }
     }
 }

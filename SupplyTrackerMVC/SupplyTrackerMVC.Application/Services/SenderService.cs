@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.Common;
+using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
+using SupplyTrackerMVC.Domain.Model.Contacts;
+using SupplyTrackerMVC.Domain.Model.Products;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 using SupplyTrackerMVC.Domain.Model.Senders;
 using System;
@@ -22,12 +26,14 @@ namespace SupplyTrackerMVC.Application.Services
     public class SenderService : ISenderService
     {
         private readonly ISenderRepository _senderRepository;
+        private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
         private readonly IFluentValidatorFactory _fluentValidatorFactory;
 
-        public SenderService(ISenderRepository senderRepository, IMapper mapper, IFluentValidatorFactory fluentValidatorFactory)
+        public SenderService(ISenderRepository senderRepository, IContactRepository contactRepository, IMapper mapper, IFluentValidatorFactory fluentValidatorFactory)
         {
             _senderRepository = senderRepository;
+            _contactRepository = contactRepository;
             _mapper = mapper;
             _fluentValidatorFactory = fluentValidatorFactory;
         }
@@ -188,9 +194,20 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public Task<ServiceResponse<NewContactVm>> AddSenderContactAsync(NewContactVm newContactVm, CancellationToken cancellationToken)
+        // TODO: Refine AddSenderContactAsync Method
+        public async Task<ServiceResponse<AddContactVm>> AddSenderContactAsync(AddContactVm newContactVm, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var validator = _fluentValidatorFactory.GetValidator<AddContactVm>();
+            var result = await validator.ValidateAsync(newContactVm, cancellationToken);
+            if (!result.IsValid)
+            {
+                return ServiceResponse<AddContactVm>.CreateFailed(result.Errors.Select(e => e.ErrorMessage),true);
+            }
+
+            var contact = _mapper.Map<Contact>(newContactVm);
+            var (contactId, Success) = await _contactRepository.AddContactAsync(contact, cancellationToken);
+
+            return ServiceResponse<AddContactVm>.CreateSuccess(null, contactId);
         }
 
         public Task<ServiceResponse<ContactDetailsVm>> UpdateSenderContactAsync(UpdateContactVm updateContactVm, CancellationToken cancellationToken)
@@ -203,6 +220,25 @@ namespace SupplyTrackerMVC.Application.Services
             throw new NotImplementedException();
         }
 
+
+        // TODO: ASync ?! - Change prototype
+        public async Task<ServiceResponse<AddContactVm>> PrepareAddContactVm()
+        {
+             var model = new AddContactVm
+            {
+                ContactDetailVm = new AddContactDetailVm
+                {
+                    ContactDetailTypeSelectList = GetContactTypes()
+                }
+            };
+
+            return ServiceResponse<AddContactVm>.CreateSuccess(model);
+        }
+
+        private ContactDetailTypeSelectListVm GetContactTypes() => new ContactDetailTypeSelectListVm()
+        {
+            ContactDetailTypes = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForSelectListVm>(_mapper.ConfigurationProvider)
+        };
 
         // TODO: Add, Add , Edit & Delete metod's for Sender Contact's 
 

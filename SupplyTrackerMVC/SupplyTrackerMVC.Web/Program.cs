@@ -1,21 +1,9 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using SupplyTrackerMVC.Application.DI;
-using SupplyTrackerMVC.Application.Interfaces;
-using SupplyTrackerMVC.Application.Services;
-using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
-using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Infrastructure;
 using SupplyTrackerMVC.Infrastructure.Interceptors;
-using SupplyTrackerMVC.Infrastructure.Repositories;
 using SupplyTrackerMVC.Web.Middleware;
-using System;
-using System.Reflection;
-using static SupplyTrackerMVC.Application.ViewModels.ReceiverVm.NewReceiverVm;
 
 var builder = WebApplication.CreateBuilder(args);
 

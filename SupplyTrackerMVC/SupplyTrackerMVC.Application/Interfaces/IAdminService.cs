@@ -10,7 +10,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface IAdminService
     {
-        Task<ServiceResponse<VoidValue>> AddNewContactDetailTypeAsync(NewContactDetailTypeVm model, CancellationToken cancellationToken);
+        Task<ServiceResponse<VoidValue>> AddNewContactDetailTypeAsync(AddContactDetailTypeVm model, CancellationToken cancellationToken);
     }
 
 }

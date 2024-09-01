@@ -186,9 +186,9 @@ namespace SupplyTrackerMVC.Application.Services
             var model = new NewReceiverBranchVm();
 
             model.ReceiverSelectList = receivers.Data;
-            model.NewContactForReceiverBranch = new NewContactVm()
+            model.NewContactForReceiverBranch = new AddContactVm()
             {
-                ContactDetailVm = new NewContactDetailVm()
+                ContactDetailVm = new AddContactDetailVm()
                 {
                     ContactDetailTypeSelectList = contactTypes.Data
                 }
@@ -225,14 +225,14 @@ namespace SupplyTrackerMVC.Application.Services
 
         private async Task<ServiceResponse<ContactDetailTypeSelectListVm>> GetContactTypesForSelectListAsync(CancellationToken cancellationToken)
         {
-            var contactTypesQuery = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForList>(_mapper.ConfigurationProvider);
+            var contactTypesQuery = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForSelectListVm>(_mapper.ConfigurationProvider);
 
             try
             {
                 var contactTypes = await contactTypesQuery.ToListAsync(cancellationToken);
                 if (contactTypes.Count == 0)
                 {
-                    return ServiceResponse<ContactDetailTypeSelectListVm>.CreateFailed(new string[] { "Collection is emmpty, Add new elements before use" });
+                    return ServiceResponse<ContactDetailTypeSelectListVm>.CreateFailed(new string[] { "Collection is empty, Add new elements before use" });
                 }
 
                 var contactTypesVm = new ContactDetailTypeSelectListVm()

@@ -1,10 +1,10 @@
 ﻿@model SupplyTrackerMVC.Application.ViewModels.SenderVm.ListSenderForListVm
 
 @{
-    ViewData["Title"] = "ListOfSenders";
+    ViewData["Title"] = "ViewSenderList";
 }
 
-<h1>ListOfSenders</h1>
+<h1>List Of Senders</h1>
 
 <p>
     <a asp-action="AddSender">Create New</a>
@@ -30,7 +30,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.ActionLink("Edit", "EditSender", new { senderId = item.Id }) |
+                @Html.ActionLink("Edit", "UpdateSender", new { senderId = item.Id }) |
                 @Html.ActionLink("Details", "ViewSender", new { senderId = item.Id }) |
                 @Html.ActionLink("Delete", "DeleteSender", new { senderId = item.Id })
             </td>

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class NewContactVm : IMapFrom<Contact>
+    public class AddContactVm : IMapFrom<Contact>
     {
         public int Id { get; set; }
         [DisplayName("First Name")]
@@ -18,12 +18,15 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
         [DisplayName("Last Name")]
         public string LastName { get; set; }
         public string Role { get; set; }
+        public int ContactOwnerId { get; set; }
 
-        public NewContactDetailVm ContactDetailVm { get; set; }
+        public AddContactDetailVm ContactDetailVm { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<NewContactVm, Contact>();
+            profile.CreateMap<AddContactVm, Contact>()
+                .ForMember(dest => dest.ReceiverId, opt => opt.Ignore())
+                .ForMember(dest => dest.SenderId, opt => opt.Ignore());
         }
     }
 }

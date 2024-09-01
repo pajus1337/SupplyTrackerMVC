@@ -11,26 +11,26 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class NewContactDetailVm : IMapFrom<ContactDetail>
+    public class AddContactDetailVm : IMapFrom<ContactDetail>
     {
         public int Id { get; set; }
-        [DisplayName("Select contact type")]
-        public int SelectedContactDetailTypeId { get; set; }
+        public int ContactDetailTypeId { get; set; }
+        [DisplayName("Select communication type")]
         public ContactDetailTypeSelectListVm ContactDetailTypeSelectList { get; set; }
-        [DisplayName("Value for selected contact type")]
+        [DisplayName("Entry Value for new communication type")]
         public string ContactDetailValue { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<NewContactDetailVm, ContactDetail>();
+            profile.CreateMap<AddContactDetailVm, ContactDetail>();
         }
     }
 
-    public class NewContactDetailValidator : AbstractValidator<NewContactDetailVm>
+    public class NewContactDetailValidator : AbstractValidator<AddContactDetailVm>
     {
         public NewContactDetailValidator()
         {
-            RuleFor(x => x.SelectedContactDetailTypeId).NotNull();
+            RuleFor(x => x.ContactDetailTypeId).NotNull();
             RuleFor(x => x.ContactDetailValue).NotNull().Length(2, 20);
         }
     }

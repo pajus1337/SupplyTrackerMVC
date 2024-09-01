@@ -1,32 +1,26 @@
 ﻿@model SupplyTrackerMVC.Application.ViewModels.SenderVm.UpdateSenderVm
 
 @{
-    ViewData["Title"] = "EditSender";
+    ViewData["Title"] = "Edit Sender Information";
 }
 
-<h1>EditSender</h1>
+<h1>Edit Sender</h1>
 
-<h4>UpdateSenderVm</h4>
+<h4>Details :</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="EditSender">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Id"/>
+            <input type="hidden" asp-for="Address.Id" />
+            <span asp-validation-for="Id" class="text-danger"></span>
+            <span asp-validation-for="Address.Id" class="text-danger"></span>
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Address.Id" class="control-label"></label>
-                <input asp-for="Address.Id" class="form-control" />
-                <span asp-validation-for="Address.Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Address.Street" class="control-label"></label>
@@ -43,7 +37,6 @@
                 <input asp-for="Address.City" class="form-control" />
                 <span asp-validation-for="Address.City" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -55,7 +48,7 @@
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Rolel</th>
+                <th>Role</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -74,12 +67,12 @@
             }
         </tbody>
     </table>
-    <a asp-action="AddContact" asp-route-senderId="@Model.Id" class="btn btn-success">Add New Contact</a>
+    <a asp-action="AddContactForSender" asp-route-senderId="@Model.Id" class="btn btn-success">Add New Contact</a>
 
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="ViewSenderList">Back to List</a>
 </div>
 
 @section Scripts {
