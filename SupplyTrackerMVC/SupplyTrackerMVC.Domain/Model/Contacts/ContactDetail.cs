@@ -11,7 +11,7 @@ namespace SupplyTrackerMVC.Domain.Model.Contacts
         public int Id { get; set; }
         public string ContactDetailValue { get; set; }
         public int ContactDetailTypeId { get; set; }
-        public virtual ContactDetailType ContactDetailType { get; set; }
+        public ContactDetailType ContactDetailType { get; set; }
         public int ContactId { get; set; }
         public Contact Contact { get; set; }
     }

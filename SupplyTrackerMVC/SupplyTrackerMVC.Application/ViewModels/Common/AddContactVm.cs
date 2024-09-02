@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using SupplyTrackerMVC.Application.Mapping;
+using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Domain.Model.Contacts;
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,16 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
             profile.CreateMap<AddContactVm, Contact>()
                 .ForMember(dest => dest.ReceiverId, opt => opt.Ignore())
                 .ForMember(dest => dest.SenderId, opt => opt.Ignore());
+        }
+    }
+
+    public class AddContactValidator : AbstractValidator<AddContactVm>
+    {
+        public AddContactValidator()
+        {
+            RuleFor(x => x.Id).NotNull();
+            RuleFor(x => x.ContactOwnerId).NotNull().GreaterThan(0);
+            RuleFor(x => x.ContactDetailVm).SetValidator(new AddContactDetailValidator());
         }
     }
 }

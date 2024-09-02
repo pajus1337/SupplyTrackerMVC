@@ -44,7 +44,7 @@ namespace SupplyTrackerMVC.Application.Services
             var validationResult = await validator.ValidateAsync(model, cancellationToken);
             if (!validationResult.IsValid)
             {
-                return ServiceResponse<NewSenderVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage),true);
+                return ServiceResponse<NewSenderVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
             }
 
             var sender = _mapper.Map<Sender>(model);
@@ -167,7 +167,7 @@ namespace SupplyTrackerMVC.Application.Services
         public async Task<ServiceResponse<UpdateSenderVm>> GetSenderForEditAsync(int senderId, CancellationToken cancellationToken)
             => await GetSenderViewModelAsync<UpdateSenderVm>(senderId, cancellationToken);
 
-        public async Task<ServiceResponse<SenderForDeleteVm>> GetSenderForDeleteAsync(int senderId, CancellationToken cancellationToken) 
+        public async Task<ServiceResponse<SenderForDeleteVm>> GetSenderForDeleteAsync(int senderId, CancellationToken cancellationToken)
             => await GetSenderViewModelAsync<SenderForDeleteVm>(senderId, cancellationToken);
 
         private async Task<ServiceResponse<TViewModel>> GetSenderViewModelAsync<TViewModel>(int senderId, CancellationToken cancellationToken)
@@ -198,16 +198,29 @@ namespace SupplyTrackerMVC.Application.Services
         public async Task<ServiceResponse<AddContactVm>> AddSenderContactAsync(AddContactVm newContactVm, CancellationToken cancellationToken)
         {
             var validator = _fluentValidatorFactory.GetValidator<AddContactVm>();
-            var result = await validator.ValidateAsync(newContactVm, cancellationToken);
-            if (!result.IsValid)
+
+            try
             {
-                return ServiceResponse<AddContactVm>.CreateFailed(result.Errors.Select(e => e.ErrorMessage),true);
+                var result = await validator.ValidateAsync(newContactVm, cancellationToken);
+                if (!result.IsValid)
+                {
+                    return ServiceResponse<AddContactVm>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
+                }
+
+                var contact = _mapper.Map<Contact>(newContactVm);
+                contact.SenderId = newContactVm.ContactOwnerId;
+                var (contactId, success) = await _contactRepository.AddContactAsync(contact, cancellationToken);
+
+                if (!success)
+                {
+                    return ServiceResponse<AddContactVm>.CreateFailed(new string[] { "Failed to save new contact in Db" });
+                }
+                return ServiceResponse<AddContactVm>.CreateSuccess(null, contactId);
             }
-
-            var contact = _mapper.Map<Contact>(newContactVm);
-            var (contactId, Success) = await _contactRepository.AddContactAsync(contact, cancellationToken);
-
-            return ServiceResponse<AddContactVm>.CreateSuccess(null, contactId);
+            catch (Exception ex)
+            {
+                return ServiceResponse<AddContactVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
 
         public Task<ServiceResponse<ContactDetailsVm>> UpdateSenderContactAsync(UpdateContactVm updateContactVm, CancellationToken cancellationToken)
@@ -222,14 +235,15 @@ namespace SupplyTrackerMVC.Application.Services
 
 
         // TODO: ASync ?! - Change prototype
-        public async Task<ServiceResponse<AddContactVm>> PrepareAddContactVm()
+        public async Task<ServiceResponse<AddContactVm>> PrepareAddContactVm(int senderId)
         {
-             var model = new AddContactVm
+            var model = new AddContactVm
             {
+                ContactOwnerId = senderId,
                 ContactDetailVm = new AddContactDetailVm
                 {
                     ContactDetailTypeSelectList = GetContactTypes()
-                }
+                },
             };
 
             return ServiceResponse<AddContactVm>.CreateSuccess(model);

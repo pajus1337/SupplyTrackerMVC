@@ -124,7 +124,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [Route("create-new-contact")]
         public async Task<IActionResult> AddContactForSender(int senderId)
         {
-            var serviceResponse = await _senderService.PrepareAddContactVm();
+            var serviceResponse = await _senderService.PrepareAddContactVm(senderId);
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);

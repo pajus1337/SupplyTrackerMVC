@@ -26,9 +26,9 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
         }
     }
 
-    public class NewContactDetailValidator : AbstractValidator<AddContactDetailVm>
+    public class AddContactDetailValidator : AbstractValidator<AddContactDetailVm>
     {
-        public NewContactDetailValidator()
+        public AddContactDetailValidator()
         {
             RuleFor(x => x.ContactDetailTypeId).NotNull();
             RuleFor(x => x.ContactDetailValue).NotNull().Length(2, 20);

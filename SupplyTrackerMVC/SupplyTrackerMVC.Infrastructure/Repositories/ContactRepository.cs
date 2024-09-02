@@ -50,9 +50,9 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
         public IQueryable<ContactDetailType> GetContactDetailTypes() => _context.ContactDetailTypes;
 
-        public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _context.SaveChangesAsync(cancellationToken);
         }
 
         public Task<bool> UpdateAddressAsync(Contact contact, CancellationToken cancellationToken)
