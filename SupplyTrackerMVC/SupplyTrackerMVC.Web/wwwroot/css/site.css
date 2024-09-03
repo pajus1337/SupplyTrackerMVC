@@ -8,6 +8,11 @@ html {
   }
 }
 
+.section-title {
+    font-size: 20px;
+
+}
+
 .section-spacing {
     margin-bottom: 20px;
 }

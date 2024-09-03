@@ -1,27 +1,34 @@
 ﻿@model SupplyTrackerMVC.Application.ViewModels.SenderVm.SenderDetailsVm
 
 @{
-    ViewData["Title"] = "ViewSender";
+    ViewData["Title"] = "View Sender Details";
 }
 
-<h1>ViewSender</h1>
-
-<div>
-    <h4>SenderDetailsVm</h4>
+<h1>Sender Company Information </h1>
+<br />
+<section>
+    <h2 class="section-title">Main Information : </h2>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Id)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
+    </dl>
+</section>
+<section>
+    <hr class="styled-hr" />
+    <h2 class="section-title">Address Information :</h2>
+    <hr />
+    <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Address.Street)
         </dt>
@@ -41,7 +48,37 @@
             @Html.DisplayFor(model => model.Address.City)
         </dd>
     </dl>
-</div>
+</section>
+<section>
+    <hr class="styled-hr" />
+    <h2 class="section-title">Available Contacts :</h2>
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Role</th>
+                <th>Contact Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var contact in Model.Contacts)
+            {
+                <tr>
+                    <td>@contact.FirstName</td>
+                    <td>@contact.LastName</td>
+                    <td>@contact.Role</td>
+                    <td>@contact.ContactDetailTypeName</td>
+                    <td>
+                        <a asp-action="ViewContact" asp-route-id="@contact.Id" class="btn btn-primary">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
 <div>
     @Html.ActionLink("Edit", "UpdateSender", new { senderId = Model.Id }) |
     <a asp-action="ViewSenderList">Back to List</a>
