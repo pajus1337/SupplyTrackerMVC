@@ -27,8 +27,15 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
         public void Mapping(Profile profile)
         {
             profile.CreateMap<AddContactVm, Contact>()
-                .ForMember(dest => dest.ReceiverId, opt => opt.Ignore())
-                .ForMember(dest => dest.SenderId, opt => opt.Ignore());
+                .ForMember(d => d.ReceiverId, opt => opt.Ignore())
+                .ForMember(d => d.SenderId, opt => opt.Ignore())
+                .AfterMap((src, dest, context) =>
+                {
+                    if (src.ContactDetailVm != null)
+                    {
+                        dest.ContactDetails = new List<ContactDetail> { context.Mapper.Map<ContactDetail>(src.ContactDetailVm) };
+                    }
+                });
         }
     }
 

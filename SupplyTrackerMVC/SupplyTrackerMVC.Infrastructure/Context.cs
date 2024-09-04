@@ -39,7 +39,7 @@ namespace SupplyTrackerMVC.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new AddressModelBuilder());
-            // modelBuilder.ApplyConfiguration(new ContactModelBuilder());
+            modelBuilder.ApplyConfiguration(new ContactModelBuilder());
             modelBuilder.ApplyConfiguration(new DeliveryModelBuilder());
             modelBuilder.ApplyConfiguration(new ProductModelBuilder());
             modelBuilder.ApplyConfiguration(new ProductDetailModelBuilder());

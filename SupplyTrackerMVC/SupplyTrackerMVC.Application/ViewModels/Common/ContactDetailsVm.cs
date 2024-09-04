@@ -22,9 +22,12 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 
         public void Mappig(Profile profile)
         {
-            profile.CreateMap<Contact, ContactDetailsVm>();
-            profile.CreateMap<ContactDetail, ContactDetailsVm>()
-                .ForMember(d => d.ContactDetailTypeName, opt => opt.MapFrom(s => s.ContactDetailType.Name));
+            //profile.CreateMap<ContactDetail, ContactDetailsVm>()
+            //    .ForMember(d => d.ContactDetailTypeName, opt => opt.MapFrom(s => s.ContactDetailType.Name)).ReverseMap();
+            profile.CreateMap<Contact, ContactDetailsVm>()
+.ForMember(dest => dest.ContactDetailTypeName, opt => opt.MapFrom(src => src.ContactDetails.FirstOrDefault().ContactDetailType.Name))
+.ForMember(dest => dest.ContactDetailValue, opt => opt.MapFrom(src => src.ContactDetails.FirstOrDefault().ContactDetailValue))
+.ReverseMap();
         }
     }
 }

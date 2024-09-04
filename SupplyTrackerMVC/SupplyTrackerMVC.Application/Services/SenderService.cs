@@ -207,8 +207,11 @@ namespace SupplyTrackerMVC.Application.Services
                     return ServiceResponse<AddContactVm>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
                 }
 
-                var contact = _mapper.Map<Contact>(newContactVm);
+                var contact = _mapper.Map<AddContactVm, Contact>(newContactVm);
                 contact.SenderId = newContactVm.ContactOwnerId;
+                // TODO: Testing part
+              //  contact.ContactDetails =  new List<ContactDetail> { _mapper.Map<ContactDetail>(newContactVm.ContactDetailVm) };
+                // End Of testing
                 var (contactId, success) = await _contactRepository.AddContactAsync(contact, cancellationToken);
 
                 if (!success)

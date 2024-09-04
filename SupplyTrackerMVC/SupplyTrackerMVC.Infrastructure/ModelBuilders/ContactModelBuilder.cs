@@ -13,7 +13,20 @@ namespace SupplyTrackerMVC.Infrastructure.ModelBuilders
     {
         public void Configure(EntityTypeBuilder<Contact> builder)
         {
-            throw new NotImplementedException();
+            builder.HasMany(c => c.ContactDetails)
+                   .WithOne(cd => cd.Contact)
+                   .HasForeignKey(cd => cd.ContactId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(c => c.Sender)
+                   .WithMany(s => s.Contacts)
+                   .HasForeignKey(c => c.SenderId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(c => c.Receiver)
+                   .WithMany(r => r.Contacts)
+                   .HasForeignKey(c => c.ReceiverId)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

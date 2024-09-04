@@ -22,7 +22,9 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<AddContactDetailVm, ContactDetail>();
+            profile.CreateMap<AddContactDetailVm, ContactDetail>()
+                .ForMember(d => d.ContactDetailTypeId, opt => opt.MapFrom(s => s.ContactDetailTypeId));
+
         }
     }
 

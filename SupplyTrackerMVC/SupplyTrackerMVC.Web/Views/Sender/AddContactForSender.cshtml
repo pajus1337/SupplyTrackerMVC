@@ -16,8 +16,10 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="ContactOwnerId" />
+            <input type="hidden" asp-for="ContactDetailVm.Id" />
             <span asp-validation-for="Id" class="text-danger"></span>
             <span asp-validation-for="ContactOwnerId" class="text-danger"></span>
+            <span asp-validation-for="ContactDetailVm.Id" class="text-danger"></span>
 
             <div class="section-header">
                 <h5>Personal Information</h5>
