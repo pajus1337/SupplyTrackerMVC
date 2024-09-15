@@ -70,7 +70,7 @@
                     <td>@contact.FirstName</td>
                     <td>@contact.LastName</td>
                     <td>@contact.Role</td>
-                    <td>@contact.ContactDetailTypeName</td>
+                    <td>@contact.ContactDetails.FirstOrDefault().ContactDetailTypeName</td>
                     <td>
                         <a asp-action="ViewContact" asp-route-id="@contact.Id" class="btn btn-primary">Details</a>
                     </td>

@@ -15,19 +15,12 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Role { get; set; }
-        public string ContactDetailTypeName { get; set; }
-        public string ContactDetailValue { get; set; }
-
-
+        public ICollection<ContactDetailVm> ContactDetails { get; set; }
 
         public void Mappig(Profile profile)
         {
-            //profile.CreateMap<ContactDetail, ContactDetailsVm>()
-            //    .ForMember(d => d.ContactDetailTypeName, opt => opt.MapFrom(s => s.ContactDetailType.Name)).ReverseMap();
             profile.CreateMap<Contact, ContactDetailsVm>()
-.ForMember(dest => dest.ContactDetailTypeName, opt => opt.MapFrom(src => src.ContactDetails.FirstOrDefault().ContactDetailType.Name))
-.ForMember(dest => dest.ContactDetailValue, opt => opt.MapFrom(src => src.ContactDetails.FirstOrDefault().ContactDetailValue))
-.ReverseMap();
+                .ForMember(d => d.ContactDetails, opt => opt.MapFrom(s => s.ContactDetails));
         }
     }
 }

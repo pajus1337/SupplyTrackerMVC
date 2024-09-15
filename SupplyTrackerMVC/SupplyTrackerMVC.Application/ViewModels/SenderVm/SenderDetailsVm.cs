@@ -25,9 +25,8 @@ namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
                 .ForMember(dest => dest.Contacts, opt => opt.MapFrom(src => src.Contacts))
                 .ReverseMap();
 
-            profile.CreateMap<SenderDetailsVm, Sender>().ReverseMap();
-            profile.CreateMap<ContactDetailsVm, Contact>().ReverseMap();
-            profile.CreateMap<AddressDetailsVm, Address>().ReverseMap();
+            profile.CreateMap<Contact, ContactDetailsVm>().ReverseMap();
+            profile.CreateMap<Address, AddressDetailsVm>().ReverseMap();
         }
     }
 }
