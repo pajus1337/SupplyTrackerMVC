@@ -22,6 +22,7 @@ namespace SupplyTrackerMVC.Application.DI
             serviceDescriptors.AddTransient<IReceiverService, ReceiverService>();
             serviceDescriptors.AddTransient<IProductService, ProductService>();
             serviceDescriptors.AddTransient<ISenderService, SenderService>();
+            serviceDescriptors.AddTransient<IAdminService, AdminService>();
 
 
             //AutoMapper
