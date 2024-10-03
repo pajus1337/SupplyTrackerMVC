@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SupplyTrackerMVC.Application.Interfaces;
+using SupplyTrackerMVC.Application.Services;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 
 namespace SupplyTrackerMVC.Web.Controllers
@@ -16,9 +17,13 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewContactTypesList(CancellationToken cancellationToken)
         {
-            // TODO: Refine method => since this belowe is just a prototype.
-            var model = await _adminService.GetListContactDetailTypeAsync(cancellationToken);
-            return View(model);
+            var serviceResponse = await _adminService.GetContactDetailTypeForListAsync(cancellationToken);
+
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
         }
 
         [HttpGet]
