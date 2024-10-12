@@ -29,7 +29,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> AddContactType(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return View(new AddContactDetailTypeVm());
         }
 
         [HttpPost]
