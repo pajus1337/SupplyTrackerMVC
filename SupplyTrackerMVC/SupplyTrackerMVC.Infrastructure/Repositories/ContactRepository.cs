@@ -38,6 +38,11 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             }
         }
 
+        public Task<(int ContactTypeId, bool Success)> AddContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> DeleteAddressAsync(int contact, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();

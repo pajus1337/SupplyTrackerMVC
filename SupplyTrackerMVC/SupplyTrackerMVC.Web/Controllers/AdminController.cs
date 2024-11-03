@@ -35,7 +35,13 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddContactType(AddContactDetailTypeVm model, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var serviceResponse = await _adminService.AddContactDetailTypeAsync(model, cancellationToken);
+
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
         }
 
         [HttpGet]

@@ -1,10 +1,15 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.Common;
+using SupplyTrackerMVC.Application.ViewModels.DeliveryVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
+using SupplyTrackerMVC.Domain.Model.Contacts;
+using SupplyTrackerMVC.Domain.Model.Deliveries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +18,30 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.Services
 {
-    public class AdminService(IContactRepository contactRepository) : IAdminService
+    public class AdminService(IContactRepository contactRepository, IFluentValidatorFactory fluentValidatorFactory, IMapper mapper) : IAdminService
     {
         private readonly IContactRepository _contactRepository = contactRepository;
+        private readonly IFluentValidatorFactory _validatorFactory = fluentValidatorFactory;
+        private readonly IMapper _mapper = mapper;
 
-        public Task<ServiceResponse<AddContactDetailTypeVm>> AddContactDetailTypeAsync(AddContactDetailTypeVm model, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<AddContactDetailTypeVm>> AddContactDetailTypeAsync(AddContactDetailTypeVm model, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-        }
+            if (model == null)
+            {
+                return ServiceResponse<AddContactDetailTypeVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
+            }
+
+            var validator = _validatorFactory.GetValidator<AddContactDetailTypeVm>();
+            var result = await validator.ValidateAsync(model, cancellationToken);
+            if (!result.IsValid)
+            {
+                return ServiceResponse<AddContactDetailTypeVm>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
+            }
+
+            var NewContactDetailType = _mapper.Map<ContactDetailType>(model);
+
+            // TODO: Add Repository Logic
+            }
 
         public Task<ServiceResponse<VoidValue>> DeleteContactDetailTypeAsync(int contactTypeId, CancellationToken cancellationToken)
         {
