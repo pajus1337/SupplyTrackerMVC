@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SupplyTrackerMVC.Application.Factories;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Services;
+using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using System.Reflection;
@@ -24,7 +25,6 @@ namespace SupplyTrackerMVC.Application.DI
             serviceDescriptors.AddTransient<ISenderService, SenderService>();
             serviceDescriptors.AddTransient<IAdminService, AdminService>();
 
-
             //AutoMapper
             serviceDescriptors.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -34,8 +34,8 @@ namespace SupplyTrackerMVC.Application.DI
             serviceDescriptors.AddTransient<IValidator<NewProductVm>, NewProductValidator>();
             serviceDescriptors.AddTransient<IValidator<NewProductTypeVm>, NewProductTypeValidator>();
             serviceDescriptors.AddTransient<IValidator<UpdateProductVm>, UpdateProductValidator>();
+            serviceDescriptors.AddTransient<IValidator<AddContactDetailTypeVm>, AddContactDetailTypeValidator>();
             serviceDescriptors.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
 
             return serviceDescriptors;
         }

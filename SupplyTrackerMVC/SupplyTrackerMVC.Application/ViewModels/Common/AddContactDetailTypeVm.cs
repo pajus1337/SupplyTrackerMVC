@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using SupplyTrackerMVC.Application.Mapping;
 using SupplyTrackerMVC.Domain.Model.Contacts;
 using System;
@@ -18,6 +19,14 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
         public void Mapping(Profile profile)
         {
             profile.CreateMap<AddContactDetailTypeVm, ContactDetailType>();
+        }
+    }
+    public class AddContactDetailTypeValidator : AbstractValidator<AddContactDetailTypeVm>
+    {
+        public AddContactDetailTypeValidator()
+        {
+            RuleFor(x => x.Id).NotNull();
+            RuleFor(x => x.Name).Length(3,12);
         }
     }
 }

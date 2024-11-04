@@ -32,15 +32,29 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
                 return (contact.Id, true);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                 throw; 
+                throw;
             }
         }
 
-        public Task<(int ContactTypeId, bool Success)> AddContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken)
+        public async Task<(int ContactTypeId, bool Success)> AddContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _context.ContactDetailTypes.AddAsync(contactDetailType, cancellationToken);
+                int success = await SaveChangesAsync(cancellationToken);
+                if (success < 1)
+                {
+                    throw new InvalidOperationException("Failed to save new contact detail type.");
+                }
+                return (contactDetailType.Id, true);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public Task<bool> DeleteAddressAsync(int contact, CancellationToken cancellationToken)
