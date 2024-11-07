@@ -61,14 +61,16 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<ListContactDetailTypesForListVm>> GetContactDetailTypeForListAsync(CancellationToken cancellationToken)
         {
-            var contactTypesQuery = _contactRepository.GetContactDetailTypes();
+            var contactTypesQuery = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForListVm>(_mapper.ConfigurationProvider);
 
             try
             {
                 var contactTypes = await contactTypesQuery.ToListAsync(cancellationToken);
 
                 ListContactDetailTypesForListVm result = new ListContactDetailTypesForListVm();
-                result.ContactDetailTypes = new List<ContactDetailTypeForListVm>();
+
+                result.ContactDetailTypes = contactTypes;
+                result.Count = result.ContactDetailTypes.Count;
 
                 return ServiceResponse<ListContactDetailTypesForListVm>.CreateSuccess(result);
             }
@@ -76,7 +78,6 @@ namespace SupplyTrackerMVC.Application.Services
             {
                 return ServiceResponse<ListContactDetailTypesForListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
-
         }
 
         public Task<ServiceResponse<VoidValue>> UpdateContactDetailTypeAsync(UpdateContactDetailTypeVm model, CancellationToken cancellationToken)

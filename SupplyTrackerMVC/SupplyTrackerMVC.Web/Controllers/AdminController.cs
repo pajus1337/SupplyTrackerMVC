@@ -54,8 +54,6 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> EditContactType(UpdateContactDetailTypeVm model, CancellationToken cancellationToke)
         {
             throw new NotImplementedException();
-        }
-             
-
+        }             
     }
 }
