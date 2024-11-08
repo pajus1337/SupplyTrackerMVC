@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.Services
 {
-    public class AdminService(IContactRepository contactRepository, IFluentValidatorFactory fluentValidatorFactory, IMapper mapper) : IAdminService
+    public class ContactService(IContactRepository contactRepository, IFluentValidatorFactory fluentValidatorFactory, IMapper mapper) : IContactService
     {
         private readonly IContactRepository _contactRepository = contactRepository;
         private readonly IFluentValidatorFactory _validatorFactory = fluentValidatorFactory;
@@ -59,7 +59,12 @@ namespace SupplyTrackerMVC.Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<ServiceResponse<ListContactDetailTypesForListVm>> GetContactDetailTypeForListAsync(CancellationToken cancellationToken)
+        public Task<ServiceResponse<ContactDetailTypeVm>> GetContactDetailTypeAsync(int contactDetailTypeId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResponse<ListContactDetailTypesForListVm>> GetContactDetailTypesForListAsync(CancellationToken cancellationToken)
         {
             var contactTypesQuery = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForListVm>(_mapper.ConfigurationProvider);
 
