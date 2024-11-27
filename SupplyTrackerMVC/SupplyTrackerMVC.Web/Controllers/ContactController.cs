@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Serialization;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 
@@ -54,5 +55,24 @@ namespace SupplyTrackerMVC.Web.Controllers
         {
             throw new NotImplementedException();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteContactType(int ContactTypeId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteContactType(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet] 
+        public async Task<IActionResult> ViewContactTypeDetails(int contactTypeId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
