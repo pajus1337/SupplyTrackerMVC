@@ -7,7 +7,7 @@ using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Contacts;
-using SupplyTrackerMVC.Domain.Model.Deliveries;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,6 +62,19 @@ namespace SupplyTrackerMVC.Application.Services
         public Task<ServiceResponse<ContactDetailTypeVm>> GetContactDetailTypeAsync(int contactDetailTypeId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResponse<UpdateContactDetailTypeVm>> GetContactDetailTypeForEditAsync(int contactDetailTypeId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+
+            if (contactDetailTypeId <= 0)
+            {
+                return ServiceResponse<UpdateContactDetailTypeVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
+            }
+
+            var contactDetailTypeQuery = _contactRepository.GetContactDetailTypes().ProjectTo<UpdateContactDetailTypeVm>(_mapper.ConfigurationProvider);
+
         }
 
         public async Task<ServiceResponse<ListContactDetailTypesForListVm>> GetContactDetailTypesForListAsync(CancellationToken cancellationToken)

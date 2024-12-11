@@ -67,6 +67,8 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public IQueryable<ContactDetailType> GetContactDetailTypeById(int contactDetailTypeId) => _context.ContactDetailTypes.Where(p => p.Id == contactDetailTypeId);
+
         public IQueryable<ContactDetailType> GetContactDetailTypes() => _context.ContactDetailTypes;
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)

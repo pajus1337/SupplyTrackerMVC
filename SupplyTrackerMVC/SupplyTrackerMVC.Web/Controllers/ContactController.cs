@@ -45,7 +45,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditContactType(CancellationToken cancellationToken)
+        public async Task<IActionResult> EditContactType(int contactTypeId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
