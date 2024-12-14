@@ -66,15 +66,27 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<UpdateContactDetailTypeVm>> GetContactDetailTypeForEditAsync(int contactDetailTypeId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-
             if (contactDetailTypeId <= 0)
             {
                 return ServiceResponse<UpdateContactDetailTypeVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
             }
 
             var contactDetailTypeQuery = _contactRepository.GetContactDetailTypes().ProjectTo<UpdateContactDetailTypeVm>(_mapper.ConfigurationProvider);
+            try
+            {
+                var contactDetailTypeVm = await contactDetailTypeQuery.SingleOrDefaultAsync(cancellationToken);
 
+                if (contactDetailTypeVm == null)
+                {
+                    return ServiceResponse<UpdateContactDetailTypeVm>.CreateFailed(new string[] { "Contact detail type not found in Db" });
+                }
+
+                return ServiceResponse<UpdateContactDetailTypeVm>.CreateSuccess(contactDetailTypeVm);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<UpdateContactDetailTypeVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
 
         public async Task<ServiceResponse<ListContactDetailTypesForListVm>> GetContactDetailTypesForListAsync(CancellationToken cancellationToken)
