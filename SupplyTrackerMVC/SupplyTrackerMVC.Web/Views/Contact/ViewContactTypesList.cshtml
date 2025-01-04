@@ -31,7 +31,7 @@
                     @Html.DisplayFor(ModelItem => item.Name)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditContactType", new { contactTypeId=item.Id }) |
+                    @Html.ActionLink("Edit", "UpdateContactType", new { contactTypeId=item.Id }) |
                     @Html.ActionLink("Details", "ViewContactTypeDetails", new { contactTypeId=item.Id }) |
                     @Html.ActionLink("Delete", "DeleteContactType", new { contactTypeId=item.Id })
                 </td>

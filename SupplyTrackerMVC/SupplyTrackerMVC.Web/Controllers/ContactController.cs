@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Serialization;
 using SupplyTrackerMVC.Application.Interfaces;
+using SupplyTrackerMVC.Application.Services;
 using SupplyTrackerMVC.Application.ViewModels.Common;
+using System.Threading;
 
 namespace SupplyTrackerMVC.Web.Controllers
 {
@@ -45,15 +47,25 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditContactType(int contactTypeId, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateContactType(int contactTypeId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var serviceResponse =  await _contactService.GetContactDetailTypeForEditAsync(contactTypeId,cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditContactType(UpdateContactDetailTypeVm model, CancellationToken cancellationToke)
+        public async Task<IActionResult> UpdateContactType(UpdateContactDetailTypeVm model, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var serviceResponse = await _contactService.UpdateContactDetailTypeAsync(model, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse, model);
+            }
+            return View(serviceResponse.Data);
         }
 
         [HttpGet]
