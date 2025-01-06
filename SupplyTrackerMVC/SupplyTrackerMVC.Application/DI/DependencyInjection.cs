@@ -35,6 +35,7 @@ namespace SupplyTrackerMVC.Application.DI
             serviceDescriptors.AddTransient<IValidator<NewProductTypeVm>, NewProductTypeValidator>();
             serviceDescriptors.AddTransient<IValidator<UpdateProductVm>, UpdateProductValidator>();
             serviceDescriptors.AddTransient<IValidator<AddContactDetailTypeVm>, AddContactDetailTypeValidator>();
+            serviceDescriptors.AddTransient<IValidator<UpdateContactDetailTypeVm>, UpdateContactDetailTypeValidator>();
             serviceDescriptors.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             return serviceDescriptors;
