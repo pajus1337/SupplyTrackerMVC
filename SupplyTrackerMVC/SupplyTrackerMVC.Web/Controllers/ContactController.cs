@@ -83,8 +83,13 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet] 
         public async Task<IActionResult> ViewContactTypeDetails(int contactTypeId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-        }
+            var serviceResponse = await _contactService.GetContactDetailTypeAsync(contactTypeId, cancellationToken);
 
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
+        }
     }
 }
