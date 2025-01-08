@@ -71,12 +71,23 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteContactType(int ContactTypeId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var serviceResponse = await _contactService.GetContactTypeForDeleteAsync(ContactTypeId, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteContactType(CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteContactType(ContactDetailTypeForDeleteVm model, CancellationToken cancellationToken)
         {
+            var serviceResponse = await _contactService.DeleteContactDetailTypeAsync(model.Id, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            } 
+            // TODO : Confirmation Page <Maybe generic?> 
             throw new NotImplementedException();
         }
 

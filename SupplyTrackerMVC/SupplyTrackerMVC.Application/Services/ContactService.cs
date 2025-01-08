@@ -132,6 +132,13 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
+
+        // TODO: Create Implementation.
+        public Task<ServiceResponse<ContactDetailTypeForDeleteVm>> GetContactTypeForDeleteAsync(int contactDetailTypeId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ServiceResponse<ContactDetailTypeVm>> UpdateContactDetailTypeAsync(UpdateContactDetailTypeVm updateContactDetailTypeVm, CancellationToken cancellationToken)
         {
             if (updateContactDetailTypeVm == null)
