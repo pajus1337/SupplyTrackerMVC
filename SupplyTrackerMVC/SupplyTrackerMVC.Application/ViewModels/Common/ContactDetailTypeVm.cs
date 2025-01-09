@@ -16,7 +16,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<ContactDetailTypeVm, ContactDetailType>();
+            profile.CreateMap<ContactDetailType, ContactDetailTypeVm>();
         }
     }
 }

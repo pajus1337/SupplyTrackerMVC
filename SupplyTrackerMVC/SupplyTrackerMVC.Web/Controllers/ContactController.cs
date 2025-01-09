@@ -71,7 +71,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteContactType(int ContactTypeId, CancellationToken cancellationToken)
         {
-            var serviceResponse = await _contactService.GetContactTypeForDeleteAsync(ContactTypeId, cancellationToken);
+            var serviceResponse = await _contactService.GetContactDetailTypeForDeleteAsync(ContactTypeId, cancellationToken);
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);

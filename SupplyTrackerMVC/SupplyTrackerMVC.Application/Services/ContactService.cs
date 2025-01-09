@@ -1,19 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.Common;
-using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Contacts;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.Services
 {
@@ -134,9 +126,29 @@ namespace SupplyTrackerMVC.Application.Services
 
 
         // TODO: Create Implementation.
-        public Task<ServiceResponse<ContactDetailTypeForDeleteVm>> GetContactTypeForDeleteAsync(int contactDetailTypeId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ContactDetailTypeForDeleteVm>> GetContactDetailTypeForDeleteAsync(int contactDetailTypeId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+
+            if (contactDetailTypeId <= 0)
+            {
+                return ServiceResponse<ContactDetailTypeForDeleteVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
+            }
+
+            var contactDetailTypeQuery = _contactRepository.GetContactDetailTypeById(contactDetailTypeId).ProjectTo<ContactDetailTypeForDeleteVm>(_mapper.ConfigurationProvider);
+            try
+            {
+                var contactDetailTypeVm = await contactDetailTypeQuery.SingleOrDefaultAsync(cancellationToken);
+                if (contactDetailTypeVm == null)
+                {
+                    return ServiceResponse<ContactDetailTypeForDeleteVm>.CreateFailed(new string[] { "Contact detail type not found in Db" });
+                }
+
+                return ServiceResponse<ContactDetailTypeForDeleteVm>.CreateSuccess(contactDetailTypeVm);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<ContactDetailTypeForDeleteVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
 
         public async Task<ServiceResponse<ContactDetailTypeVm>> UpdateContactDetailTypeAsync(UpdateContactDetailTypeVm updateContactDetailTypeVm, CancellationToken cancellationToken)
