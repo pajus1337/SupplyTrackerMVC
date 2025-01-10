@@ -6,6 +6,7 @@ using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Contacts;
+using SupplyTrackerMVC.Domain.Model.Senders;
 
 namespace SupplyTrackerMVC.Application.Services
 {
@@ -49,7 +50,13 @@ namespace SupplyTrackerMVC.Application.Services
 
         public Task<ServiceResponse<VoidValue>> DeleteContactDetailTypeAsync(int contactTypeId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var success = await _contactRepository.DeleteContactDetailTypeAsync(contactTypeId, cancellationToken);
+            if (!success)
+            {
+                // TODO: Complet the implementaton of whole metod
+            }
+
+            return ServiceResponse<VoidValue>.CreateSuccess(new VoidValue(),null,null);
         }
 
         public async Task<ServiceResponse<ContactDetailTypeVm>> GetContactDetailTypeAsync(int contactDetailTypeId, CancellationToken cancellationToken)
