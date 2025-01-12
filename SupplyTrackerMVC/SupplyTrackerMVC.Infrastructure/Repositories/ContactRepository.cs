@@ -108,9 +108,18 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        // TODO: Refine?
         public async Task<bool> DeleteContactDetailTypeAsync(int contactDetailTypeId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var contactDetailType = await _context.ContactDetailTypes.FindAsync(contactDetailTypeId, cancellationToken);
+            if (contactDetailType == null)
+            {
+                return false;
+            }
+
+            _context.ContactDetailTypes.Remove(contactDetailType);
+            await _context.SaveChangesAsync(cancellationToken);
+            return true;
         }
     }
 }

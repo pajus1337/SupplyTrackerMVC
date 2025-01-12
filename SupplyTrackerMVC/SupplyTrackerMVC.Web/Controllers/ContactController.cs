@@ -65,7 +65,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             {
                 return HandleErrors(serviceResponse, model);
             }
-            return View(serviceResponse.Data);
+            return RedirectToAction("ViewContactTypeDetails", new { contactTypeId = model.Id });
         }
 
         [HttpGet]
@@ -86,9 +86,11 @@ namespace SupplyTrackerMVC.Web.Controllers
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);
-            } 
-            // TODO : Confirmation Page <Maybe generic?> 
-            throw new NotImplementedException();
+            }
+
+            ViewBag.ReturnUrl = Url.Action("ViewContactTypesList");
+            ViewBag.Message = $"Contact type with ID {model.Id} has been successfully deleted";
+            return View("GenericConfirmation");
         }
 
         [HttpGet] 

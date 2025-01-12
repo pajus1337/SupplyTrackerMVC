@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Confirmation";
+}
+<h1>Confirmation</h1>
+<p>@ViewBag.Message</p>
+
+@if (!string.IsNullOrEmpty(ViewBag.ReturnUrl))
+{
+    <a href="@ViewBag.ReturnUrl">Go back to the previous page</a>
+}
+else
+{
+    <a asp-action="Index" asp-controller="Home">Go back to the homepage</a>
+}

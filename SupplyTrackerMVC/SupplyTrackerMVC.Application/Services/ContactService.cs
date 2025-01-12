@@ -48,12 +48,12 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public Task<ServiceResponse<VoidValue>> DeleteContactDetailTypeAsync(int contactTypeId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<VoidValue>> DeleteContactDetailTypeAsync(int contactTypeId, CancellationToken cancellationToken)
         {
             var success = await _contactRepository.DeleteContactDetailTypeAsync(contactTypeId, cancellationToken);
             if (!success)
             {
-                // TODO: Complet the implementaton of whole metod
+                // TODO: Complete the implementation of whole function
             }
 
             return ServiceResponse<VoidValue>.CreateSuccess(new VoidValue(),null,null);
