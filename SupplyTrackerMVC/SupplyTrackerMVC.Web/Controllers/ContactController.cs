@@ -43,7 +43,10 @@ namespace SupplyTrackerMVC.Web.Controllers
             {
                 return HandleErrors(serviceResponse);
             }
-            return View(serviceResponse.Data);
+
+            ViewBag.ReturnUrl = Url.Action("ViewContactTypesList");
+            ViewBag.Message = $"Contact type with ID {serviceResponse.ObjectId} has been successfully created";
+            return View("GenericConfirmation");
         }
 
         [HttpGet]
