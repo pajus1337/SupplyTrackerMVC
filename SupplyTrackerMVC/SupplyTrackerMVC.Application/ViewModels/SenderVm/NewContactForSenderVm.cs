@@ -22,6 +22,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
                 RuleFor(x => x.FirstName).MinimumLength(2).MaximumLength(100);
                 RuleFor(x => x.LastName).MinimumLength(2).MaximumLength(100);
                 RuleFor(x => x.Role).MinimumLength(2).MaximumLength(100);
+                RuleFor(x => x.ContactDetails).NotEmpty();
             }
         }
     }

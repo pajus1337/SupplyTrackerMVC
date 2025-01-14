@@ -194,5 +194,32 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<ContactDetailTypeVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
+
+        // TODO: Make manual test - Open.
+        public async Task<ServiceResponse<ContactDetailsVm>> GetContactDetailsAsync(int contactId, CancellationToken cancellationToken)
+        {
+            if (contactId <= 0)
+            {
+                return ServiceResponse<ContactDetailsVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
+            }
+
+            try
+            {
+                var contactDetailsQuery = _contactRepository.GetContactById(contactId);
+                var contactDetails = await contactDetailsQuery.ProjectTo<ContactDetailsVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
+                
+                if (contactDetails == null)
+                {
+                    return ServiceResponse<ContactDetailsVm>.CreateFailed(new[] { "Contact not found" });
+                }
+
+                return ServiceResponse<ContactDetailsVm>.CreateSuccess(contactDetails);
+
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<ContactDetailsVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+            }
+        }
     }
 }
