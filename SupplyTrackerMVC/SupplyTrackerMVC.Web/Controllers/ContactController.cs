@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Serialization;
 using SupplyTrackerMVC.Application.Interfaces;
+using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.Services;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 using System.Threading;
@@ -100,6 +101,19 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> ViewContactTypeDetails(int contactTypeId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _contactService.GetContactDetailTypeAsync(contactTypeId, cancellationToken);
+
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
+        }
+
+        // TODO: Create Prototype, test and refine at end this function.
+        [HttpGet]
+        public async Task<IActionResult> ViewContactDetails(int Id, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _contactService.GetContactDetailsAsync(Id, cancellationToken);
 
             if (!serviceResponse.Success)
             {

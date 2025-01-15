@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Infrastructure.Repositories
@@ -120,6 +121,14 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context.ContactDetailTypes.Remove(contactDetailType);
             await _context.SaveChangesAsync(cancellationToken);
             return true;
+        }
+
+
+        // TODO: Less complex logic ?
+        public IQueryable<ContactDetail> GetContactDetailsById(int contactDetailsId)
+        {
+            var contactDetailQuery = _context.ContactDetails.Where(p => p.Id == contactDetailsId);
+            return contactDetailQuery;
         }
     }
 }

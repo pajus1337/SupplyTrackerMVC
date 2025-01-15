@@ -205,7 +205,7 @@ namespace SupplyTrackerMVC.Application.Services
 
             try
             {
-                var contactDetailsQuery = _contactRepository.GetContactById(contactId);
+                var contactDetailsQuery = _contactRepository.GetContactDetailsById(contactId);
                 var contactDetails = await contactDetailsQuery.ProjectTo<ContactDetailsVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
                 
                 if (contactDetails == null)
