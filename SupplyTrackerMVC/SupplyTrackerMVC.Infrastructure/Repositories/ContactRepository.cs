@@ -43,7 +43,8 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
         public IQueryable<Contact> GetContactById(int contactId)
         {
-            throw new NotImplementedException();
+            var contactQuery = _context.Contacts.Where(p => p.Id == contactId);
+            return contactQuery;
         }
 
         public async Task<(int ContactTypeId, bool Success)> AddContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken)
@@ -124,7 +125,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         }
 
 
-        // TODO: Less complex logic ?
+        // TODO: Less complex logic ? -> Replace with GetContact? 
         public IQueryable<ContactDetail> GetContactDetailsById(int contactDetailsId)
         {
             var contactDetailQuery = _context.ContactDetails.Where(p => p.Id == contactDetailsId);

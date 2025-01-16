@@ -195,7 +195,7 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        // TODO: Make manual test - Open.
+        // TODO: Make manual test - Open. - Rename ? and call Contact not contactDetails  but mapp obj into ContactDetails with includ ? ? 
         public async Task<ServiceResponse<ContactDetailsVm>> GetContactDetailsAsync(int contactId, CancellationToken cancellationToken)
         {
             if (contactId <= 0)
@@ -205,7 +205,7 @@ namespace SupplyTrackerMVC.Application.Services
 
             try
             {
-                var contactDetailsQuery = _contactRepository.GetContactDetailsById(contactId);
+                var contactDetailsQuery = _contactRepository.GetContactById(contactId);
                 var contactDetails = await contactDetailsQuery.ProjectTo<ContactDetailsVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
                 
                 if (contactDetails == null)
