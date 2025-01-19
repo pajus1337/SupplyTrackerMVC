@@ -70,28 +70,10 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
         public async Task<bool> UpdateContactDetailTypeAsync(ContactDetailType contactTypeDetail, CancellationToken cancellationToken)
         {
-            if (contactTypeDetail == null)
-            {
-                throw new InvalidOperationException($"Didn't Received the object to update");
-            }
+            _context.ContactDetailTypes.Update(contactTypeDetail);
+            await _context.SaveChangesAsync(cancellationToken);
 
-            try
-            {
-                _context.ContactDetailTypes.Update(contactTypeDetail);
-                int success = await SaveChangesAsync(cancellationToken);
-                if (success <= 0)
-                {
-                    throw new InvalidOperationException($"Failed to update contact type with ID {contactTypeDetail.Id}");
-                }
-
-                return true;
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return true;
         }
 
         public IQueryable<ContactDetailType> GetContactDetailTypes() => _context.ContactDetailTypes;
@@ -124,12 +106,18 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             return true;
         }
 
-
-        // TODO: Less complex logic ? -> Replace with GetContact? 
         public IQueryable<ContactDetail> GetContactDetailsById(int contactDetailsId)
         {
             var contactDetailQuery = _context.ContactDetails.Where(p => p.Id == contactDetailsId);
             return contactDetailQuery;
+        }
+
+        public async Task<bool> UpdateContactAsync(Contact contact, CancellationToken cancellationToken)
+        {
+            _context.Contacts.Update(contact);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return true;
         }
     }
 }

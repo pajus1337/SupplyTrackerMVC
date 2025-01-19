@@ -10,15 +10,16 @@ namespace SupplyTrackerMVC.Domain.Interfaces
     public interface IContactRepository
     {
         Task<(int ContactId, bool Success)> AddContactAsync(Contact contact, CancellationToken cancellationToken);
-        Task<(int ContactTypeId, bool Success)> AddContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken);
+        Task<bool> UpdateContactAsync(Contact contact, CancellationToken cancellationToken);
         Task<bool> DeleteAddressAsync(int contactId, CancellationToken cancellationToken);
         Task<bool> UpdateAddressAsync(Contact contact, CancellationToken cancellationToken);
         IQueryable<Contact> GetContactById(int contactId);
         IQueryable<ContactDetailType> GetContactDetailTypes();
         IQueryable<ContactDetailType> GetContactDetailTypeById(int contactDetailTypeId);
         IQueryable<ContactDetail> GetContactDetailsById(int contactDetailsId);
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        Task<(int ContactTypeId, bool Success)> AddContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken);
         Task<bool> UpdateContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken);
         Task<bool> DeleteContactDetailTypeAsync(int contactDetailTypeId, CancellationToken cancellationToken);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

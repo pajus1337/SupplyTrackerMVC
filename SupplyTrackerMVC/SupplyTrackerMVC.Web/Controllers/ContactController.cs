@@ -111,9 +111,9 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         // TODO: Create Prototype, test and refine at end this function.
         [HttpGet]
-        public async Task<IActionResult> ViewContactDetails(int Id, CancellationToken cancellationToken)
+        public async Task<IActionResult> ViewContact(int Id, CancellationToken cancellationToken)
         {
-            var serviceResponse = await _contactService.GetContactDetailsAsync(Id, cancellationToken);
+            var serviceResponse = await _contactService.GetContactAsync(Id, cancellationToken);
 
             if (!serviceResponse.Success)
             {
@@ -123,9 +123,21 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UpdateContactDetails(int contactId, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateContact(int contactId, CancellationToken cancellationToken)
         {
-            var serviceResponse = await _contactService.GetContactDetailsForUpdateAsync (contactId, cancellationToken);
+            var serviceResponse = await _contactService.GetContactForUpdateAsync (contactId, cancellationToken);
+
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateContact(UpdateContactVm model, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _contactService.UpdateContactAsync(model, cancellationToken);
 
             if (!serviceResponse.Success)
             {

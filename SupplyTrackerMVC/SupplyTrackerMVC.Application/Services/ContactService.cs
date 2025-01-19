@@ -135,7 +135,6 @@ namespace SupplyTrackerMVC.Application.Services
         // TODO: Create Implementation.
         public async Task<ServiceResponse<ContactDetailTypeForDeleteVm>> GetContactDetailTypeForDeleteAsync(int contactDetailTypeId, CancellationToken cancellationToken)
         {
-
             if (contactDetailTypeId <= 0)
             {
                 return ServiceResponse<ContactDetailTypeForDeleteVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
@@ -195,30 +194,94 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        // TODO: Make manual test - Open. - Rename ? and call Contact not contactDetails  but mapp obj into ContactDetails with includ ? ? 
-        public async Task<ServiceResponse<ContactPersonVm>> GetContactDetailsAsync(int contactId, CancellationToken cancellationToken)
+        // TODO: Make manual test - Open. - Rename ? and call Contact not contact  but mapp obj into ContactDetails with includ ? ? 
+        public async Task<ServiceResponse<ContactVm>> GetContactAsync(int contactId, CancellationToken cancellationToken)
         {
             if (contactId <= 0)
             {
-                return ServiceResponse<ContactPersonVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
+                return ServiceResponse<ContactVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
             }
 
             try
             {
                 var contactDetailsQuery = _contactRepository.GetContactById(contactId);
-                var contactDetails = await contactDetailsQuery.ProjectTo<ContactPersonVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
+                var contactDetails = await contactDetailsQuery.ProjectTo<ContactVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
                 
                 if (contactDetails == null)
                 {
-                    return ServiceResponse<ContactPersonVm>.CreateFailed(new[] { "Contact not found" });
+                    return ServiceResponse<ContactVm>.CreateFailed(new[] { "Contact not found" });
                 }
 
-                return ServiceResponse<ContactPersonVm>.CreateSuccess(contactDetails);
+                return ServiceResponse<ContactVm>.CreateSuccess(contactDetails);
 
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ContactPersonVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+                return ServiceResponse<ContactVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+            }
+        }
+
+        public async Task<ServiceResponse<UpdateContactVm>> GetContactForUpdateAsync(int contactId, CancellationToken cancellationToken)
+        {
+            if (contactId <= 0)
+            {
+                return ServiceResponse<UpdateContactVm>.CreateFailed(new string[] { "Invalid contact ID" });
+            }
+
+            try
+            {
+                var contactQuery = _contactRepository.GetContactById(contactId);
+                var contact = await contactQuery.ProjectTo<UpdateContactVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
+
+                if (contact == null)
+                {
+                    return ServiceResponse<UpdateContactVm>.CreateFailed(new[] { "Contact not found" });
+                }
+
+                return ServiceResponse<UpdateContactVm>.CreateSuccess(contact);
+
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<UpdateContactVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+            }
+        }
+
+        public async Task<ServiceResponse<ContactVm>> UpdateContactAsync(UpdateContactVm model, CancellationToken cancellationToken)
+        {
+            if (model == null)
+            {
+                return ServiceResponse<ContactVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
+            }
+
+            try
+            {
+                var validator = _validatorFactory.GetValidator<UpdateContactVm>();
+                var validationResult = await validator.ValidateAsync(model, cancellationToken);
+                if (!validationResult.IsValid)
+                {
+                    return ServiceResponse<ContactVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
+                }
+
+                var contact = _mapper.Map<Contact>(model);
+                var success = await _contactRepository.UpdateContactAsync(contact, cancellationToken);
+                if (!success)
+                {
+                    return ServiceResponse<ContactVm>.CreateFailed(new string[] { "Failed to update contact" });
+                }
+
+                var response = await GetContactAsync(contact.Id, cancellationToken);
+                if (!response.Success)
+                {
+                    return ServiceResponse<ContactVm>.CreateFailed(new string[] { "Contact found in DB after update" });
+                }
+
+                return ServiceResponse<ContactVm>.CreateSuccess(response.Data);
+            }
+
+            catch (Exception ex)
+            {
+                return ServiceResponse<ContactVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
     }

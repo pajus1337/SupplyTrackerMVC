@@ -214,7 +214,7 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public Task<ServiceResponse<ContactPersonVm>> UpdateSenderContactAsync(UpdateContactVm updateContactVm, CancellationToken cancellationToken)
+        public Task<ServiceResponse<ContactVm>> UpdateSenderContactAsync(UpdateContactVm updateContactVm, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

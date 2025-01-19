@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class AddressDetailsVm : IMapFrom<Address>
+    public class AddressVm : IMapFrom<Address>
     {
         public int Id { get; set; }
         public string Street { get; set; }
@@ -21,7 +21,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Address, AddressDetailsVm>();
+            profile.CreateMap<Address, AddressVm>();
         }
     }
 }

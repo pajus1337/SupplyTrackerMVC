@@ -15,7 +15,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Address, AddressDetailsVm>().ReverseMap();
+            profile.CreateMap<Address, AddressVm>().ReverseMap();
         }
 
         public class UpdateAddressDetailsValidator : AbstractValidator<UpdateAddressDetailsVm>

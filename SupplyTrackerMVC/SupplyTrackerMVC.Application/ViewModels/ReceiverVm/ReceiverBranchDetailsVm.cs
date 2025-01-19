@@ -19,10 +19,10 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
         public string BranchAlias { get; set; }
 
         public int AddressId { get; set; }
-        public AddressDetailsVm AddressDetails { get; set; }
+        public AddressVm AddressDetails { get; set; }
 
         public int ContactId { get; set; }
-        public ContactPersonVm ContactDetails { get; set; }
+        public ContactVm ContactDetails { get; set; }
         public int ReceiverId { get; set; }
         public ReceiverDetailsForRbVm ReceiverDetails { get; set; }
 
