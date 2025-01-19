@@ -121,5 +121,17 @@ namespace SupplyTrackerMVC.Web.Controllers
             }
             return View(serviceResponse.Data);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateContactDetails(int contactId, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _contactService.GetContactDetailsForUpdateAsync (contactId, cancellationToken);
+
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
+        }
     }
 }

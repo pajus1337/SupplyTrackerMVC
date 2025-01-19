@@ -22,7 +22,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
         public AddressDetailsVm AddressDetails { get; set; }
 
         public int ContactId { get; set; }
-        public ContactDetailsVm ContactDetails { get; set; }
+        public ContactPersonVm ContactDetails { get; set; }
         public int ReceiverId { get; set; }
         public ReceiverDetailsForRbVm ReceiverDetails { get; set; }
 

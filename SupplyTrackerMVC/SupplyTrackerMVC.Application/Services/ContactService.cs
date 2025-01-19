@@ -196,29 +196,29 @@ namespace SupplyTrackerMVC.Application.Services
         }
 
         // TODO: Make manual test - Open. - Rename ? and call Contact not contactDetails  but mapp obj into ContactDetails with includ ? ? 
-        public async Task<ServiceResponse<ContactDetailsVm>> GetContactDetailsAsync(int contactId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ContactPersonVm>> GetContactDetailsAsync(int contactId, CancellationToken cancellationToken)
         {
             if (contactId <= 0)
             {
-                return ServiceResponse<ContactDetailsVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
+                return ServiceResponse<ContactPersonVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
             }
 
             try
             {
                 var contactDetailsQuery = _contactRepository.GetContactById(contactId);
-                var contactDetails = await contactDetailsQuery.ProjectTo<ContactDetailsVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
+                var contactDetails = await contactDetailsQuery.ProjectTo<ContactPersonVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
                 
                 if (contactDetails == null)
                 {
-                    return ServiceResponse<ContactDetailsVm>.CreateFailed(new[] { "Contact not found" });
+                    return ServiceResponse<ContactPersonVm>.CreateFailed(new[] { "Contact not found" });
                 }
 
-                return ServiceResponse<ContactDetailsVm>.CreateSuccess(contactDetails);
+                return ServiceResponse<ContactPersonVm>.CreateSuccess(contactDetails);
 
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ContactDetailsVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+                return ServiceResponse<ContactPersonVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
             }
         }
     }

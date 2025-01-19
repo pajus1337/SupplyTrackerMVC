@@ -9,18 +9,20 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class ContactDetailsVm : IMapFrom<Contact>
+    public class ContactPersonVm : IMapFrom<Contact>
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Role { get; set; }
+        public string CompanyName { get; set; }
         public ICollection<ContactDetailVm> ContactDetails { get; set; }
 
         public void Mappig(Profile profile)
         {
-            profile.CreateMap<Contact, ContactDetailsVm>()
-                .ForMember(d => d.ContactDetails, opt => opt.MapFrom(s => s.ContactDetails));
+            profile.CreateMap<Contact, ContactPersonVm>()
+                .ForMember(d => d.ContactDetails, opt => opt.MapFrom(s => s.ContactDetails))
+                .ForMember(d => d.CompanyName, opt => opt.MapFrom(s => s.Sender.Name ?? s.Receiver.Name) );
         }
     }
 }
