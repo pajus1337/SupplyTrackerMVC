@@ -145,5 +145,33 @@ namespace SupplyTrackerMVC.Web.Controllers
             }
             return View(serviceResponse.Data);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateContactDetail(int contactId, CancellationToken cancellationToken)
+        {
+            // TODO: Create new model and get data to fill if for edit.
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateContactDetail(ContactDetailVm model, CancellationToken cancellationToke)
+        {
+            // TODO: Create implementation 
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
+       public async Task<IActionResult> DeleteContactDetail(int contactDetailId, CancellationToken cancellationToken)
+        {
+            // TODO: Get Contact Detail model for delete.
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteContactDetail(ContactDetailVm model, CancellationToken cancellationToken)
+        {
+            // TODO: Create implementation 
+            throw new NotImplementedException();
+        }
     }
 }

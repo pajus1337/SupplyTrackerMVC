@@ -20,5 +20,8 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<ServiceResponse<ContactVm>> GetContactAsync(int contactId, CancellationToken cancellationToken);
         Task<ServiceResponse<UpdateContactVm>> GetContactForUpdateAsync(int contactId, CancellationToken cancellationToken);
         Task<ServiceResponse<ContactVm>> UpdateContactAsync(UpdateContactVm model, CancellationToken cancellationToken);
+        Task<ServiceResponse<VoidValue>> GetContactDetailAsync(int contactDetailId, CancellationToken cancellationToken);
+        Task<ServiceResponse<VoidValue>> UpdateContactDetailAsync(UpdateContactDetailVm model, CancellationToken cancellationToken);
+        Task<ServiceResponse<VoidValue>> DeleteContactDetailAsync(int contactDetailId, CancellationToken cancellationToken);
     }
 }
