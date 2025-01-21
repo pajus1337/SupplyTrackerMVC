@@ -284,5 +284,41 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<ContactVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
+
+        public async Task<ServiceResponse<ContactDetailVm>> GetContactDetailAsync(int contactDetailId, CancellationToken cancellationToken)
+        {
+            if (contactDetailId <= 0)
+            {
+                return ServiceResponse<ContactDetailVm>.CreateFailed(new string[] { "Invalid contact detail ID" });
+            }
+
+            try
+            {
+                var query = _contactRepository.GetContactDetailById(contactDetailId);
+                var contactDetail = await query.ProjectTo<ContactDetailVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
+
+                if (contactDetail == null)
+                {
+                    return ServiceResponse<ContactDetailVm>.CreateFailed(new[] { "Contact not found" });
+                }
+
+                return ServiceResponse<ContactDetailVm>.CreateSuccess(contactDetail);
+
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<ContactDetailVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+            }
+        }
+
+        public Task<ServiceResponse<VoidValue>> UpdateContactDetailAsync(UpdateContactDetailVm model, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ServiceResponse<VoidValue>> DeleteContactDetailAsync(int contactDetailId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

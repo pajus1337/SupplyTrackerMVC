@@ -26,6 +26,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             {
                 return HandleErrors(serviceResponse);
             }
+
             return View(serviceResponse.Data);
         }
 
@@ -47,6 +48,7 @@ namespace SupplyTrackerMVC.Web.Controllers
 
             ViewBag.ReturnUrl = Url.Action("ViewContactTypesList");
             ViewBag.Message = $"Contact type with ID {serviceResponse.ObjectId} has been successfully created";
+
             return View("GenericConfirmation");
         }
 
@@ -54,10 +56,12 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> UpdateContactType(int contactTypeId, CancellationToken cancellationToken)
         {
             var serviceResponse =  await _contactService.GetContactDetailTypeForEditAsync(contactTypeId,cancellationToken);
+
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);
             }
+
             return View(serviceResponse.Data);
         }
 
@@ -65,10 +69,12 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> UpdateContactType(UpdateContactDetailTypeVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _contactService.UpdateContactDetailTypeAsync(model, cancellationToken);
+
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse, model);
             }
+
             return RedirectToAction("ViewContactTypeDetails", new { contactTypeId = model.Id });
         }
 
@@ -76,10 +82,12 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> DeleteContactType(int ContactTypeId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _contactService.GetContactDetailTypeForDeleteAsync(ContactTypeId, cancellationToken);
+
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);
             }
+
             return View(serviceResponse.Data);
         }
 
@@ -87,6 +95,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> DeleteContactType(ContactDetailTypeForDeleteVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _contactService.DeleteContactDetailTypeAsync(model.Id, cancellationToken);
+
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);
@@ -94,6 +103,7 @@ namespace SupplyTrackerMVC.Web.Controllers
 
             ViewBag.ReturnUrl = Url.Action("ViewContactTypesList");
             ViewBag.Message = $"Contact type with ID {model.Id} has been successfully deleted";
+
             return View("GenericConfirmation");
         }
 
@@ -106,6 +116,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             {
                 return HandleErrors(serviceResponse);
             }
+
             return View(serviceResponse.Data);
         }
 
@@ -119,6 +130,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             {
                 return HandleErrors(serviceResponse);
             }
+
             return View(serviceResponse.Data);
         }
 
@@ -131,6 +143,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             {
                 return HandleErrors(serviceResponse);
             }
+
             return View(serviceResponse.Data);
         }
 
@@ -143,14 +156,21 @@ namespace SupplyTrackerMVC.Web.Controllers
             {
                 return HandleErrors(serviceResponse);
             }
+
             return View(serviceResponse.Data);
         }
 
         [HttpGet]
-        public async Task<IActionResult> UpdateContactDetail(int contactId, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateContactDetail(int contactDetailId, CancellationToken cancellationToken)
         {
-            // TODO: Create new model and get data to fill if for edit.
-            throw new NotImplementedException();
+            var serviceResponse = await _contactService.GetContactDetailAsync(contactDetailId, cancellationToken);
+
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            return View(serviceResponse.Data);
         }
 
         [HttpPost]

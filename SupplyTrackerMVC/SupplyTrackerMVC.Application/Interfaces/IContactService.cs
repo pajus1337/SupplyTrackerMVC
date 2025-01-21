@@ -1,5 +1,6 @@
 ﻿using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.Common;
+using SupplyTrackerMVC.Domain.Model.Contacts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<ServiceResponse<ContactVm>> GetContactAsync(int contactId, CancellationToken cancellationToken);
         Task<ServiceResponse<UpdateContactVm>> GetContactForUpdateAsync(int contactId, CancellationToken cancellationToken);
         Task<ServiceResponse<ContactVm>> UpdateContactAsync(UpdateContactVm model, CancellationToken cancellationToken);
-        Task<ServiceResponse<VoidValue>> GetContactDetailAsync(int contactDetailId, CancellationToken cancellationToken);
+        Task<ServiceResponse<ContactDetailVm>> GetContactDetailAsync(int contactDetailId, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> UpdateContactDetailAsync(UpdateContactDetailVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> DeleteContactDetailAsync(int contactDetailId, CancellationToken cancellationToken);
     }

@@ -71,7 +71,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             return true;
         }
 
-        public IQueryable<ContactDetail> GetContactDetailsById(int contactDetailsId)
+        public IQueryable<ContactDetail> GetContactDetailById(int contactDetailsId)
         {
             var contactDetailQuery = _context.ContactDetails.Where(p => p.Id == contactDetailsId);
             return contactDetailQuery;

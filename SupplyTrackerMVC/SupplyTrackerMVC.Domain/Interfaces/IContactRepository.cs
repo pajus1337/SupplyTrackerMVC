@@ -14,7 +14,7 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         IQueryable<Contact> GetContactById(int contactId);
         IQueryable<ContactDetailType> GetContactDetailTypes();
         IQueryable<ContactDetailType> GetContactDetailTypeById(int contactDetailTypeId);
-        IQueryable<ContactDetail> GetContactDetailsById(int contactDetailsId);
+        IQueryable<ContactDetail> GetContactDetailById(int contactDetailsId);
         Task<(int ContactTypeId, bool Success)> AddContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken);
         Task<bool> UpdateContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken);
         Task<bool> DeleteContactDetailTypeAsync(int contactDetailTypeId, CancellationToken cancellationToken);
