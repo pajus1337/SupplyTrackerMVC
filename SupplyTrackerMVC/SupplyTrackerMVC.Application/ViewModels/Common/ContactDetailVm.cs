@@ -11,6 +11,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
     public class ContactDetailVm : IMapFrom<ContactDetail>
     {
+        public int Id { get; set; }
         public string ContactDetailTypeName { get; set; }
         public string ContactDetailValue { get; set; }
 

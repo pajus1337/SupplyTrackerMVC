@@ -56,7 +56,7 @@ namespace SupplyTrackerMVC.Application.Services
                 // TODO: Complete the implementation of whole function
             }
 
-            return ServiceResponse<VoidValue>.CreateSuccess(new VoidValue(),null,null);
+            return ServiceResponse<VoidValue>.CreateSuccess(new VoidValue(), null, null);
         }
 
         public async Task<ServiceResponse<ContactDetailTypeVm>> GetContactDetailTypeAsync(int contactDetailTypeId, CancellationToken cancellationToken)
@@ -206,7 +206,7 @@ namespace SupplyTrackerMVC.Application.Services
             {
                 var contactDetailsQuery = _contactRepository.GetContactById(contactId);
                 var contactDetails = await contactDetailsQuery.ProjectTo<ContactVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
-                
+
                 if (contactDetails == null)
                 {
                     return ServiceResponse<ContactVm>.CreateFailed(new[] { "Contact not found" });
@@ -319,6 +319,33 @@ namespace SupplyTrackerMVC.Application.Services
         public Task<ServiceResponse<VoidValue>> DeleteContactDetailAsync(int contactDetailId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResponse<UpdateContactDetailVm>> GetContactDetailForUpdateAsync(int contactDetailId, CancellationToken cancellationToken)
+        {
+            // TODO: Check and if needed includ ContactDetail Types for selectList
+            if (contactDetailId <= 0)
+            {
+                return ServiceResponse<UpdateContactDetailVm>.CreateFailed(new string[] { "Invalid contact detail ID" });
+            }
+
+            try
+            {
+                var query = _contactRepository.GetContactDetailById(contactDetailId);
+                var contactDetail = await query.ProjectTo<UpdateContactDetailVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
+
+                if (contactDetail == null)
+                {
+                    return ServiceResponse<UpdateContactDetailVm>.CreateFailed(new[] { "Contact detail not found" });
+                }
+
+                return ServiceResponse<UpdateContactDetailVm>.CreateSuccess(contactDetail);
+
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<UpdateContactDetailVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+            }
         }
     }
 }

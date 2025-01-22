@@ -4,6 +4,7 @@ using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.Services;
 using SupplyTrackerMVC.Application.ViewModels.Common;
+using SupplyTrackerMVC.Domain.Model.Contacts;
 using System.Threading;
 
 namespace SupplyTrackerMVC.Web.Controllers
@@ -163,7 +164,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateContactDetail(int contactDetailId, CancellationToken cancellationToken)
         {
-            var serviceResponse = await _contactService.GetContactDetailAsync(contactDetailId, cancellationToken);
+            var serviceResponse = await _contactService.GetContactDetailForUpdateAsync(contactDetailId, cancellationToken);
 
             if (!serviceResponse.Success)
             {
@@ -174,10 +175,16 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateContactDetail(ContactDetailVm model, CancellationToken cancellationToke)
+        public async Task<IActionResult> UpdateContactDetail(UpdateContactDetailVm model, CancellationToken cancellationToke)
         {
-            // TODO: Create implementation 
-            throw new NotImplementedException();
+            var serviceResponse = await _contactService.UpdateContactDetailAsync(model, cancellationToke);
+
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            return View(serviceResponse.Data);
         }
 
         [HttpGet]
