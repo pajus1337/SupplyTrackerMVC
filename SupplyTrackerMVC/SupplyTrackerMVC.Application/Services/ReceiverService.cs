@@ -7,6 +7,7 @@ using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
+using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 
@@ -14,31 +15,31 @@ namespace SupplyTrackerMVC.Application.Services
 {
     public class ReceiverService : IReceiverService
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IFluentValidatorFactory _fluentValidatorFactory;
         private readonly IReceiverRepository _receiverRepository;
         private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
 
-        public ReceiverService(IReceiverRepository receiverRepository, IContactRepository contactRepository, IMapper mapper, IServiceProvider serviceProvider)
+        public ReceiverService(IReceiverRepository receiverRepository,IFluentValidatorFactory fluentValidatorFactory, IContactRepository contactRepository, IMapper mapper, IServiceProvider serviceProvider)
         {
             _receiverRepository = receiverRepository;
+            _fluentValidatorFactory = fluentValidatorFactory;
             _contactRepository = contactRepository;
             _mapper = mapper;
-            _serviceProvider = serviceProvider;
         }
 
         public async Task<ServiceResponse<VoidValue>> AddReceiverAsync(NewReceiverVm model, CancellationToken cancellationToken)
         {
-            var validator = _serviceProvider.GetService<IValidator<NewReceiverVm>>();
+            var validator = _fluentValidatorFactory.GetValidator<NewReceiverVm>();
             if (validator == null)
             {
                 throw new InvalidOperationException("Validator not found");
             }
 
-            var result = await validator.ValidateAsync(model);
-            if (!result.IsValid)
+            var validationResult = await validator.ValidateAsync(model, cancellationToken);
+            if (!validationResult.IsValid)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage));
+                return ServiceResponse<VoidValue>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
             }
 
             var receiver = _mapper.Map<Receiver>(model);
