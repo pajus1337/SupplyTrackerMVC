@@ -259,8 +259,8 @@ namespace SupplyTrackerMVC.Application.Services
                 }
 
                 var contact = _mapper.Map<Contact>(model);
-                var success = await _contactRepository.UpdateContactAsync(contact, cancellationToken);
-                if (!success)
+                var isSuccess = await _contactRepository.UpdateContactAsync(contact, cancellationToken);
+                if (!isSuccess)
                 {
                     return ServiceResponse<ContactVm>.CreateFailed(new string[] { "Failed to update contact" });
                 }
@@ -323,14 +323,14 @@ namespace SupplyTrackerMVC.Application.Services
             var contactDetail = _mapper.Map<ContactDetail>(model);
             try
             {
-                var contactDetailTypeId = await _contactRepository.UpdateContactDetailAsync(contactDetail, cancellationToken);
-
-                return ServiceResponse<AddContactDetailTypeVm>.CreateSuccess(null, contactDetailTypeId);
+                await _contactRepository.UpdateContactDetailAsync(contactDetail, cancellationToken);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<AddContactDetailTypeVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" }, false);
+                return ServiceResponse<VoidValue>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" }, false);
             }
+
+            return ServiceResponse<VoidValue>.CreateSuccess(null);
         }
 
         public Task<ServiceResponse<VoidValue>> DeleteContactDetailAsync(int contactDetailId, CancellationToken cancellationToken)

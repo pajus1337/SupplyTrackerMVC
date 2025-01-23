@@ -200,12 +200,8 @@ namespace SupplyTrackerMVC.Application.Services
                 // TODO: Testing part
               //  contact.ContactDetails =  new List<ContactDetail> { _mapper.Map<ContactDetail>(newContactVm.ContactDetailVm) };
                 // End Of testing
-                var (contactId, success) = await _contactRepository.AddContactAsync(contact, cancellationToken);
+                var contactId = await _contactRepository.AddContactAsync(contact, cancellationToken);
 
-                if (!success)
-                {
-                    return ServiceResponse<AddContactVm>.CreateFailed(new string[] { "Failed to save new contact in Db" });
-                }
                 return ServiceResponse<AddContactVm>.CreateSuccess(null, contactId);
             }
             catch (Exception ex)

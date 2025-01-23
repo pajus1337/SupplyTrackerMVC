@@ -23,12 +23,12 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<(int ContactId, bool Success)> AddContactAsync(Contact contact, CancellationToken cancellationToken)
+        public async Task<int> AddContactAsync(Contact contact, CancellationToken cancellationToken)
         {
             await _context.Contacts.AddAsync(contact, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return (contact.Id, true);
+            return contact.Id;
         }
 
 
@@ -38,12 +38,12 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             return contactQuery;
         }
 
-        public async Task<(int ContactTypeId, bool Success)> AddContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken)
+        public async Task<int> AddContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken)
         {
             await _context.ContactDetailTypes.AddAsync(contactDetailType, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return (contactDetailType.Id, true);
+            return contactDetailType.Id;
         }
 
         public IQueryable<ContactDetailType> GetContactDetailTypeById(int contactDetailTypeId) => _context.ContactDetailTypes.Where(p => p.Id == contactDetailTypeId);
@@ -51,9 +51,9 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         public async Task<bool> UpdateContactDetailTypeAsync(ContactDetailType contactTypeDetail, CancellationToken cancellationToken)
         {
             _context.ContactDetailTypes.Update(contactTypeDetail);
-            await _context.SaveChangesAsync(cancellationToken);
+            var result = await _context.SaveChangesAsync(cancellationToken);
 
-            return true;
+            return result > 0 ? true : false;
         }
 
         public IQueryable<ContactDetailType> GetContactDetailTypes() => _context.ContactDetailTypes;
@@ -80,9 +80,15 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         public async Task<bool> UpdateContactAsync(Contact contact, CancellationToken cancellationToken)
         {
             _context.Contacts.Update(contact);
-            await _context.SaveChangesAsync(cancellationToken);
+            var result = await _context.SaveChangesAsync(cancellationToken);
 
-            return true;
+            return result > 0 ? true : false;
+        }
+
+        public async Task UpdateContactDetailAsync(ContactDetail contactDetail, CancellationToken cancellationToken)
+        {
+            _context.ContactDetails.Update(contactDetail);
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }
