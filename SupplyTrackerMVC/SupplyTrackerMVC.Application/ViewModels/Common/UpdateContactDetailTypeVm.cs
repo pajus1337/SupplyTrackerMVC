@@ -21,6 +21,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
             profile.CreateMap<UpdateContactDetailTypeVm, ContactDetailType>().ReverseMap();
         }
     }
+
     public class UpdateContactDetailTypeValidator : AbstractValidator<UpdateContactDetailTypeVm>
     {
         public UpdateContactDetailTypeValidator()
@@ -29,6 +30,4 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
             RuleFor(x => x.Name).Length(0, 20);
         }
     }
-
-
 }

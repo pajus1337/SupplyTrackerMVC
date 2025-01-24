@@ -53,7 +53,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context.ContactDetailTypes.Update(contactTypeDetail);
             var result = await _context.SaveChangesAsync(cancellationToken);
 
-            return result > 0 ? true : false;
+            return result > 0;
         }
 
         public IQueryable<ContactDetailType> GetContactDetailTypes() => _context.ContactDetailTypes;
@@ -74,6 +74,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         public IQueryable<ContactDetail> GetContactDetailById(int contactDetailsId)
         {
             var contactDetailQuery = _context.ContactDetails.Where(p => p.Id == contactDetailsId);
+
             return contactDetailQuery;
         }
 
@@ -82,9 +83,11 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context.Contacts.Update(contact);
             var result = await _context.SaveChangesAsync(cancellationToken);
 
-            return result > 0 ? true : false;
+            return result > 0;
         }
 
+
+        //TODO : Implement logical return ? 
         public async Task UpdateContactDetailAsync(ContactDetail contactDetail, CancellationToken cancellationToken)
         {
             _context.ContactDetails.Update(contactDetail);

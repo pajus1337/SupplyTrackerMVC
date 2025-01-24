@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.Factories
 {
-    public class FluentValidatorFactory : Interfaces.IFluentValidatorFactory
+    public class FluentValidatorFactory : IFluentValidatorFactory
     {
         private readonly IServiceProvider _serviceProvider;
 

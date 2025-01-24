@@ -24,17 +24,18 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<AddContactDetailTypeVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
-            var validator = _validatorFactory.GetValidator<AddContactDetailTypeVm>();
-            var validationResult = await validator.ValidateAsync(model, cancellationToken);
-            if (!validationResult.IsValid)
-            {
-                return ServiceResponse<AddContactDetailTypeVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
-            }
-
-            var contactDetailType = _mapper.Map<ContactDetailType>(model);
             try
             {
+                var validator = _validatorFactory.GetValidator<AddContactDetailTypeVm>();
+                var validationResult = await validator.ValidateAsync(model, cancellationToken);
+                if (!validationResult.IsValid)
+                {
+                    return ServiceResponse<AddContactDetailTypeVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
+                }
+
+                var contactDetailType = _mapper.Map<ContactDetailType>(model);
                 var contactDetailTypeId = await _contactRepository.AddContactDetailTypeAsync(contactDetailType, cancellationToken);
+
                 return ServiceResponse<AddContactDetailTypeVm>.CreateSuccess(null, contactDetailTypeId);
             }
             catch (Exception ex)
@@ -46,6 +47,7 @@ namespace SupplyTrackerMVC.Application.Services
         public async Task<ServiceResponse<VoidValue>> DeleteContactDetailTypeAsync(int contactTypeId, CancellationToken cancellationToken)
         {
             var success = await _contactRepository.DeleteContactDetailTypeAsync(contactTypeId, cancellationToken);
+
             if (!success)
             {
                 // TODO: Complete the implementation of whole function
@@ -56,16 +58,15 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<ContactDetailTypeVm>> GetContactDetailTypeAsync(int contactDetailTypeId, CancellationToken cancellationToken)
         {
-            if (contactDetailTypeId <= 0)
+            if (contactDetailTypeId < 1)
             {
                 return ServiceResponse<ContactDetailTypeVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
             }
 
-            var contactDetailTypeQuery = _contactRepository.GetContactDetailTypeById(contactDetailTypeId).ProjectTo<ContactDetailTypeVm>(_mapper.ConfigurationProvider);
             try
             {
+                var contactDetailTypeQuery = _contactRepository.GetContactDetailTypeById(contactDetailTypeId).ProjectTo<ContactDetailTypeVm>(_mapper.ConfigurationProvider);
                 var contactDetailTypeVm = await contactDetailTypeQuery.SingleOrDefaultAsync(p => p.Id == contactDetailTypeId, cancellationToken);
-
                 if (contactDetailTypeVm == null)
                 {
                     return ServiceResponse<ContactDetailTypeVm>.CreateFailed(new string[] { "Contact detail type not found in Db" });
@@ -82,16 +83,15 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<UpdateContactDetailTypeVm>> GetContactDetailTypeForEditAsync(int contactDetailTypeId, CancellationToken cancellationToken)
         {
-            if (contactDetailTypeId <= 0)
+            if (contactDetailTypeId < 1)
             {
                 return ServiceResponse<UpdateContactDetailTypeVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
             }
 
-            var contactDetailTypeQuery = _contactRepository.GetContactDetailTypes().ProjectTo<UpdateContactDetailTypeVm>(_mapper.ConfigurationProvider);
             try
             {
+                var contactDetailTypeQuery = _contactRepository.GetContactDetailTypes().ProjectTo<UpdateContactDetailTypeVm>(_mapper.ConfigurationProvider);
                 var contactDetailTypeVm = await contactDetailTypeQuery.SingleOrDefaultAsync(p => p.Id == contactDetailTypeId, cancellationToken);
-
                 if (contactDetailTypeVm == null)
                 {
                     return ServiceResponse<UpdateContactDetailTypeVm>.CreateFailed(new string[] { "Contact detail type not found in Db" });
@@ -107,14 +107,12 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<ListContactDetailTypesForListVm>> GetContactDetailTypesForListAsync(CancellationToken cancellationToken)
         {
-            var contactTypesQuery = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForListVm>(_mapper.ConfigurationProvider);
-
             try
             {
+                var contactTypesQuery = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForListVm>(_mapper.ConfigurationProvider);
                 var contactTypes = await contactTypesQuery.ToListAsync(cancellationToken);
 
                 ListContactDetailTypesForListVm result = new ListContactDetailTypesForListVm();
-
                 result.ContactDetailTypes = contactTypes;
                 result.Count = result.ContactDetailTypes.Count;
 
@@ -126,18 +124,16 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-
-        // TODO: Create Implementation.
         public async Task<ServiceResponse<ContactDetailTypeForDeleteVm>> GetContactDetailTypeForDeleteAsync(int contactDetailTypeId, CancellationToken cancellationToken)
         {
-            if (contactDetailTypeId <= 0)
+            if (contactDetailTypeId < 1)
             {
                 return ServiceResponse<ContactDetailTypeForDeleteVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
             }
 
-            var contactDetailTypeQuery = _contactRepository.GetContactDetailTypeById(contactDetailTypeId).ProjectTo<ContactDetailTypeForDeleteVm>(_mapper.ConfigurationProvider);
             try
             {
+                var contactDetailTypeQuery = _contactRepository.GetContactDetailTypeById(contactDetailTypeId).ProjectTo<ContactDetailTypeForDeleteVm>(_mapper.ConfigurationProvider);
                 var contactDetailTypeVm = await contactDetailTypeQuery.SingleOrDefaultAsync(cancellationToken);
                 if (contactDetailTypeVm == null)
                 {
@@ -192,7 +188,7 @@ namespace SupplyTrackerMVC.Application.Services
         // TODO: Make manual test - Open. - Rename ? and call Contact not contact  but mapp obj into ContactDetails with includ ? ? 
         public async Task<ServiceResponse<ContactVm>> GetContactAsync(int contactId, CancellationToken cancellationToken)
         {
-            if (contactId <= 0)
+            if (contactId < 1)
             {
                 return ServiceResponse<ContactVm>.CreateFailed(new string[] { "Invalid contact detail type ID" });
             }
@@ -201,14 +197,12 @@ namespace SupplyTrackerMVC.Application.Services
             {
                 var contactDetailsQuery = _contactRepository.GetContactById(contactId);
                 var contactDetails = await contactDetailsQuery.ProjectTo<ContactVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
-
                 if (contactDetails == null)
                 {
                     return ServiceResponse<ContactVm>.CreateFailed(new[] { "Contact not found" });
                 }
 
                 return ServiceResponse<ContactVm>.CreateSuccess(contactDetails);
-
             }
             catch (Exception ex)
             {
@@ -218,7 +212,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<UpdateContactVm>> GetContactForUpdateAsync(int contactId, CancellationToken cancellationToken)
         {
-            if (contactId <= 0)
+            if (contactId < 1)
             {
                 return ServiceResponse<UpdateContactVm>.CreateFailed(new string[] { "Invalid contact ID" });
             }
@@ -227,7 +221,6 @@ namespace SupplyTrackerMVC.Application.Services
             {
                 var contactQuery = _contactRepository.GetContactById(contactId);
                 var contact = await contactQuery.ProjectTo<UpdateContactVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
-
                 if (contact == null)
                 {
                     return ServiceResponse<UpdateContactVm>.CreateFailed(new[] { "Contact not found" });
@@ -282,7 +275,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<ContactDetailVm>> GetContactDetailAsync(int contactDetailId, CancellationToken cancellationToken)
         {
-            if (contactDetailId <= 0)
+            if (contactDetailId < 1)
             {
                 return ServiceResponse<ContactDetailVm>.CreateFailed(new string[] { "Invalid contact detail ID" });
             }
@@ -291,7 +284,6 @@ namespace SupplyTrackerMVC.Application.Services
             {
                 var query = _contactRepository.GetContactDetailById(contactDetailId);
                 var contactDetail = await query.ProjectTo<ContactDetailVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
-
                 if (contactDetail == null)
                 {
                     return ServiceResponse<ContactDetailVm>.CreateFailed(new[] { "Contact not found" });
@@ -313,16 +305,16 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
-            var validator = _validatorFactory.GetValidator<UpdateContactDetailVm>();
-            var validationResult = await validator.ValidateAsync(model, cancellationToken);
-            if (!validationResult.IsValid)
-            {
-                return ServiceResponse<VoidValue>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
-            }
-
-            var contactDetail = _mapper.Map<ContactDetail>(model);
             try
             {
+                var validator = _validatorFactory.GetValidator<UpdateContactDetailVm>();
+                var validationResult = await validator.ValidateAsync(model, cancellationToken);
+                if (!validationResult.IsValid)
+                {
+                    return ServiceResponse<VoidValue>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
+                }
+
+                var contactDetail = _mapper.Map<ContactDetail>(model);
                 await _contactRepository.UpdateContactDetailAsync(contactDetail, cancellationToken);
             }
             catch (Exception ex)
@@ -340,8 +332,8 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<UpdateContactDetailVm>> GetContactDetailForUpdateAsync(int contactDetailId, CancellationToken cancellationToken)
         {
-            // TODO: Check and if needed includ ContactDetail Types for selectList
-            if (contactDetailId <= 0)
+            // TODO: Check and if needed include ContactDetail Types for selectList
+            if (contactDetailId < 1)
             {
                 return ServiceResponse<UpdateContactDetailVm>.CreateFailed(new string[] { "Invalid contact detail ID" });
             }
@@ -350,7 +342,6 @@ namespace SupplyTrackerMVC.Application.Services
             {
                 var query = _contactRepository.GetContactDetailById(contactDetailId);
                 var contactDetail = await query.ProjectTo<UpdateContactDetailVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
-
                 if (contactDetail == null)
                 {
                     return ServiceResponse<UpdateContactDetailVm>.CreateFailed(new[] { "Contact detail not found" });
