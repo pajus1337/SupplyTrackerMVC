@@ -40,7 +40,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         }
 
 
-        // TODO: TO Refactoring
+        // TODO: TO Refactoring replace the logik into service ?
         public async Task<(bool Success, string? Error, string? AdditionalMessage)> DeleteSenderAsync(int senderId, CancellationToken cancellationToken)
         {
             if (senderId == 0)

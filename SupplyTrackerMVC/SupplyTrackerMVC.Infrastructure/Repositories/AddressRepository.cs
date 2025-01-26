@@ -29,10 +29,5 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
-
-        public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
