@@ -325,9 +325,22 @@ namespace SupplyTrackerMVC.Application.Services
             return ServiceResponse<VoidValue>.CreateSuccess(null);
         }
 
-        public Task<ServiceResponse<VoidValue>> DeleteContactDetailAsync(int contactDetailId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<VoidValue>> DeleteContactDetailAsync(int contactDetailId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (contactDetailId < 1)
+            {
+                return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Invalid contact detail ID" });
+            }
+
+            try
+            {
+                _contactRepository.de
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<ServiceResponse<UpdateContactDetailVm>> GetContactDetailForUpdateAsync(int contactDetailId, CancellationToken cancellationToken)

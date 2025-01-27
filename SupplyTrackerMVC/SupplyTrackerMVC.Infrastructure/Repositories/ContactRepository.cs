@@ -93,5 +93,18 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context.ContactDetails.Update(contactDetail);
             await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<bool> DeleteContactDetailAsync(int contactDetailId, CancellationToken cancellationToken)
+        {
+            var contactDetail = await _context.ContactDetails.FindAsync(contactDetailId, cancellationToken);
+            if (contactDetail == null)
+            {
+                return false;
+            }
+
+            _context.ContactDetails.Remove(contactDetail);
+            await _context.SaveChangesAsync(cancellationToken);
+            return true;
+        }
     }
 }

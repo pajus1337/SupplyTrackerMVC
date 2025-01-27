@@ -18,6 +18,7 @@ namespace SupplyTrackerMVC.Domain.Interfaces
         Task<int> AddContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken);
         Task<bool> UpdateContactDetailTypeAsync(ContactDetailType contactDetailType, CancellationToken cancellationToken);
         Task<bool> DeleteContactDetailTypeAsync(int contactDetailTypeId, CancellationToken cancellationToken);
+        Task<bool> DeleteContactDetailAsync(int contactDetailId, CancellationToken cancellationToken);
         Task UpdateContactDetailAsync(ContactDetail contactDetail, CancellationToken cancellationToken);
     }
 }
