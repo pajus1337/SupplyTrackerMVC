@@ -334,13 +334,14 @@ namespace SupplyTrackerMVC.Application.Services
 
             try
             {
-                _contactRepository.de
+                await _contactRepository.DeleteContactDetailAsync(contactDetailId, cancellationToken);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return ServiceResponse<VoidValue>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
             }
+
+            return ServiceResponse<VoidValue>.CreateSuccess(null);
         }
 
         public async Task<ServiceResponse<UpdateContactDetailVm>> GetContactDetailForUpdateAsync(int contactDetailId, CancellationToken cancellationToken)

@@ -45,17 +45,46 @@
 
                     <td>
                         <a asp-controller="Contact" asp-action="UpdateContactDetail" asp-route-contactDetailId="@contactDetail.Id" class="btn btn-primary">Edit</a>
-                        <a asp-controller="" asp-action="" asp-route-id="" class="btn btn-danger">Delete</a>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" onclick="setContactDetailId(@contactDetail.Id)">Delete</button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <a asp-controller="" asp-action="" asp-route-id="" class="btn btn-success">Add more Contact Types for this Person</a>
+    <a asp-controller="Contact" asp-action="" asp-route-id="" class="btn btn-success">Add more Contact Types for this Person</a>
     <hr />
 </section>
 
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Edit", "UpdateContact", new { contactId = Model.Id }) |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<!-- Modal Confirmation for delete action -->
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this contact detail?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" action="/Contact/DeleteContactDetail">
+                    <input type="hidden" name="contactDetailId" id="contactDetailId" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+            // Set right Id to the Modal hidden id field
+    function setContactDetailId(id) {
+        document.getElementById("contactDetailId").value = id;
+    }
+</script>

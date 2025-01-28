@@ -129,6 +129,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             {
                 return HandleErrors(serviceResponse);
             }
+
             return View(serviceResponse.Data);
         }
 
@@ -141,6 +142,8 @@ namespace SupplyTrackerMVC.Web.Controllers
             {
                 return HandleErrors(serviceResponse);
             }
+
+            return RedirectToAction("ViewContact", "Contact", serviceResponse.ObjectId);
             return RedirectToAction("ViewSenderContact", serviceResponse.ObjectId);
         }
         // TODO: AddContact, DeleteContact, EditContact - For Sender.

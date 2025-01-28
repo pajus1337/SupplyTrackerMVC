@@ -116,9 +116,9 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         // TODO: Create Prototype, test and refine at end this function.
         [HttpGet]
-        public async Task<IActionResult> ViewContact(int Id, CancellationToken cancellationToken)
+        public async Task<IActionResult> ViewContact(int contactId, CancellationToken cancellationToken)
         {
-            var serviceResponse = await _contactService.GetContactAsync(Id, cancellationToken);
+            var serviceResponse = await _contactService.GetContactAsync(contactId, cancellationToken);
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);
@@ -178,18 +178,18 @@ namespace SupplyTrackerMVC.Web.Controllers
             return View("GenericConfirmation");
         }
 
-        [HttpGet]
-       public async Task<IActionResult> DeleteContactDetail(int contactDetailId, CancellationToken cancellationToken)
-        {
-            // TODO: Get Contact Detail model for delete.
-            throw new NotImplementedException();
-        }
-
         [HttpPost]
-        public async Task<IActionResult> DeleteContactDetail(ContactDetailVm model, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteContactDetail(int contactDetailId, CancellationToken cancellationToken)
         {
-            // TODO: Create implementation 
-            throw new NotImplementedException();
+            var serviceResponse = await _contactService.DeleteContactDetailAsync(contactDetailId, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            ViewBag.Message = $"Contact detail with ID {contactDetailId} has been successfully deleted";
+
+            return View("GenericConfirmation");
         }
     }
 }

@@ -185,10 +185,9 @@ namespace SupplyTrackerMVC.Application.Services
         // TODO: Refine AddSenderContactAsync Method
         public async Task<ServiceResponse<AddContactVm>> AddSenderContactAsync(AddContactVm newContactVm, CancellationToken cancellationToken)
         {
-            var validator = _fluentValidatorFactory.GetValidator<AddContactVm>();
-
             try
             {
+                var validator = _fluentValidatorFactory.GetValidator<AddContactVm>();
                 var result = await validator.ValidateAsync(newContactVm, cancellationToken);
                 if (!result.IsValid)
                 {
@@ -240,10 +239,5 @@ namespace SupplyTrackerMVC.Application.Services
         {
             ContactDetailTypes = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForSelectListVm>(_mapper.ConfigurationProvider)
         };
-
-        // TODO: Add, Add , Edit & Delete metod's for Sender Contact's 
-
-
-
     }
 }
