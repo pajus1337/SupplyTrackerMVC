@@ -347,6 +347,8 @@ namespace SupplyTrackerMVC.Application.Services
         public async Task<ServiceResponse<UpdateContactDetailVm>> GetContactDetailForUpdateAsync(int contactDetailId, CancellationToken cancellationToken)
         {
             // TODO: Check and if needed include ContactDetail Types for selectList
+
+            // TODO: Refine ?
             if (contactDetailId < 1)
             {
                 return ServiceResponse<UpdateContactDetailVm>.CreateFailed(new string[] { "Invalid contact detail ID" });
@@ -356,10 +358,8 @@ namespace SupplyTrackerMVC.Application.Services
             {
                 var query = _contactRepository.GetContactDetailById(contactDetailId);
                 var contactDetail = await query.ProjectTo<UpdateContactDetailVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
-                if (contactDetail == null)
-                {
-                    return ServiceResponse<UpdateContactDetailVm>.CreateFailed(new[] { "Contact detail not found" });
-                }
+                var serviceResponse = await GetContactDetailTypesForListAsync(cancellationToken);
+                contactDetail.ContactDetailTypes = serviceResponse.Data.ContactDetailTypes;
 
                 return ServiceResponse<UpdateContactDetailVm>.CreateSuccess(contactDetail);
             }

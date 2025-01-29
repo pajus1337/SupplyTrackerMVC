@@ -1,12 +1,14 @@
 ﻿@model SupplyTrackerMVC.Application.ViewModels.Common.UpdateContactDetailVm
 
 @{
-    ViewData["Title"] = "UpdateContactDetail";
+    ViewData["Title"] = "Edit Contact Detail Information";
 }
 
-<h1>UpdateContactDetail</h1>
+<h1>Edit Contact Detail Information</h1>
+<br />
 
-<h4>UpdateContactDetailVm</h4>
+<section>
+    <h2>Contact Detail Information :</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -32,9 +34,17 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+            <div class="form-group">
+                    <select 
+                        asp-for="ContactDetailTypeId" 
+                        asp-items="@(new SelectList(Model.ContactDetailTypes, "Id", "Name"))" 
+                        class="form-control">
+                        <option value="">-- Select Contact Detail Type --</option></select>
+            </div>
         </form>
     </div>
 </div>
+</section>
 
 <div>
     <a asp-action="Index">Back to List</a>
