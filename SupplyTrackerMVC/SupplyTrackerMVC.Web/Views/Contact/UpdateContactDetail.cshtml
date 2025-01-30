@@ -14,13 +14,21 @@
     <div class="col-md-4">
         <form asp-action="UpdateContactDetail">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>
             <input asp-for="ContactId" type="hidden" />
             <input asp-for="ContactDetailTypeId" type="hidden" />
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
+                <input asp-for="Id" type="hidden" />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
+                <div class="form-group">
+                    <label asp-for="ContactDetailTypes" class="control-label"></label>
+                    <select asp-for="ContactDetailTypeId"
+                            asp-items="@(new SelectList(Model.ContactDetailTypes, "Id", "Name"))"
+                            class="form-control">
+                        <option value="">-- Select Contact Detail Type --</option>
+                    </select>
+                </div>
+
             <div class="form-group">
                 <label asp-for="ContactDetailTypeName" class="control-label"></label>
                 <input asp-for="ContactDetailTypeName" class="form-control" />
@@ -33,13 +41,6 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-            <div class="form-group">
-                    <select 
-                        asp-for="ContactDetailTypeId" 
-                        asp-items="@(new SelectList(Model.ContactDetailTypes, "Id", "Name"))" 
-                        class="form-control">
-                        <option value="">-- Select Contact Detail Type --</option></select>
             </div>
         </form>
     </div>
