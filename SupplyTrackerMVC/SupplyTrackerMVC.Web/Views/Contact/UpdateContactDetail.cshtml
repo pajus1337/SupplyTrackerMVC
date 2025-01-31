@@ -9,42 +9,37 @@
 
 <section>
     <h2>Contact Detail Information :</h2>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="UpdateContactDetail">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div>
-            <input asp-for="ContactId" type="hidden" />
-            <input asp-for="ContactDetailTypeId" type="hidden" />
-                <input asp-for="Id" type="hidden" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="UpdateContactDetail">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div>
+                    <input asp-for="ContactId" type="hidden" />
+                    <input asp-for="Id" type="hidden" />
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                    <input asp-for="ContactDetailTypeName" type="hidden" />
+                    <span asp-validation-for="ContactDetailTypeName" class="text-danger"></span>
+                </div>
                 <div class="form-group">
-                    <label asp-for="ContactDetailTypes" class="control-label"></label>
+                    <label asp-for="ContactDetailTypeId" class="control-label"></label>
                     <select asp-for="ContactDetailTypeId"
                             asp-items="@(new SelectList(Model.ContactDetailTypes, "Id", "Name"))"
                             class="form-control">
                         <option value="">-- Select Contact Detail Type --</option>
                     </select>
                 </div>
-
-            <div class="form-group">
-                <label asp-for="ContactDetailTypeName" class="control-label"></label>
-                <input asp-for="ContactDetailTypeName" class="form-control" />
-                <span asp-validation-for="ContactDetailTypeName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ContactDetailValue" class="control-label"></label>
-                <input asp-for="ContactDetailValue" class="form-control" />
-                <span asp-validation-for="ContactDetailValue" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="ContactDetailValue" class="control-label"></label>
+                    <input asp-for="ContactDetailValue" class="form-control" />
+                    <span asp-validation-for="ContactDetailValue" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 </section>
 
 <div>
@@ -52,5 +47,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

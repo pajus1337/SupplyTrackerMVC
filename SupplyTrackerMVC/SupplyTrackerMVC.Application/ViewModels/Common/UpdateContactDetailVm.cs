@@ -15,9 +15,9 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
     {
         public int Id { get; set; }
         public int ContactId { get; set; }
+        [Display(Name = "Contact Detail Type")]
         public int ContactDetailTypeId { get; set; }
         // TODO: Add Collection of contactDetailTypes to create a select list element in view section.
-        [Display(Name = "Contact Detail Type")]
         public List<ContactDetailTypeForListVm> ContactDetailTypes { get; set; }
         public string ContactDetailTypeName { get; set; }
         [Display(Name = "Contact Detail Value")]
