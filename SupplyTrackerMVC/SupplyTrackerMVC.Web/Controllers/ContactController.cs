@@ -54,7 +54,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateContactType(int contactTypeId, CancellationToken cancellationToken)
         {
-            var serviceResponse =  await _contactService.GetContactDetailTypeForEditAsync(contactTypeId,cancellationToken);
+            var serviceResponse = await _contactService.GetContactDetailTypeForEditAsync(contactTypeId, cancellationToken);
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);
@@ -102,7 +102,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             return View("GenericConfirmation");
         }
 
-        [HttpGet] 
+        [HttpGet]
         public async Task<IActionResult> ViewContactTypeDetails(int contactTypeId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _contactService.GetContactDetailTypeAsync(contactTypeId, cancellationToken);
@@ -130,7 +130,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateContact(int contactId, CancellationToken cancellationToken)
         {
-            var serviceResponse = await _contactService.GetContactForUpdateAsync (contactId, cancellationToken);
+            var serviceResponse = await _contactService.GetContactForUpdateAsync(contactId, cancellationToken);
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);
@@ -190,6 +190,26 @@ namespace SupplyTrackerMVC.Web.Controllers
             ViewBag.Message = $"Contact detail with ID {contactDetailId} has been successfully deleted";
 
             return View("GenericConfirmation");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddContactDetail(int contactId, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _contactService.PrepareAddContactDetailVmAsync(contactId, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            var model = serviceResponse.Data;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddContactDetail(AddContactDetailVm model)
+        {
+            return View();
         }
     }
 }

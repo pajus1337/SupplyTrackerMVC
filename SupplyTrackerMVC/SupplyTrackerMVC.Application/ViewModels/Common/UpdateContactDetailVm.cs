@@ -19,14 +19,11 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
         public int ContactDetailTypeId { get; set; }
         // TODO: Add Collection of contactDetailTypes to create a select list element in view section.
         public List<ContactDetailTypeForListVm> ContactDetailTypes { get; set; }
-        public string ContactDetailTypeName { get; set; }
-        [Display(Name = "Contact Detail Value")]
         public string ContactDetailValue { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<ContactDetail, UpdateContactDetailVm>()
-                .ForMember(dest => dest.ContactDetailTypeName, opt => opt.MapFrom(src => src.ContactDetailType.Name)).ReverseMap();
+            profile.CreateMap<ContactDetail, UpdateContactDetailVm>().ReverseMap();
         }
     }
 
@@ -37,7 +34,6 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
             RuleFor(x => x.Id).GreaterThan(0);
             RuleFor(x => x.ContactId).GreaterThan(0);
             RuleFor(x => x.ContactDetailTypeId).GreaterThan(0);
-            RuleFor(x => x.ContactDetailTypeName).NotEmpty();
             RuleFor(x => x.ContactDetailValue).Length(1, 20);
         }
     }

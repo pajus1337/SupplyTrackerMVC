@@ -12,6 +12,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
     public interface IContactService
     {
         Task<ServiceResponse<AddContactDetailTypeVm>> AddContactDetailTypeAsync(AddContactDetailTypeVm model, CancellationToken cancellationToken);
+        Task<ServiceResponse<AddContactDetailVm>> AddContactDetailAsync(AddContactDetailVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<ContactDetailTypeVm>> UpdateContactDetailTypeAsync(UpdateContactDetailTypeVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> DeleteContactDetailTypeAsync(int contactTypeId, CancellationToken cancellationToken);
         Task<ServiceResponse<ListContactDetailTypesForListVm>> GetContactDetailTypesForListAsync(CancellationToken cancellationToken);
@@ -25,5 +26,6 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<ServiceResponse<UpdateContactDetailVm>> GetContactDetailForUpdateAsync(int contactDetailId, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> UpdateContactDetailAsync(UpdateContactDetailVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> DeleteContactDetailAsync(int contactDetailId, CancellationToken cancellationToken);
+        Task<ServiceResponse<AddContactDetailVm>> PrepareAddContactDetailVmAsync(int contactId, CancellationToken cancellationToken);
     }
 }

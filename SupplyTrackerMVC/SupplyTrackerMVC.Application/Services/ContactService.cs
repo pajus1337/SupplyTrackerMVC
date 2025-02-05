@@ -368,5 +368,55 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<UpdateContactDetailVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
             }
         }
+
+        public async Task<ServiceResponse<AddContactDetailVm>> AddContactDetailAsync(AddContactDetailVm model, CancellationToken cancellationToken)
+        {
+            if (model == null)
+            {
+                return ServiceResponse<AddContactDetailVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
+            }
+
+            try
+            {
+                var validator = _validatorFactory.GetValidator<AddContactDetailVm>();
+                var validationResult = await validator.ValidateAsync(model, cancellationToken);
+                if (!validationResult.IsValid)
+                {
+                    return ServiceResponse<AddContactDetailVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
+                }
+                // TODO: Get Answer => Add over root object, or create just new ContactDetail with FK to contact
+                var contactDetail = _mapper.Map<AddContactDetailVm, ContactDetail>(model);
+                var contactDetailId = await _contactRepository.AddContactDetailAsync(contactDetail, cancellationToken);
+                return ServiceResponse<AddContactDetailVm>.CreateSuccess(null, contactDetailId);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<AddContactDetailVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+            }
+        }
+
+        public async Task<ServiceResponse<AddContactDetailVm>> PrepareAddContactDetailVmAsync(int contactId, CancellationToken cancellationToken)
+        {
+            if (contactId < 1)
+            {
+                return ServiceResponse<AddContactDetailVm>.CreateFailed(new string[] { "Invalid contact ID" });
+            }
+
+            try
+            {
+                var model = new AddContactDetailVm
+                {
+                    ContactId = contactId,
+
+                    ContactDetailTypeSelectList = await _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken)
+                };
+
+                return ServiceResponse<AddContactDetailVm>.CreateSuccess(model);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<AddContactDetailVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+            }
+        }
     }
 }

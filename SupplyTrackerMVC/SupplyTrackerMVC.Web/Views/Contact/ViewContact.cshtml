@@ -1,10 +1,10 @@
 ﻿@model SupplyTrackerMVC.Application.ViewModels.Common.ContactVm
 
 @{
-    ViewData["Title"] = "Person Contact Information";
+    ViewData["Title"] = "Contact Information";
 }
 
-<h1>Person Contact Information</h1>
+<h1>Contact Information</h1>
 <br />
 <section>
     <h2>Personal Information :</h2>
@@ -51,7 +51,7 @@
             }
         </tbody>
     </table>
-    <a asp-controller="Contact" asp-action="" asp-route-id="" class="btn btn-success">Add more Contact Types for this Person</a>
+    <a asp-controller="Contact" asp-action="AddContactDetail" asp-route-contactId="@Model.Id" class="btn btn-success">Add more Contact Types for this Contact</a>
     <hr />
 </section>
 
