@@ -17,7 +17,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
         public int ContactId { get; set; }
         public int ContactDetailTypeId { get; set; }
         [DisplayName("Select communication type")]
-        public List<ContactDetailTypeForListVm> ContactDetailTypeSelectList { get; set; }
+        public ContactDetailTypeSelectListVm ContactDetailTypeSelectList { get; set; }
         [DisplayName("Entry Value for new communication type")]
         public string ContactDetailValue { get; set; }
 

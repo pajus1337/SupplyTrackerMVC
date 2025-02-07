@@ -395,6 +395,12 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
+        private ContactDetailTypeSelectListVm GetContactTypesSelectList() => new ContactDetailTypeSelectListVm()
+        {
+            ContactDetailTypes = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForSelectListVm>(_mapper.ConfigurationProvider)
+        };
+
+
         public async Task<ServiceResponse<AddContactDetailVm>> PrepareAddContactDetailVmAsync(int contactId, CancellationToken cancellationToken)
         {
             if (contactId < 1)
@@ -407,8 +413,7 @@ namespace SupplyTrackerMVC.Application.Services
                 var model = new AddContactDetailVm
                 {
                     ContactId = contactId,
-
-                    ContactDetailTypeSelectList = await _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken)
+                    ContactDetailTypeSelectList = GetContactTypesSelectList()
                 };
 
                 return ServiceResponse<AddContactDetailVm>.CreateSuccess(model);

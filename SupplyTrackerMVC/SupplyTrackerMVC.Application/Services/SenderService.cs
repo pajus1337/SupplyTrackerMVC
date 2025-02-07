@@ -221,6 +221,7 @@ namespace SupplyTrackerMVC.Application.Services
 
 
         // TODO: ASync ?! - Change prototype
+        // TODO: Move to contactService? Generic the logic ?
         public async Task<ServiceResponse<AddContactVm>> PrepareAddContactVm(int senderId)
         {
             var model = new AddContactVm
