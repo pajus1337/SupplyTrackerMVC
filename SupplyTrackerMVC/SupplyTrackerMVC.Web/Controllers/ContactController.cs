@@ -207,9 +207,18 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddContactDetail(AddContactDetailVm model)
+        public async Task<IActionResult> AddContactDetail(AddContactDetailVm model, CancellationToken cancellationToken)
         {
-            return View();
+            var serviceResponse = await _contactService.AddContactDetailAsync(model, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            ViewBag.ReturnUrl = Url.Action("ViewContact", new { contactId = model.ContactId });
+            ViewBag.Message = $"Contact detail with ID {serviceResponse.ObjectId} has been successfully created";
+
+            return View("GenericConfirmation");
         }
     }
 }

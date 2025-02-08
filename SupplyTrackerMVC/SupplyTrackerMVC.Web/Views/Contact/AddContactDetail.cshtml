@@ -23,9 +23,11 @@
                 <span asp-validation-for="ContactId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ContactDetailTypeId" class="control-label"></label>
-                <input asp-for="ContactDetailTypeId" class="form-control" />
-                <span asp-validation-for="ContactDetailTypeId" class="text-danger"></span>
+                <label asp-for="ContactDetailTypeSelectList" class="control-label"></label>
+                <select asp-for="ContactDetailTypeId"
+                        asp-items="@(new SelectList(Model.ContactDetailTypeSelectList.ContactDetailTypes, "Id", "Name"))" class="form-control">
+                    <option value="">-- Select Contact Detail Type --</option>
+                    </select>
             </div>
             <div class="form-group">
                 <label asp-for="ContactDetailValue" class="control-label"></label>
