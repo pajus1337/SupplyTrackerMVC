@@ -2,12 +2,10 @@
 using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
-using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 
@@ -79,29 +77,31 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public async Task<ServiceResponse<ReceiverDetailsAfterCreateVm>> GetReceiverDetailsByIdAsync(int receiverId, CancellationToken cancellationToken)
+
+        // TODO: Include contacts and maybe more ? In Service or repo ? Check out´the best solution for such opertation.
+        public async Task<ServiceResponse<ReceiverDetailsVm>> GetReceiverDetailsByIdAsync(int receiverId, CancellationToken cancellationToken)
         {
-            if (receiverId <= 0)
+            if (receiverId < 1)
             {
-                return ServiceResponse<ReceiverDetailsAfterCreateVm>.CreateFailed(new string[] { "Invalid receiver ID" });
+                return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { "Invalid receiver ID" });
             }
 
-            var receiverQuery = _receiverRepository.GetReceiverById(receiverId);
             try
             {
+                var receiverQuery = _receiverRepository.GetReceiverById(receiverId);
                 var receiver = await receiverQuery.SingleOrDefaultAsync(cancellationToken);
                 if (receiver == null)
                 {
-                    ServiceResponse<ReceiverDetailsAfterCreateVm>.CreateFailed(new string[] { "receiver not found" });
+                    ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { "receiver not found" });
                 }
 
-                var receiverVm = _mapper.Map<ReceiverDetailsAfterCreateVm>(receiver);
+                var receiverVm = _mapper.Map<ReceiverDetailsVm>(receiver);
 
-                return ServiceResponse<ReceiverDetailsAfterCreateVm>.CreateSuccess(receiverVm);
+                return ServiceResponse<ReceiverDetailsVm>.CreateSuccess(receiverVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ReceiverDetailsAfterCreateVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
