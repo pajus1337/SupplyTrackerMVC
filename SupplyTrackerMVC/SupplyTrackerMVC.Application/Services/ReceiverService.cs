@@ -46,7 +46,7 @@ namespace SupplyTrackerMVC.Application.Services
             return isSuccess ? ServiceResponse<VoidValue>.CreateSuccess(null, receiverId) : ServiceResponse<VoidValue>.CreateFailed(new string[] { "Failed to add receiver" });
         }
 
-        public async Task<ServiceResponse<ListReceiverForListVm>> GetReceiversForListAsysnc(CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ListReceiverForListVm>> GetReceiversForListAsync(CancellationToken cancellationToken)
         {
             var receiversQuery = _receiverRepository.GetAllReceivers();
 
@@ -90,6 +90,7 @@ namespace SupplyTrackerMVC.Application.Services
             {
                 var receiverQuery = _receiverRepository.GetReceiverById(receiverId);
                 var receiver = await receiverQuery.SingleOrDefaultAsync(cancellationToken);
+
                 if (receiver == null)
                 {
                     ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { "receiver not found" });
