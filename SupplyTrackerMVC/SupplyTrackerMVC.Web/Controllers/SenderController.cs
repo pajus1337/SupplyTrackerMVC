@@ -73,7 +73,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [Route("edit-sender")]
         public async Task<IActionResult> UpdateSender(UpdateSenderVm model, CancellationToken cancellationToken)
         {
-            var serviceResponse = await _senderService.UpdateSenderByIdAsync(model, cancellationToken);
+            var serviceResponse = await _senderService.UpdateSenderAsync(model, cancellationToken);
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse, model);
@@ -109,7 +109,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [Route("delete-sender")]
         public async Task<IActionResult> DeleteSender(SenderForDeleteVm model, CancellationToken cancellationToken)
         {
-            var serviceResponse = await _senderService.DeleteSenderAsync(model.Id, cancellationToken);
+            var serviceResponse = await _senderService.DeleteSenderByIdAsync(model.Id, cancellationToken);
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);

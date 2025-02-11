@@ -46,7 +46,7 @@ namespace SupplyTrackerMVC.Application.Services
             return ServiceResponse<NewSenderVm>.CreateSuccess(model, senderId);
         }
 
-        public async Task<ServiceResponse<VoidValue>> DeleteSenderAsync(int senderId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<VoidValue>> DeleteSenderByIdAsync(int senderId, CancellationToken cancellationToken)
         {
             var (success, error, additionalMessage) = await _senderRepository.DeleteSenderAsync(senderId, cancellationToken);
             if (!success)
@@ -62,7 +62,7 @@ namespace SupplyTrackerMVC.Application.Services
             return ServiceResponse<VoidValue>.CreateSuccess(new VoidValue(), null, additionalMessage);
         }
 
-        public async Task<ServiceResponse<SenderDetailsVm>> UpdateSenderByIdAsync(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<SenderDetailsVm>> UpdateSenderAsync(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken)
         {
             if (updateSenderVm == null)
             {
