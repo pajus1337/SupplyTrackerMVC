@@ -11,7 +11,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
     public interface IReceiverService
     {
         Task<ServiceResponse<VoidValue>> AddReceiverAsync(NewReceiverVm model, CancellationToken cancellationToken);
-        Task<ServiceResponse<UpdateReceiverVm>> UpdateReceiver(UpdateReceiverVm model, CancellationToken cancellationToken);
+        Task<ServiceResponse<UpdateReceiverVm>> UpdateReceiverAsync(UpdateReceiverVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> DeleteReceiverByIdAsync(int receiverId, CancellationToken cancellationToken);
         Task<ServiceResponse<ListReceiverForListVm>> GetReceiversForListAsync(CancellationToken cancellationToken);
         Task<ServiceResponse<ReceiverDetailsVm>> GetReceiverDetailsByIdAsync(int receiverId, CancellationToken cancellationToken);
@@ -20,6 +20,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<ServiceResponse<VoidValue>> AddReceiverBranchAsync(NewReceiverBranchVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<ReceiverBranchDetailsVm>> GetReceiverBranchDetailsAsync(int receiverBranchId, CancellationToken cancellationToken);
         Task<NewReceiverBranchVm> PrepareNewReceiverBranchVm(CancellationToken cancellationToken);
+        Task<ServiceResponse<UpdateReceiverVm>> GetReceiverForEditAsync(int receiverId,CancellationToken cancellationToken);
 
     }
 }

@@ -19,7 +19,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListOfActiveReceivers(CancellationToken cancellationToken)
+        public async Task<IActionResult> ViewReceiverList(CancellationToken cancellationToken)
         {
             var serviceResponse = await _receiverService.GetReceiversForListAsync(cancellationToken);
 
@@ -73,7 +73,12 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateReceiver(UpdateReceiverVm model, CancellationToken cancellationToken)
         {
-            _receiverService.
+            var serviceResponse = await _receiverService.UpdateReceiverAsync(model, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
         }
 
         [HttpGet]
