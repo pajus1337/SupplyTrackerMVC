@@ -2,6 +2,7 @@
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Services;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
+using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 
 namespace SupplyTrackerMVC.Web.Controllers
 {
@@ -79,6 +80,12 @@ namespace SupplyTrackerMVC.Web.Controllers
                 return HandleErrors(serviceResponse);
             }
             return View(serviceResponse.Data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteReceiver(int receiverId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
 
         [HttpGet]
