@@ -260,9 +260,27 @@ namespace SupplyTrackerMVC.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<UpdateReceiverVm>> GetReceiverForEditAsync(int receiverId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<UpdateReceiverVm>> GetReceiverForEditAsync(int receiverId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (receiverId < 1)
+            {
+                return ServiceResponse<UpdateReceiverVm>.CreateFailed(new string[] { "Invalid receiver ID" });
+            }
+
+            try
+            {
+                var receiverVm = await _receiverRepository.GetReceiverById(receiverId).ProjectTo<UpdateReceiverVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
+                if (receiverVm == null)
+                {
+                    return ServiceResponse<UpdateReceiverVm>.CreateFailed(new string[] { "Receiver not found in Db" });
+                }
+
+                return ServiceResponse<UpdateReceiverVm>.CreateSuccess(receiverVm);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<UpdateReceiverVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
     }
 }
