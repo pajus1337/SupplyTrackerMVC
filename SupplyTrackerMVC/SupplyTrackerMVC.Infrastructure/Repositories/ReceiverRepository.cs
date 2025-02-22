@@ -107,7 +107,8 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context.Receivers.Where(p => p.Id == receiverId)
             .Include(p => p.Address)
             .Include(p => p.Contacts)
-            .ThenInclude(p => p.ContactDetails);
+            .ThenInclude(p => p.ContactDetails)
+            .Include(p => p.DeliveryBranchs);
 
         public async Task<(bool Success, int? ReceiverBranchId)> AddReceiverBranchAsync(ReceiverBranch receiverBranch, CancellationToken cancellationToken)
         {
