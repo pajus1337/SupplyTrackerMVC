@@ -108,27 +108,24 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<ReceiverSelectListVm>> GetReceiversForSelectListAsync(CancellationToken cancellationToken)
         {
-            var receiversQuery = _receiverRepository.GetAllReceivers().ProjectTo<ReceiverForSelectListVm>(_mapper.ConfigurationProvider);
-
             try
             {
-                var receivers = await receiversQuery.ToListAsync(cancellationToken);
+                var receivers = await _receiverRepository.GetAllReceivers().ProjectTo<ReceiverForSelectListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
                 if (receivers == null)
                 {
                     return ServiceResponse<ReceiverSelectListVm>.CreateFailed(new string[] { "receiver not found" });
                 }
-                var receiversVm = new ReceiverSelectListVm()
+
+                var receiversSelectListVm = new ReceiverSelectListVm()
                 {
-                    Receivers = receiversQuery,
+                    Receivers = receivers,
                 };
 
-                return ServiceResponse<ReceiverSelectListVm>.CreateSuccess(receiversVm);
-
+                return ServiceResponse<ReceiverSelectListVm>.CreateSuccess(receiversSelectListVm);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return ServiceResponse<ReceiverSelectListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
