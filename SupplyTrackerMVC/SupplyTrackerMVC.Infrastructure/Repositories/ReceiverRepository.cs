@@ -24,23 +24,10 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         // TODO: Change into Async AddReceiverAsync
         public async Task<(bool Success, int? ReceiverId)> AddReceiverAsync(Receiver receiver, CancellationToken cancellationToken)
         {
-            if (receiver == null)
-            {
-                return (false, null);
-            }
+            await _context.AddAsync(receiver, cancellationToken);
+            int success = await SaveChangesAsync(cancellationToken);
 
-            try
-            {
-                await _context.AddAsync(receiver, cancellationToken);
-                int success = await SaveChangesAsync(cancellationToken);
-
-                return success > 0 ? (true, receiver.Id) : (false, null);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return success > 0 ? (true, receiver.Id) : (false, null);
         }
 
         public async Task<bool> DeleteReceiverAsync(int receiverId, CancellationToken cancellationToken)
@@ -76,21 +63,9 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
         public async Task<bool> UpdateReceiverAsync(Receiver receiver, CancellationToken cancellationToken)
         {
-            if (receiver == null)
-            {
-                return false;
-            }
-
-            try
-            {
-                _context.Receivers.Update(receiver);
-                int success = await SaveChangesAsync(cancellationToken);
-                return success > 0 ? true : false;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            _context.Receivers.Update(receiver);
+            int success = await SaveChangesAsync(cancellationToken);
+            return success > 0 ? true : false;
         }
 
         public IQueryable<ReceiverBranch> GetAllActiveReceiverBranches(int receiverId)
@@ -112,29 +87,15 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
         public async Task<(bool Success, int? ReceiverBranchId)> AddReceiverBranchAsync(ReceiverBranch receiverBranch, CancellationToken cancellationToken)
         {
-            if (receiverBranch == null)
-            {
-                return (false, null);
-            }
-
-            try
-            {
                 await _context.AddAsync(receiverBranch, cancellationToken);
                 int success = await SaveChangesAsync(cancellationToken);
 
                 return success > 0 ? (true, receiverBranch.Id) : (false, null);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             return await _context.SaveChangesAsync(cancellationToken);
         }
-
     }
 }
