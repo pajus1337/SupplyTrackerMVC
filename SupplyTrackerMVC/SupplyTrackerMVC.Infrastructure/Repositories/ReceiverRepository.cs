@@ -70,11 +70,11 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
         public IQueryable<ReceiverBranch> GetAllActiveReceiverBranches(int receiverId)
         {
-            var activeBranches = _context.DeliveryBranches.Where(b => b.ReceiverId == receiverId && !b.IsDeleted);
+            var activeBranches = _context.ReceiverBranches.Where(b => b.ReceiverId == receiverId && !b.IsDeleted);
             return activeBranches;
         }
 
-        public IQueryable<ReceiverBranch> GetAllReceiverBranches() => _context.DeliveryBranches;
+        public IQueryable<ReceiverBranch> GetAllReceiverBranches() => _context.ReceiverBranches;
 
         public IQueryable<Receiver> GetAllReceivers() => _context.Receivers;
 
@@ -83,7 +83,7 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             .Include(p => p.Address)
             .Include(p => p.Contacts)
             .ThenInclude(p => p.ContactDetails)
-            .Include(p => p.DeliveryBranchs);
+            .Include(p => p.ReceiverBranches);
 
         public async Task<(bool Success, int? ReceiverBranchId)> AddReceiverBranchAsync(ReceiverBranch receiverBranch, CancellationToken cancellationToken)
         {

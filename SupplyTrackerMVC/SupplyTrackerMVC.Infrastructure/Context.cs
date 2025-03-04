@@ -28,7 +28,7 @@ namespace SupplyTrackerMVC.Infrastructure
         public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<Receiver> Receivers { get; set; }
-        public DbSet<ReceiverBranch> DeliveryBranches { get; set; }
+        public DbSet<ReceiverBranch> ReceiverBranches { get; set; }
         public DbSet<Sender> Senders { get; set; }
 
         public Context(DbContextOptions options) : base(options)

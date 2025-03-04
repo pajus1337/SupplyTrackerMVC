@@ -23,11 +23,12 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
         public string Name { get; set; }
         public UpdateAddressDetailsVm Address { get; set; }
         public ICollection<UpdateContactVm> Contacts { get; set; }
-        public ICollection<ListReceiverBranchForListVm> ReceiverBranchs { get; set; }
+        public ICollection<ReceiverBranchForListVm> ReceiverBranches { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Receiver, UpdateReceiverVm>();
+            profile.CreateMap<Receiver, UpdateReceiverVm>()
+                .ForMember(d => d.ReceiverBranches, opt => opt.MapFrom(s => s.ReceiverBranches));
             profile.CreateMap<UpdateAddressDetailsVm, Address>().ReverseMap();
             profile.CreateMap<UpdateContactVm, Contact>().ReverseMap();
         }

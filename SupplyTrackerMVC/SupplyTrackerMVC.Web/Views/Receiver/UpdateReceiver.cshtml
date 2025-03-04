@@ -81,10 +81,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var receiverBranches in Model.ReceiverBranchs)
+            @foreach (var receiverBranches in Model.ReceiverBranches)
             {
                 <tr>
-                    <td>@receiverBranches.ReceiverBranches</td>
+                    <td>@receiverBranches.Name</td>
                     <td>
                         <a asp-action="" asp-route-id="" class="btn btn-primary">Edit</a>
                         <a asp-action="" asp-route-id="" class="btn btn-danger">Delete</a>

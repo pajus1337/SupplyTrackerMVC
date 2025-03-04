@@ -33,7 +33,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.DeliveryVm
             profile.CreateMap<Delivery, DeliveryDetailsVm>()
                 .ForMember(d => d.SenderName, opt => opt.MapFrom(s => s.Sender.Name))
                 .ForMember(d => d.ReceiverName, opt => opt.MapFrom(s => s.Receiver.Name))
-                // .ForMember(d => d.ReceiverBranchName, opt => opt.MapFrom(s => s.Receiver.DeliveryBranchs.)) => Add obj to Delivery.
+                // .ForMember(d => d.ReceiverBranchName, opt => opt.MapFrom(s => s.Receiver.ReceiverBranches.)) => Add obj to Delivery.
                 .ForMember(d => d.ProductName, opt => opt.MapFrom(s => s.Product.ProductDetail.ChemicalName))
                 .ForMember(d => d.ProductDeliveryWeight, opt => opt.MapFrom(d => d.ProductDeliveryWeight));
         }

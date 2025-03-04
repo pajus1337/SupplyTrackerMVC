@@ -270,7 +270,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DeliveryBranches",
+                name: "ReceiverBranches",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -492,13 +492,13 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_DeliveryBranches_AddressId",
-                table: "DeliveryBranches",
+                table: "ReceiverBranches",
                 column: "AddressId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DeliveryBranches_ReceiverId",
-                table: "DeliveryBranches",
+                table: "ReceiverBranches",
                 column: "ReceiverId");
 
             migrationBuilder.CreateIndex(
@@ -568,7 +568,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 name: "Deliveries");
 
             migrationBuilder.DropTable(
-                name: "DeliveryBranches");
+                name: "ReceiverBranches");
 
             migrationBuilder.DropTable(
                 name: "ProductDetails");

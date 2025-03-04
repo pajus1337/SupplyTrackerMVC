@@ -23,7 +23,7 @@ namespace SupplyTrackerMVC.Domain.Model.Receivers
         public Address Address { get; set; }
 
         // 1:N
-        public virtual ICollection<ReceiverBranch> DeliveryBranchs { get; set; }
+        public virtual ICollection<ReceiverBranch> ReceiverBranches { get; set; }
 
         // 1:N
         public virtual ICollection<Contact> Contacts { get; set; }

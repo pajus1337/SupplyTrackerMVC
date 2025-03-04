@@ -12,15 +12,15 @@ using SupplyTrackerMVC.Infrastructure;
 namespace SupplyTrackerMVC.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240901082627_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250304100007_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -639,11 +639,13 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 {
                     b.HasOne("SupplyTrackerMVC.Domain.Model.Receivers.Receiver", "Receiver")
                         .WithMany("Contacts")
-                        .HasForeignKey("ReceiverId");
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SupplyTrackerMVC.Domain.Model.Senders.Sender", "Sender")
                         .WithMany("Contacts")
-                        .HasForeignKey("SenderId");
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Receiver");
 

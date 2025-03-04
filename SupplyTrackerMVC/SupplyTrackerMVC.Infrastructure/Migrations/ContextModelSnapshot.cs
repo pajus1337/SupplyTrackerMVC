@@ -17,7 +17,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -543,7 +543,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
                     b.HasIndex("ReceiverId");
 
-                    b.ToTable("DeliveryBranches");
+                    b.ToTable("ReceiverBranches");
                 });
 
             modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Senders.Sender", b =>
@@ -636,11 +636,13 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 {
                     b.HasOne("SupplyTrackerMVC.Domain.Model.Receivers.Receiver", "Receiver")
                         .WithMany("Contacts")
-                        .HasForeignKey("ReceiverId");
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("SupplyTrackerMVC.Domain.Model.Senders.Sender", "Sender")
                         .WithMany("Contacts")
-                        .HasForeignKey("SenderId");
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Receiver");
 
@@ -735,7 +737,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("SupplyTrackerMVC.Domain.Model.Receivers.Receiver", "Receiver")
-                        .WithMany("DeliveryBranchs")
+                        .WithMany("ReceiverBranches")
                         .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -783,7 +785,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
 
                     b.Navigation("Deliveries");
 
-                    b.Navigation("DeliveryBranchs");
+                    b.Navigation("ReceiverBranches");
                 });
 
             modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Senders.Sender", b =>
