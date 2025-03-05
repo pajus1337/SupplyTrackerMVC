@@ -18,7 +18,7 @@ namespace SupplyTrackerMVC.Application.Services
         private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
 
-        public ReceiverService(IReceiverRepository receiverRepository,IFluentValidatorFactory fluentValidatorFactory, IContactRepository contactRepository, IMapper mapper, IServiceProvider serviceProvider)
+        public ReceiverService(IReceiverRepository receiverRepository, IFluentValidatorFactory fluentValidatorFactory, IContactRepository contactRepository, IMapper mapper, IServiceProvider serviceProvider)
         {
             _receiverRepository = receiverRepository;
             _fluentValidatorFactory = fluentValidatorFactory;
@@ -193,7 +193,7 @@ namespace SupplyTrackerMVC.Application.Services
                 }
             };
 
-                return model;
+            return model;
         }
 
         public async Task<ServiceResponse<ReceiverBranchDetailsVm>> GetReceiverBranchDetailsAsync(int receiverBranchId, CancellationToken cancellationToken)
@@ -257,6 +257,8 @@ namespace SupplyTrackerMVC.Application.Services
             throw new NotImplementedException();
         }
 
+
+        // TODO: Should we get ReceiverBranch seperet or get all with one db query call? Think - And implement best way for the project.
         public async Task<ServiceResponse<UpdateReceiverVm>> GetReceiverForEditAsync(int receiverId, CancellationToken cancellationToken)
         {
             if (receiverId < 1)
@@ -271,6 +273,8 @@ namespace SupplyTrackerMVC.Application.Services
                 {
                     return ServiceResponse<UpdateReceiverVm>.CreateFailed(new string[] { "Receiver not found in Db" });
                 }
+
+               // var receiverBranches = await _receiverRepository.GetAllActiveReceiverBranches(receiverId).ProjectTo<ReceiverForListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
 
                 return ServiceResponse<UpdateReceiverVm>.CreateSuccess(receiverVm);
             }

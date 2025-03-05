@@ -84,6 +84,7 @@
             @foreach (var receiverBranches in Model.ReceiverBranches)
             {
                 <tr>
+                    <td>@receiverBranches.Id</td>
                     <td>@receiverBranches.Name</td>
                     <td>
                         <a asp-action="" asp-route-id="" class="btn btn-primary">Edit</a>
@@ -93,7 +94,7 @@
             }
         </tbody>
     </table>
-    <a asp-action="AddContactForReceiver" asp-route-senderId="@Model.Id" class="btn btn-success">Add New Contact</a>
+    <a asp-action="AddContactForReceiver" asp-route-senderId="@Model.Id" class="btn btn-success">Add ReceiverBranch</a>
 
 <div>
     <a asp-action="Index">Back to List</a>

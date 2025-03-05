@@ -285,15 +285,15 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DeliveryBranches", x => x.Id);
+                    table.PrimaryKey("PK_ReceiverBranches", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DeliveryBranches_Addresses_AddressId",
+                        name: "FK_ReceiverBranches_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_DeliveryBranches_Receivers_ReceiverId",
+                        name: "FK_ReceiverBranches_Receivers_ReceiverId",
                         column: x => x.ReceiverId,
                         principalTable: "Receivers",
                         principalColumn: "Id",
@@ -319,12 +319,14 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                         name: "FK_Contacts_Receivers_ReceiverId",
                         column: x => x.ReceiverId,
                         principalTable: "Receivers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Contacts_Senders_SenderId",
                         column: x => x.SenderId,
                         principalTable: "Senders",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -491,17 +493,6 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DeliveryBranches_AddressId",
-                table: "ReceiverBranches",
-                column: "AddressId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DeliveryBranches_ReceiverId",
-                table: "ReceiverBranches",
-                column: "ReceiverId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProductDetails_ProductRef",
                 table: "ProductDetails",
                 column: "ProductRef",
@@ -517,6 +508,17 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 name: "IX_Products_ProductTypeId",
                 table: "Products",
                 column: "ProductTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReceiverBranches_AddressId",
+                table: "ReceiverBranches",
+                column: "AddressId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReceiverBranches_ReceiverId",
+                table: "ReceiverBranches",
+                column: "ReceiverId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Receivers_AddressId",
@@ -568,10 +570,10 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 name: "Deliveries");
 
             migrationBuilder.DropTable(
-                name: "ReceiverBranches");
+                name: "ProductDetails");
 
             migrationBuilder.DropTable(
-                name: "ProductDetails");
+                name: "ReceiverBranches");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
