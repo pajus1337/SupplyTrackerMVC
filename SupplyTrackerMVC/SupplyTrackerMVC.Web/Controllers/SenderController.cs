@@ -144,7 +144,6 @@ namespace SupplyTrackerMVC.Web.Controllers
             }
 
             return RedirectToAction("ViewContact", "Contact", serviceResponse.ObjectId);
-            return RedirectToAction("ViewSenderContact", serviceResponse.ObjectId);
         }
         // TODO: AddContact, DeleteContact, EditContact - For Sender.
 

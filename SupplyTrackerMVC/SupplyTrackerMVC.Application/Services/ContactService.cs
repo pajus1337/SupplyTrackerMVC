@@ -423,5 +423,26 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<AddContactDetailVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
             }
         }
+
+
+        public async Task<ServiceResponse<AddContactVm>> PrepareAddContactVm(int contactOwnerId, CancellationToken cancellationToken)
+        {
+            var model = new AddContactVm
+            {
+                ContactOwnerId = contactOwnerId,
+                ContactDetailVm = new AddContactDetailVm
+                {
+                    ContactDetailTypeSelectList = GetContactTypesForSelectList()
+                },
+            };
+
+            return ServiceResponse<AddContactVm>.CreateSuccess(model);
+        }
+
+        
+        private ContactDetailTypeSelectListVm GetContactTypesForSelectList() => new ContactDetailTypeSelectListVm()
+        {
+            ContactDetailTypes = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForSelectListVm>(_mapper.ConfigurationProvider)
+        };
     }
 }

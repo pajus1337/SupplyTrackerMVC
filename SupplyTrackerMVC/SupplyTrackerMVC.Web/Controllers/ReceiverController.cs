@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Services;
+using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 
@@ -9,10 +10,12 @@ namespace SupplyTrackerMVC.Web.Controllers
     public class ReceiverController : BaseController
     {
         private readonly IReceiverService _receiverService;
+        private readonly IContactService _contactService;
 
-        public ReceiverController(IReceiverService receiverService)
+        public ReceiverController(IReceiverService receiverService, IContactService contactService)
         {
             _receiverService = receiverService;
+            _contactService = contactService;
         }
         public IActionResult Index()
         {
@@ -129,6 +132,30 @@ namespace SupplyTrackerMVC.Web.Controllers
             }
 
             return View(serviceResponse.Data);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddContactForReceiver(int receiverId, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _contactService.PrepareAddContactVm(receiverId, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            return View(serviceResponse.Data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddContactForReceiver(AddContactVm model, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _receiverService.AddReceiverContactAsync(model, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            return RedirectToAction("ViewContact", "Contact", serviceResponse.ObjectId);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using SupplyTrackerMVC.Application.Responses;
+using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<ServiceResponse<ReceiverDetailsVm>> GetReceiverDetailsByIdAsync(int receiverId, CancellationToken cancellationToken);
         Task<ServiceResponse<ReceiverSelectListVm>> GetReceiversForSelectListAsync(CancellationToken cancellationToken);
         Task<ServiceResponse<ReceiverBranchSelectListVm>> GetReceiverBranchesForSelectListAsync(CancellationToken cancellationToken);
+        Task<ServiceResponse<AddContactVm>> AddReceiverContactAsync(AddContactVm newContactVm, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> AddReceiverBranchAsync(NewReceiverBranchVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<ReceiverBranchDetailsVm>> GetReceiverBranchDetailsAsync(int receiverBranchId, CancellationToken cancellationToken);
         Task<NewReceiverBranchVm> PrepareNewReceiverBranchVm(CancellationToken cancellationToken);

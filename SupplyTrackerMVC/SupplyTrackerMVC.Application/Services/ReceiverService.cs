@@ -283,5 +283,10 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<UpdateReceiverVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
+
+        public Task<ServiceResponse<AddContactVm>> AddReceiverContactAsync(AddContactVm newContactVm, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
