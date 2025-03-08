@@ -1,0 +1,76 @@
+﻿@model SupplyTrackerMVC.Application.ViewModels.Common.AddContactVm
+
+@{
+    ViewData["Title"] = "Create new contact for Receiver";
+}
+
+<h1>Create New Contact</h1>
+
+<h4>Contact Information</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddContactForReceiver">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ContactOwnerId" />
+            <input type="hidden" asp-for="ContactDetailVm.Id" />
+            <span asp-validation-for="Id" class="text-danger"></span>
+            <span asp-validation-for="ContactOwnerId" class="text-danger"></span>
+            <span asp-validation-for="ContactDetailVm.Id" class="text-danger"></span>
+
+            <div class="section-header">
+                <h5>Personal Information</h5>
+                <p>Please fill in the personal information for the new contact below:</p>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Role" class="control-label"></label>
+                <input asp-for="Role" class="form-control" />
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+            <hr class="styled-hr" />
+            <div class="section-header">
+                <h5>Contact Method</h5>
+                <p>Please select the preferred contact method and provide the appropriate details:</p>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactDetailVm.ContactDetailTypeSelectList" class="control-label"></label>
+                <select asp-for="ContactDetailVm.ContactDetailTypeId" class="form-control" asp-items="@(new SelectList(Model.ContactDetailVm.ContactDetailTypeSelectList.ContactDetailTypes, "Id", "Name"))">
+                    <option value="">--- Select Contact Type ---</option>
+                </select>
+                <span asp-validation-for="ContactDetailVm.ContactDetailTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactDetailVm.ContactDetailValue" class="control-label"></label>
+                <input asp-for="ContactDetailVm.ContactDetailValue" class="form-control" />
+                <span asp-validation-for="ContactDetailVm.ContactDetailValue" class="text-danger"></span>
+            </div>
+            <hr class="styled-hr" />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="ViewReceiverList">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

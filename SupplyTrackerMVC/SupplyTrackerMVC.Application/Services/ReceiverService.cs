@@ -7,6 +7,7 @@ using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Domain.Interfaces;
+using SupplyTrackerMVC.Domain.Model.Contacts;
 using SupplyTrackerMVC.Domain.Model.Receivers;
 
 namespace SupplyTrackerMVC.Application.Services
@@ -274,7 +275,7 @@ namespace SupplyTrackerMVC.Application.Services
                     return ServiceResponse<UpdateReceiverVm>.CreateFailed(new string[] { "Receiver not found in Db" });
                 }
 
-               // var receiverBranches = await _receiverRepository.GetAllActiveReceiverBranches(receiverId).ProjectTo<ReceiverForListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+                // var receiverBranches = await _receiverRepository.GetAllActiveReceiverBranches(receiverId).ProjectTo<ReceiverForListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
 
                 return ServiceResponse<UpdateReceiverVm>.CreateSuccess(receiverVm);
             }
@@ -284,9 +285,27 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public Task<ServiceResponse<AddContactVm>> AddReceiverContactAsync(AddContactVm newContactVm, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<AddContactVm>> AddReceiverContactAsync(AddContactVm newContactVm, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var validator = _fluentValidatorFactory.GetValidator<AddContactVm>();
+                var validResult = await validator.ValidateAsync(newContactVm, cancellationToken);
+                if (!validResult.IsValid)
+                {
+                    return ServiceResponse<AddContactVm>.CreateFailed(validResult.Errors.Select(e => e.ErrorMessage), true);
+                }
+
+                var contact = _mapper.Map<AddContactVm, Contact>(newContactVm);
+                contact.ReceiverId = newContactVm.ContactOwnerId;
+                var contactId = await _contactRepository.AddContactAsync(contact, cancellationToken);
+
+                return ServiceResponse<AddContactVm>.CreateSuccess(null, contactId);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<AddContactVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
     }
 }
