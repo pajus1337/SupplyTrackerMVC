@@ -92,9 +92,9 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddReceiverBranch(CancellationToken cancellationToken)
+        public async Task<IActionResult> AddReceiverBranch(CancellationToken cancellationToken, int receiverId = 0)
         {
-            var model = await _receiverService.PrepareNewReceiverBranchVm(cancellationToken);
+            var model = await _receiverService.PrepareNewReceiverBranchVm(cancellationToken, receiverId);
 
                 return View(model);
         }

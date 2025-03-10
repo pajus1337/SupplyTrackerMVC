@@ -21,7 +21,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<ServiceResponse<AddContactVm>> AddReceiverContactAsync(AddContactVm newContactVm, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> AddReceiverBranchAsync(NewReceiverBranchVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<ReceiverBranchDetailsVm>> GetReceiverBranchDetailsAsync(int receiverBranchId, CancellationToken cancellationToken);
-        Task<NewReceiverBranchVm> PrepareNewReceiverBranchVm(CancellationToken cancellationToken);
+        Task<NewReceiverBranchVm> PrepareNewReceiverBranchVm(CancellationToken cancellationToken, int receiverId);
         Task<ServiceResponse<UpdateReceiverVm>> GetReceiverForEditAsync(int receiverId,CancellationToken cancellationToken);
 
     }

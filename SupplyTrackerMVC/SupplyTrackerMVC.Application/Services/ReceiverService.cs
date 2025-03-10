@@ -178,7 +178,7 @@ namespace SupplyTrackerMVC.Application.Services
         }
 
         // TODO: Create better implementation of this prototype metod
-        public async Task<NewReceiverBranchVm> PrepareNewReceiverBranchVm(CancellationToken cancellationToken)
+        public async Task<NewReceiverBranchVm> PrepareNewReceiverBranchVm(CancellationToken cancellationToken, int receiverId = 0)
         {
             var receivers = await GetReceiversForSelectListAsync(cancellationToken);
             var contactTypes = await GetContactTypesForSelectListAsync(cancellationToken);
@@ -193,6 +193,12 @@ namespace SupplyTrackerMVC.Application.Services
                     ContactDetailTypeSelectList = contactTypes.Data
                 }
             };
+
+            if (receiverId > 0)
+            {
+                model.ReceiverSelectedId = receiverId;
+                model.ReceiverSelectList.Receivers = receivers.Data.Receivers.Where(p => p.Id == receiverId);
+            }
 
             return model;
         }

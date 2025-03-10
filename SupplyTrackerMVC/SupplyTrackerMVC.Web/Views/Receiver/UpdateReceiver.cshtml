@@ -95,7 +95,7 @@
             }
         </tbody>
     </table>
-    <a asp-action="AddContactForReceiver" asp-route-senderId="@Model.Id" class="btn btn-success">Add ReceiverBranch</a>
+    <a asp-controller="Receiver" asp-action="AddReceiverBranch" asp-route-receiverId="@Model.Id" class="btn btn-success">Add ReceiverBranch</a>
 
 <div>
     <a asp-action="Index">Back to List</a>
