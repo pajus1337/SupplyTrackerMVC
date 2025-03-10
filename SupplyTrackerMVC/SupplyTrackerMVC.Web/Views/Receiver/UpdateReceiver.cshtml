@@ -88,7 +88,7 @@
                     <td>@receiverBranches.Id</td>
                     <td>@receiverBranches.Name</td>
                     <td>
-                        <a asp-action="" asp-route-id="@receiverBranches.Id" class="btn btn-primary">Edit</a>
+                        <a asp-controller="Receiver" asp-action="UpdateReceiverBranch" asp-route-receiverBranchId="@receiverBranches.Id" class="btn btn-primary">Edit</a>
                         <a asp-action="" asp-route-id="@receiverBranches.Id" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>

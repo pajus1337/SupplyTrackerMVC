@@ -121,6 +121,18 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> UpdateReceiverBranch(int receiverBranchId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateReceiverBranch(UpdateReceiverBranch model, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
         public async Task<IActionResult> ViewReceiverBranch(int receiverBranchId, CancellationToken cancellationToken)
         {
            var serviceResponse = await _receiverService.GetReceiverBranchDetailsAsync(receiverBranchId, cancellationToken);
