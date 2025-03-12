@@ -27,7 +27,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
         public NewAddressForReceiverBranchVm NewAddressForReceiverBranch { get; set; }
 
         public int ContactId { get; set; }
-        public AddContactVm NewContactForReceiverBranch { get; set; }
+        public NewContactVm NewContactForReceiverBranch { get; set; }
         [DisplayName("Select Receiver you create new branch for")]
         public int ReceiverSelectedId { get; set; }
         public ReceiverSelectListVm ReceiverSelectList { get; set; }

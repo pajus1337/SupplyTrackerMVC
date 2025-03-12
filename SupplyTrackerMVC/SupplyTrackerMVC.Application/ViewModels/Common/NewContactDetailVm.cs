@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class AddContactDetailVm : IMapFrom<ContactDetail>
+    public class NewContactDetailVm : IMapFrom<ContactDetail>
     {
         public int Id { get; set; }
         public int ContactId { get; set; }
@@ -23,13 +23,13 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<AddContactDetailVm, ContactDetail>()
+            profile.CreateMap<NewContactDetailVm, ContactDetail>()
                 .ForMember(d => d.ContactDetailTypeId, opt => opt.MapFrom(s => s.ContactDetailTypeId));
 
         }
     }
 
-    public class AddContactDetailValidator : AbstractValidator<AddContactDetailVm>
+    public class AddContactDetailValidator : AbstractValidator<NewContactDetailVm>
     {
         public AddContactDetailValidator()
         {

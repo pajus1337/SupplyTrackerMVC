@@ -135,7 +135,7 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         [HttpPost]
         [Route("create-new-contact")]
-        public async Task<IActionResult> AddContactForSender(AddContactVm model, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddContactForSender(NewContactVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.AddSenderContactAsync(model, cancellationToken);
             if (!serviceResponse.Success)

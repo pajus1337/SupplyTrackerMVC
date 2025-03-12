@@ -33,11 +33,11 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> AddContactType(CancellationToken cancellationToken)
         {
-            return View(new AddContactDetailTypeVm());
+            return View(new NewContactDetailTypeVm());
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddContactType(AddContactDetailTypeVm model, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddContactType(NewContactDetailTypeVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _contactService.AddContactDetailTypeAsync(model, cancellationToken);
             if (!serviceResponse.Success)
@@ -207,7 +207,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddContactDetail(AddContactDetailVm model, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddContactDetail(NewContactDetailVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _contactService.AddContactDetailAsync(model, cancellationToken);
             if (!serviceResponse.Success)

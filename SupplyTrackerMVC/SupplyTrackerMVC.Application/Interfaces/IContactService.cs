@@ -11,8 +11,8 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface IContactService
     {
-        Task<ServiceResponse<AddContactDetailTypeVm>> AddContactDetailTypeAsync(AddContactDetailTypeVm model, CancellationToken cancellationToken);
-        Task<ServiceResponse<AddContactDetailVm>> AddContactDetailAsync(AddContactDetailVm model, CancellationToken cancellationToken);
+        Task<ServiceResponse<NewContactDetailTypeVm>> AddContactDetailTypeAsync(NewContactDetailTypeVm model, CancellationToken cancellationToken);
+        Task<ServiceResponse<NewContactDetailVm>> AddContactDetailAsync(NewContactDetailVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<ContactDetailTypeVm>> UpdateContactDetailTypeAsync(UpdateContactDetailTypeVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> DeleteContactDetailTypeAsync(int contactTypeId, CancellationToken cancellationToken);
         Task<ServiceResponse<ListContactDetailTypesForListVm>> GetContactDetailTypesForListAsync(CancellationToken cancellationToken);
@@ -26,7 +26,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<ServiceResponse<UpdateContactDetailVm>> GetContactDetailForUpdateAsync(int contactDetailId, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> UpdateContactDetailAsync(UpdateContactDetailVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> DeleteContactDetailAsync(int contactDetailId, CancellationToken cancellationToken);
-        Task<ServiceResponse<AddContactDetailVm>> PrepareAddContactDetailVmAsync(int contactId, CancellationToken cancellationToken);
-        Task<ServiceResponse<AddContactVm>> PrepareAddContactVm(int contactOwnerId, CancellationToken cancellationToken);
+        Task<ServiceResponse<NewContactDetailVm>> PrepareAddContactDetailVmAsync(int contactId, CancellationToken cancellationToken);
+        Task<ServiceResponse<NewContactVm>> PrepareAddContactVm(int contactOwnerId, CancellationToken cancellationToken);
     }
 }

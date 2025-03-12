@@ -186,9 +186,9 @@ namespace SupplyTrackerMVC.Application.Services
             var model = new NewReceiverBranchVm();
 
             model.ReceiverSelectList = receivers.Data;
-            model.NewContactForReceiverBranch = new AddContactVm()
+            model.NewContactForReceiverBranch = new NewContactVm()
             {
-                ContactDetailVm = new AddContactDetailVm()
+                ContactDetailVm = new NewContactDetailVm()
                 {
                     ContactDetailTypeSelectList = contactTypes.Data
                 }
@@ -291,26 +291,26 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public async Task<ServiceResponse<AddContactVm>> AddReceiverContactAsync(AddContactVm newContactVm, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<NewContactVm>> AddReceiverContactAsync(NewContactVm newContactVm, CancellationToken cancellationToken)
         {
             try
             {
-                var validator = _fluentValidatorFactory.GetValidator<AddContactVm>();
+                var validator = _fluentValidatorFactory.GetValidator<NewContactVm>();
                 var validResult = await validator.ValidateAsync(newContactVm, cancellationToken);
                 if (!validResult.IsValid)
                 {
-                    return ServiceResponse<AddContactVm>.CreateFailed(validResult.Errors.Select(e => e.ErrorMessage), true);
+                    return ServiceResponse<NewContactVm>.CreateFailed(validResult.Errors.Select(e => e.ErrorMessage), true);
                 }
 
-                var contact = _mapper.Map<AddContactVm, Contact>(newContactVm);
+                var contact = _mapper.Map<NewContactVm, Contact>(newContactVm);
                 contact.ReceiverId = newContactVm.ContactOwnerId;
                 var contactId = await _contactRepository.AddContactAsync(contact, cancellationToken);
 
-                return ServiceResponse<AddContactVm>.CreateSuccess(null, contactId);
+                return ServiceResponse<NewContactVm>.CreateSuccess(null, contactId);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<AddContactVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ServiceResponse<NewContactVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
     }

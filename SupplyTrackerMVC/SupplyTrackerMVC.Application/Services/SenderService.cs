@@ -183,29 +183,29 @@ namespace SupplyTrackerMVC.Application.Services
         }
 
         // TODO: Refine AddSenderContactAsync Method
-        public async Task<ServiceResponse<AddContactVm>> AddSenderContactAsync(AddContactVm newContactVm, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<NewContactVm>> AddSenderContactAsync(NewContactVm newContactVm, CancellationToken cancellationToken)
         {
             try
             {
-                var validator = _fluentValidatorFactory.GetValidator<AddContactVm>();
+                var validator = _fluentValidatorFactory.GetValidator<NewContactVm>();
                 var result = await validator.ValidateAsync(newContactVm, cancellationToken);
                 if (!result.IsValid)
                 {
-                    return ServiceResponse<AddContactVm>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
+                    return ServiceResponse<NewContactVm>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
                 }
 
-                var contact = _mapper.Map<AddContactVm, Contact>(newContactVm);
+                var contact = _mapper.Map<NewContactVm, Contact>(newContactVm);
                 contact.SenderId = newContactVm.ContactOwnerId;
                 // TODO: Testing part
               //  contact.ContactDetails =  new List<ContactDetail> { _mapper.Map<ContactDetail>(newContactVm.ContactDetailVm) };
                 // End Of testing
                 var contactId = await _contactRepository.AddContactAsync(contact, cancellationToken);
 
-                return ServiceResponse<AddContactVm>.CreateSuccess(null, contactId);
+                return ServiceResponse<NewContactVm>.CreateSuccess(null, contactId);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<AddContactVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ServiceResponse<NewContactVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
@@ -222,18 +222,18 @@ namespace SupplyTrackerMVC.Application.Services
 
         // TODO: ASync ?! - Change prototype
         // TODO: Move to contactService? Generic the logic ?
-        public async Task<ServiceResponse<AddContactVm>> PrepareAddContactVm(int senderId)
+        public async Task<ServiceResponse<NewContactVm>> PrepareAddContactVm(int senderId)
         {
-            var model = new AddContactVm
+            var model = new NewContactVm
             {
                 ContactOwnerId = senderId,
-                ContactDetailVm = new AddContactDetailVm
+                ContactDetailVm = new NewContactDetailVm
                 {
                     ContactDetailTypeSelectList = GetContactTypes()
                 },
             };
 
-            return ServiceResponse<AddContactVm>.CreateSuccess(model);
+            return ServiceResponse<NewContactVm>.CreateSuccess(model);
         }
 
         private ContactDetailTypeSelectListVm GetContactTypes() => new ContactDetailTypeSelectListVm()

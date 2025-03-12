@@ -17,30 +17,30 @@ namespace SupplyTrackerMVC.Application.Services
         private readonly IFluentValidatorFactory _validatorFactory = fluentValidatorFactory;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<ServiceResponse<AddContactDetailTypeVm>> AddContactDetailTypeAsync(AddContactDetailTypeVm model, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<NewContactDetailTypeVm>> AddContactDetailTypeAsync(NewContactDetailTypeVm model, CancellationToken cancellationToken)
         {
             if (model == null)
             {
-                return ServiceResponse<AddContactDetailTypeVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
+                return ServiceResponse<NewContactDetailTypeVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
             try
             {
-                var validator = _validatorFactory.GetValidator<AddContactDetailTypeVm>();
+                var validator = _validatorFactory.GetValidator<NewContactDetailTypeVm>();
                 var validationResult = await validator.ValidateAsync(model, cancellationToken);
                 if (!validationResult.IsValid)
                 {
-                    return ServiceResponse<AddContactDetailTypeVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
+                    return ServiceResponse<NewContactDetailTypeVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
                 }
 
                 var contactDetailType = _mapper.Map<ContactDetailType>(model);
                 var contactDetailTypeId = await _contactRepository.AddContactDetailTypeAsync(contactDetailType, cancellationToken);
 
-                return ServiceResponse<AddContactDetailTypeVm>.CreateSuccess(null, contactDetailTypeId);
+                return ServiceResponse<NewContactDetailTypeVm>.CreateSuccess(null, contactDetailTypeId);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<AddContactDetailTypeVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" }, false);
+                return ServiceResponse<NewContactDetailTypeVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" }, false);
             }
         }
 
@@ -369,29 +369,29 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public async Task<ServiceResponse<AddContactDetailVm>> AddContactDetailAsync(AddContactDetailVm model, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<NewContactDetailVm>> AddContactDetailAsync(NewContactDetailVm model, CancellationToken cancellationToken)
         {
             if (model == null)
             {
-                return ServiceResponse<AddContactDetailVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
+                return ServiceResponse<NewContactDetailVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
             try
             {
-                var validator = _validatorFactory.GetValidator<AddContactDetailVm>();
+                var validator = _validatorFactory.GetValidator<NewContactDetailVm>();
                 var validationResult = await validator.ValidateAsync(model, cancellationToken);
                 if (!validationResult.IsValid)
                 {
-                    return ServiceResponse<AddContactDetailVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
+                    return ServiceResponse<NewContactDetailVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
                 }
                 // TODO: Get Answer => Add over root object, or create just new ContactDetail with FK to contact
-                var contactDetail = _mapper.Map<AddContactDetailVm, ContactDetail>(model);
+                var contactDetail = _mapper.Map<NewContactDetailVm, ContactDetail>(model);
                 var contactDetailId = await _contactRepository.AddContactDetailAsync(contactDetail, cancellationToken);
-                return ServiceResponse<AddContactDetailVm>.CreateSuccess(null, contactDetailId);
+                return ServiceResponse<NewContactDetailVm>.CreateSuccess(null, contactDetailId);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<AddContactDetailVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+                return ServiceResponse<NewContactDetailVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
             }
         }
 
@@ -401,42 +401,42 @@ namespace SupplyTrackerMVC.Application.Services
         };
 
 
-        public async Task<ServiceResponse<AddContactDetailVm>> PrepareAddContactDetailVmAsync(int contactId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<NewContactDetailVm>> PrepareAddContactDetailVmAsync(int contactId, CancellationToken cancellationToken)
         {
             if (contactId < 1)
             {
-                return ServiceResponse<AddContactDetailVm>.CreateFailed(new string[] { "Invalid contact ID" });
+                return ServiceResponse<NewContactDetailVm>.CreateFailed(new string[] { "Invalid contact ID" });
             }
 
             try
             {
-                var model = new AddContactDetailVm
+                var model = new NewContactDetailVm
                 {
                     ContactId = contactId,
                     ContactDetailTypeSelectList = GetContactTypesSelectList()
                 };
 
-                return ServiceResponse<AddContactDetailVm>.CreateSuccess(model);
+                return ServiceResponse<NewContactDetailVm>.CreateSuccess(model);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<AddContactDetailVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+                return ServiceResponse<NewContactDetailVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
             }
         }
 
 
-        public async Task<ServiceResponse<AddContactVm>> PrepareAddContactVm(int contactOwnerId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<NewContactVm>> PrepareAddContactVm(int contactOwnerId, CancellationToken cancellationToken)
         {
-            var model = new AddContactVm
+            var model = new NewContactVm
             {
                 ContactOwnerId = contactOwnerId,
-                ContactDetailVm = new AddContactDetailVm
+                ContactDetailVm = new NewContactDetailVm
                 {
                     ContactDetailTypeSelectList = GetContactTypesForSelectList()
                 },
             };
 
-            return ServiceResponse<AddContactVm>.CreateSuccess(model);
+            return ServiceResponse<NewContactVm>.CreateSuccess(model);
         }
 
         

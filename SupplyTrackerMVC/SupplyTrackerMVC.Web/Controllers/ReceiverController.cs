@@ -159,7 +159,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddContactForReceiver(AddContactVm model, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddContactForReceiver(NewContactVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _receiverService.AddReceiverContactAsync(model, cancellationToken);
             if (!serviceResponse.Success)
@@ -167,7 +167,7 @@ namespace SupplyTrackerMVC.Web.Controllers
                 return HandleErrors(serviceResponse);
             }
 
-            return RedirectToAction("ViewContact", "Contact", serviceResponse.ObjectId);
+            return RedirectToAction("ViewContact", "Contact", new { contactId = serviceResponse.ObjectId });
         }
     }
 }

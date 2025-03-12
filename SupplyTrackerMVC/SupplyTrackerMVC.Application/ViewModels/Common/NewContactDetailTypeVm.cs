@@ -11,17 +11,17 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.Common
 {
-    public class AddContactDetailTypeVm : IMapFrom<ContactDetailType>
+    public class NewContactDetailTypeVm : IMapFrom<ContactDetailType>
     {
         public int Id { get; set; }
         public string Name { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<AddContactDetailTypeVm, ContactDetailType>();
+            profile.CreateMap<NewContactDetailTypeVm, ContactDetailType>();
         }
     }
-    public class AddContactDetailTypeValidator : AbstractValidator<AddContactDetailTypeVm>
+    public class AddContactDetailTypeValidator : AbstractValidator<NewContactDetailTypeVm>
     {
         public AddContactDetailTypeValidator()
         {
