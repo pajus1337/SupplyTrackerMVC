@@ -13,6 +13,8 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string BranchInternalID { get; set; }
+        public string BranchAlias { get; set; }
 
         public void Mapping(Profile profile)
         {

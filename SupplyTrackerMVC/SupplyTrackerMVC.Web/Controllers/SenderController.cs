@@ -143,7 +143,7 @@ namespace SupplyTrackerMVC.Web.Controllers
                 return HandleErrors(serviceResponse);
             }
 
-            return RedirectToAction("ViewContact", "Contact", serviceResponse.ObjectId);
+            return RedirectToAction("ViewContact", "Contact", new { contactId = serviceResponse.ObjectId });
         }
         // TODO: AddContact, DeleteContact, EditContact - For Sender.
 

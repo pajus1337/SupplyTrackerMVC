@@ -75,9 +75,9 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
-              @*<th>Alias</th> // >> TODO: Add this property for view in table*@ 
+                <th>Alias</th>
+                <th>Internal ID</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -85,8 +85,9 @@
             @foreach (var receiverBranches in Model.ReceiverBranches)
             {
                 <tr>
-                    <td>@receiverBranches.Id</td>
                     <td>@receiverBranches.Name</td>
+                    <td>@receiverBranches.BranchAlias</td>
+                    <td>@receiverBranches.BranchInternalID</td>
                     <td>
                         <a asp-controller="Receiver" asp-action="UpdateReceiverBranch" asp-route-receiverBranchId="@receiverBranches.Id" class="btn btn-primary">Edit</a>
                         <a asp-action="" asp-route-id="@receiverBranches.Id" class="btn btn-danger">Delete</a>
