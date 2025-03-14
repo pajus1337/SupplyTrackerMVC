@@ -85,10 +85,26 @@ namespace SupplyTrackerMVC.Web.Controllers
             return View(serviceResponse.Data);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> DeleteReceiver(int receiverId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var serviceResponse = await _receiverService.GetReceiverForDeleteAsync(receiverId, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteReceiver(ReceiverForDeleteVm model, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _receiverService.DeleteReceiverByIdAsync(model.Id, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
         }
 
         [HttpGet]

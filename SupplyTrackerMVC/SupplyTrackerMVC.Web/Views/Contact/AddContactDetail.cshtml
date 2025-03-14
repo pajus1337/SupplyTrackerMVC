@@ -1,50 +1,49 @@
 ﻿@model SupplyTrackerMVC.Application.ViewModels.Common.NewContactDetailVm
 
 @{
-    ViewData["Title"] = "AddContactDetail";
+    ViewData["Title"] = "Add Contact Detail Information";
 }
 
-<h1>AddContactDetail</h1>
+<h1>Add Contact Detail Information</h1>
+<br />
 
-<h4>AddContactDetailVm</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="AddContactDetail">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ContactId" class="control-label"></label>
-                <input asp-for="ContactId" class="form-control" />
-                <span asp-validation-for="ContactId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ContactDetailTypeSelectList" class="control-label"></label>
-                <select asp-for="ContactDetailTypeId"
-                        asp-items="@(new SelectList(Model.ContactDetailTypeSelectList.ContactDetailTypes, "Id", "Name"))" class="form-control">
-                    <option value="">-- Select Contact Detail Type --</option>
+<section>
+    <h2>Contact Detail Information :</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AddContactDetail">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div>
+                    <input asp-for="ContactId" type="hidden" />
+                    <input asp-for="Id" type="hidden" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="ContactDetailTypeSelectList" class="control-label"></label>
+                    <select asp-for="ContactDetailTypeId"
+                            asp-items="@(new SelectList(Model.ContactDetailTypeSelectList.ContactDetailTypes, "Id", "Name"))" class="form-control">
+                        <option value="">-- Select Contact Detail Type --</option>
                     </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ContactDetailValue" class="control-label"></label>
-                <input asp-for="ContactDetailValue" class="form-control" />
-                <span asp-validation-for="ContactDetailValue" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ContactDetailValue" class="control-label"></label>
+                    <input asp-for="ContactDetailValue" class="form-control" />
+                    <span asp-validation-for="ContactDetailValue" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+</section>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

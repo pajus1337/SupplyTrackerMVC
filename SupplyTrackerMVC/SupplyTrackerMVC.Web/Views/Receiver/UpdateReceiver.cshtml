@@ -44,7 +44,7 @@
     </div>
     <hr />
     <h2>Contacts</h2>
-    <table class="table">
+    <table id="contactsTable" class="table contacts-table my-table">
         <thead>
             <tr>
                 <th>First Name</th>
@@ -72,7 +72,7 @@
 
     <hr />
     <h2>Receiver Branches</h2>
-    <table class="table">
+    <table id="receiverBranchesTable" class="table receiver-branches-table my-table">
         <thead>
             <tr>
                 <th>Name</th>
@@ -98,10 +98,12 @@
     </table>
     <a asp-controller="Receiver" asp-action="AddReceiverBranch" asp-route-receiverId="@Model.Id" class="btn btn-success">Add ReceiverBranch</a>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
