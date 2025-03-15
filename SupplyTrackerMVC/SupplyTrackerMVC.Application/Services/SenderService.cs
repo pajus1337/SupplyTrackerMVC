@@ -99,16 +99,21 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public async Task<ServiceResponse<ListSenderForListVm>> GetSendersForListAsync(CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ListSenderForListVm>> GetSendersForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken)
         {
-            var sendersQuery = _senderRepository.GetAllSenders();
-
             try
             {
-                var senders = await sendersQuery.ToListAsync(cancellationToken);
+                var sendersQuery = _senderRepository.GetAllSenders().Where(p => p.Name.StartsWith(searchString));
+                var sendersToShow = sendersQuery.Skip(pageSize * (pageNo - 1)).Take(pageSize);
+
+                var senders = await sendersToShow.ToListAsync(cancellationToken);
 
                 ListSenderForListVm result = new ListSenderForListVm();
                 result.Senders = new List<SenderForListVm>();
+                result.PageSize = pageNo;
+                result.SearchString = searchString;
+                result.Count = sendersQuery.Count();
+                
 
                 foreach (var sender in senders)
                 {

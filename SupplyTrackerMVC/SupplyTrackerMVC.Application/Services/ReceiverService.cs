@@ -313,5 +313,10 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<NewContactVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
+
+        public Task<ServiceResponse<ReceiverForDeleteVm>> GetReceiverForDeleteAsync(int receiverId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

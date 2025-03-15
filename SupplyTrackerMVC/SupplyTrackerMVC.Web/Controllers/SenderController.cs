@@ -85,7 +85,19 @@ namespace SupplyTrackerMVC.Web.Controllers
         [Route("list-of-senders")]
         public async Task<IActionResult> ViewSenderList(CancellationToken cancellationToken)
         {
-            var serviceResponse = await _senderService.GetSendersForListAsync(cancellationToken);
+            var serviceResponse = await _senderService.GetSendersForListAsync(5, 1, "", cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+            return View(serviceResponse.Data);
+        }
+
+        [HttpPost]
+        [Route("list-of-senders")]
+        public async Task<IActionResult> ViewSenderList(int pageSize, CancellationToken cancellationToken, int pageNo = 1, string searchString = "")
+        {
+            var serviceResponse = await _senderService.GetSendersForListAsync(pageSize, pageNo, searchString, cancellationToken);
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);
