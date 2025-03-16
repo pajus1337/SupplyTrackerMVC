@@ -2,44 +2,94 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="container my-4">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
 
-<div>
-    <h3>Manage Products</h3>
-    <button onclick="location.href='@Url.Action("ProductsList", "Product")'" type="button">
-        Manage Products
-    </button>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Manage Receivers
+                </div>
+                <div class="card-body">
+                    <p class="card-text">View or modify receivers.</p>
+                    <button class="btn btn-primary"
+                            onclick="location.href='@Url.Action("ViewReceiverList", "Receiver")'">
+                        Manage Receivers
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    <button onclick="location.href='@Url.Action("ProductTypesList", "Product")'" type="button">
-        Manage Product Types
-    </button>
-</div>
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Manage Senders
+                </div>
+                <div class="card-body">
+                    <p class="card-text">View or modify senders.</p>
+                    <button class="btn btn-primary"
+                            onclick="location.href='@Url.Action("ViewSenderList", "Sender")'">
+                        Manage Senders
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div>
-    <h3>Manage Receivers</h3>
-    <button onclick="location.href='@Url.Action("ViewReceiverList", "Receiver")'" type="button">
-        Manage Receivers
-    </button>
-</div>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Manage Products
+                </div>
+                <div class="card-body">
+                    <p class="card-text">View or modify products and product types.</p>
+                    <button class="btn btn-primary me-2"
+                            onclick="location.href='@Url.Action("ViewProductList", "Product")'">
+                        Manage Products
+                    </button>
+                    <button class="btn btn-secondary"
+                            onclick="location.href='@Url.Action("ProductTypesList", "Product")'">
+                        Manage Product Types
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div>
-    <h3>Manage Senders</h3>
-    <button onclick="location.href='@Url.Action("ViewSenderList", "Sender")'" type="button">
-        Manage Senders
-    </button>
-</div>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Manage Contact Types
+                </div>
+                <div class="card-body">
+                    <p class="card-text">View or modify contact types.</p>
+                    <button class="btn btn-primary"
+                            onclick="location.href='@Url.Action("ViewContactTypesList", "Contact")'">
+                        Manage Contact Types
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-@* TODO: Add after create, Action and Controller Path for user manage *@
-<div>
-    <h3>Manage Users</h3>
-    <button onclick="location.href='@Url.Action("", "")'" type="button">
-        Manage Users
-    </button>
-</div>
-
-<div>
-    <h3>Manage Contact Types</h3>
-    <button onclick="location.href='@Url.Action("ViewContactTypesList", "Contact")'" type="button">
-        Manage Contact Types
-    </button>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Manage Users
+                </div>
+                <div class="card-body">
+                    <p class="card-text">View or modify user accounts.</p>
+                    <!-- TODO: Add URL ACTION  -->
+                    <button class="btn btn-primary"
+                            onclick="location.href='@Url.Action("Index", "UserAdmin")'">
+                        Manage Users
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

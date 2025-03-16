@@ -6,6 +6,7 @@ using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
+using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Contacts;
 using SupplyTrackerMVC.Domain.Model.Receivers;
@@ -47,16 +48,20 @@ namespace SupplyTrackerMVC.Application.Services
             return isSuccess ? ServiceResponse<VoidValue>.CreateSuccess(null, receiverId) : ServiceResponse<VoidValue>.CreateFailed(new string[] { "Failed to add receiver" });
         }
 
-        public async Task<ServiceResponse<ListReceiverForListVm>> GetReceiversForListAsync(CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ListReceiverForListVm>> GetReceiversForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken)
         {
-            var receiversQuery = _receiverRepository.GetAllReceivers();
-
             try
             {
-                var receivers = await receiversQuery.ToListAsync(cancellationToken);
+                var receiversQuery = _receiverRepository.GetAllReceivers().Where(p => p.Name.StartsWith(searchString));
+                var receiversToShow = receiversQuery.Skip(pageSize * (pageNo - 1)).Take(pageSize);
+                var receivers = await receiversToShow.ToListAsync(cancellationToken);
 
                 ListReceiverForListVm result = new ListReceiverForListVm();
                 result.Receivers = new List<ReceiverForListVm>();
+                result.CurrentPage = pageNo;
+                result.PageSize = pageSize;
+                result.SearchString = searchString;
+                result.Count = receiversQuery.Count();
 
                 foreach (var receiver in receivers)
                 {
@@ -71,10 +76,10 @@ namespace SupplyTrackerMVC.Application.Services
 
                 return ServiceResponse<ListReceiverForListVm>.CreateSuccess(result);
             }
-            catch (Exception)
-            {
 
-                throw;
+            catch (Exception ex)
+            {
+                return ServiceResponse<ListReceiverForListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 

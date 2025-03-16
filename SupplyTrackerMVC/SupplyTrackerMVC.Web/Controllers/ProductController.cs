@@ -118,7 +118,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ProductsList(CancellationToken cancellationToken)
+        public async Task<IActionResult> ViewProductList(CancellationToken cancellationToken)
         {
             var serviceResponse = await _productService.GetAllProductsForListAsync(cancellationToken);
 
