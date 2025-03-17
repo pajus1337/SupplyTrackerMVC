@@ -14,14 +14,14 @@ namespace SupplyTrackerMVC.Application.Interfaces
     {
         Task<ServiceResponse<VoidValue>> AddNewProductAsync(NewProductVm model,CancellationToken cancellationToken);
         Task<ServiceResponse<UpdateProductVm>> UpdateProductAsync(UpdateProductVm model, CancellationToken cancellationToken);
-        Task<ServiceResponse<UpdateProductVm>> GetPreparedUpdateProductVmAsync(int productId, CancellationToken cancellationToken);
+        Task<ServiceResponse<UpdateProductVm>> PrepareUpdateProductVmAsync(int productId, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> DeleteProductASync(int productId, CancellationToken cancellationToken);
-        Task<ServiceResponse<VoidValue>> AddNewProductTypeAsync(NewProductTypeVm model, CancellationToken cancellationToken);
+        Task<ServiceResponse<VoidValue>> AddProductTypeAsync(NewProductTypeVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<ProductTypeVm>> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken);
-        Task<ServiceResponse<ListProductTypeForListVm>> GetAllProductTypesForListAsync(CancellationToken cancellationToken);
-        Task<ServiceResponse<ListProductForListVm>> GetAllProductsForListAsync(CancellationToken cancellationToken);
+        Task<ServiceResponse<ListProductTypeForListVm>> GetProductTypesForListAsync(CancellationToken cancellationToken);
+        Task<ServiceResponse<ListProductForListVm>> GetProductsForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken);
         Task<ServiceResponse<ProductDetailVm>> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken);
-        Task<ServiceResponse<ProductSelectListVm>> GetAllActiveProductsForSelectList(CancellationToken cancellationToken);
+        Task<ServiceResponse<ProductSelectListVm>> GetProductsForSelectList(CancellationToken cancellationToken);
         NewProductVm PrepareNewProductViewModel();
     }
 }

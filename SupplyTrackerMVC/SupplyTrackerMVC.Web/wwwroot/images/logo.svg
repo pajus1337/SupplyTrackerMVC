@@ -1,0 +1,27 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg"
+     width="200"
+     height="50"
+     viewBox="0 0 200 50"
+     role="img"
+     aria-label="Supply Tracker logo">
+
+	<defs>
+		<filter id="dropshadow" x="-50%" y="-50%" width="200%" height="200%">
+			<feOffset in="SourceAlpha" dx="2" dy="2" result="offset" />
+			<feGaussianBlur in="offset" stdDeviation="2" result="blur" />
+			<feBlend in="SourceGraphic" in2="blur" mode="normal" />
+		</filter>
+	</defs>
+
+	<text x="50%"
+		  y="50%"
+		  fill="#ffffff"
+		  font-family="Arial, sans-serif"
+		  font-size="20"
+		  font-weight="bold"
+		  text-anchor="middle"
+		  alignment-baseline="middle"
+		  filter="url(#dropshadow)">
+		Supply Tracker
+	</text>
+</svg>

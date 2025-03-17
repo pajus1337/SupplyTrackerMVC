@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "User Dashboard";
+}
+
+<div class="container my-4">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Manage Deliveries
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Create, View or Modify Deliveries.</p>
+                    <button class="btn btn-primary"
+                    <!--TODO: Add Action Url's for button-->
+                            onclick="location.href='@Url.Action("", "")'">
+                        Manage Deliveries
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    Statistics
+                </div>
+                <div class="card-body">
+                    <p class="card-text">View Delivery Statistics.</p>
+                    <button class="btn btn-primary"
+                            onclick="location.href='@Url.Action("", "")'">
+                        Statistics
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                     Reports
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Create and download Delivery Reports.</p>
+                    <button class="btn btn-primary me-2"
+                            onclick="location.href='@Url.Action("", "")'">
+                        Daily
+                    </button>
+                    <button class="btn btn-secondary"
+                            onclick="location.href='@Url.Action("", "")'">
+                        Monthly
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

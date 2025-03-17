@@ -2,7 +2,7 @@
 
 namespace SupplyTrackerMVC.Web.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         public IActionResult Index()
         {

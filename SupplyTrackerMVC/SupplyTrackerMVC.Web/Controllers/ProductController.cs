@@ -7,7 +7,7 @@ using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 
 namespace SupplyTrackerMVC.Web.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         private readonly IProductService _productService;
 
@@ -52,10 +52,17 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateProduct(int productId, CancellationToken cancellationToken)
         {
-            var model = await _productService.GetPreparedUpdateProductVmAsync(productId, cancellationToken);
-            return View(model);
+            var serviceResponse = await _productService.PrepareUpdateProductVmAsync(productId, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            return View(serviceResponse.Data);
         }
 
+
+        // TODO: Refine, ( Error Handling ) Display success message of update process )
         [HttpPost]
         public async Task<IActionResult> UpdateProduct(UpdateProductVm model, CancellationToken cancellationToken)
         {
@@ -69,10 +76,12 @@ namespace SupplyTrackerMVC.Web.Controllers
             return View(new NewProductTypeVm());
         }
 
+
+        // TODO: Refactor Model invalid stat  display method, ( using implementation from BaseController), Check if it comfor with isValid property.
         [HttpPost]
         public async Task<IActionResult> NewProductType(NewProductTypeVm model, CancellationToken cancellationToken)
         {
-            var serviceResponse = await _productService.AddNewProductTypeAsync(model, cancellationToken);
+            var serviceResponse = await _productService.AddProductTypeAsync(model, cancellationToken);
             if (!serviceResponse.Success)
             {
                 if (serviceResponse.ErrorMessage != null)
@@ -97,8 +106,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             var serviceResponse = await _productService.GetProductTypeByIdAsync(productTypeId, cancellationToken);
             if (!serviceResponse.Success)
             {
-                // TODO: Add unsuccess case 
-                return View();
+                return HandleErrors(serviceResponse);
             }
 
             return View(serviceResponse.Data);
@@ -110,8 +118,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             var serviceResponse = await _productService.GetProductDetailsByIdAsync(productId, cancellationToken);
             if (!serviceResponse.Success)
             {
-                // TODO: Add !success handler 
-                return View();
+                return HandleErrors(serviceResponse);
             }
 
             return View(serviceResponse.Data);
@@ -120,12 +127,24 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewProductList(CancellationToken cancellationToken)
         {
-            var serviceResponse = await _productService.GetAllProductsForListAsync(cancellationToken);
+            var serviceResponse = await _productService.GetProductsForListAsync(5, 1, "", cancellationToken);
 
             if (!serviceResponse.Success)
             {
-                // TODO: Add !success handler 
-                return View();
+                return HandleErrors(serviceResponse);
+            }
+
+            return View(serviceResponse.Data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ViewProductList(int pageSize, CancellationToken cancellationToken, int pageNo = 1, string searchString = "")
+        {
+            var serviceResponse = await _productService.GetProductsForListAsync(pageSize, pageNo, searchString, cancellationToken);
+
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
             }
 
             return View(serviceResponse.Data);
@@ -135,12 +154,11 @@ namespace SupplyTrackerMVC.Web.Controllers
         // TODO: Create Razor View
         public async Task<IActionResult> ProductTypesList(CancellationToken cancellationToken)
         {
-            var serviceResponse = await _productService.GetAllProductTypesForListAsync(cancellationToken);
+            var serviceResponse = await _productService.GetProductTypesForListAsync(cancellationToken);
 
             if (!serviceResponse.Success)
             {
-                // TODO: Add !success handler 
-                return View();
+                return HandleErrors(serviceResponse);
             }
 
             return View(serviceResponse.Data);
