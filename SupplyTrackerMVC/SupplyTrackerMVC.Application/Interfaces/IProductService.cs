@@ -12,7 +12,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface IProductService
     {
-        Task<ServiceResponse<VoidValue>> AddNewProductAsync(NewProductVm model,CancellationToken cancellationToken);
+        Task<ServiceResponse<VoidValue>> AddProductAsync(NewProductVm model,CancellationToken cancellationToken);
         Task<ServiceResponse<UpdateProductVm>> UpdateProductAsync(UpdateProductVm model, CancellationToken cancellationToken);
         Task<ServiceResponse<UpdateProductVm>> PrepareUpdateProductVmAsync(int productId, CancellationToken cancellationToken);
         Task<ServiceResponse<VoidValue>> DeleteProductASync(int productId, CancellationToken cancellationToken);
@@ -22,6 +22,6 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<ServiceResponse<ListProductForListVm>> GetProductsForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken);
         Task<ServiceResponse<ProductDetailVm>> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken);
         Task<ServiceResponse<ProductSelectListVm>> GetProductsForSelectList(CancellationToken cancellationToken);
-        NewProductVm PrepareNewProductViewModel();
+        NewProductVm PrepareNewProductVm();
     }
 }

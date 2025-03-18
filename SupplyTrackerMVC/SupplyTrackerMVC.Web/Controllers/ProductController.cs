@@ -21,16 +21,16 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult NewProduct()
+        public IActionResult AddProduct()
         {
-            var model = _productService.PrepareNewProductViewModel();
+            var model = _productService.PrepareNewProductVm();
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> NewProduct(NewProductVm model, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddProduct(NewProductVm model, CancellationToken cancellationToken)
         {
-            var serviceResponse = await _productService.AddNewProductAsync(model, cancellationToken);
+            var serviceResponse = await _productService.AddProductAsync(model, cancellationToken);
             if (!serviceResponse.Success)
             {
                 if (serviceResponse.ErrorMessage != null)
@@ -42,7 +42,7 @@ namespace SupplyTrackerMVC.Web.Controllers
                 }
 
                 TempData["Header"] = "Add new product";
-                return View("NewProduct", model);
+                return View("AddProduct", model);
             }
 
             TempData["Header"] = "Successfully added new product";
@@ -71,7 +71,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult NewProductType()
+        public IActionResult AddProductType()
         {
             return View(new NewProductTypeVm());
         }
@@ -79,7 +79,7 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         // TODO: Refactor Model invalid stat  display method, ( using implementation from BaseController), Check if it comfor with isValid property.
         [HttpPost]
-        public async Task<IActionResult> NewProductType(NewProductTypeVm model, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddProductType(NewProductTypeVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _productService.AddProductTypeAsync(model, cancellationToken);
             if (!serviceResponse.Success)
@@ -93,7 +93,7 @@ namespace SupplyTrackerMVC.Web.Controllers
                 }
                 TempData["Header"] = "Add new product type";
 
-                return View("NewProductType", model);
+                return View("AddProductType", model);
             }
 
             TempData["Header"] = "Successfully added new product type";
@@ -152,7 +152,7 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         [HttpGet] 
         // TODO: Create Razor View
-        public async Task<IActionResult> ProductTypesList(CancellationToken cancellationToken)
+        public async Task<IActionResult> ViewProductTypesList(CancellationToken cancellationToken)
         {
             var serviceResponse = await _productService.GetProductTypesForListAsync(cancellationToken);
 

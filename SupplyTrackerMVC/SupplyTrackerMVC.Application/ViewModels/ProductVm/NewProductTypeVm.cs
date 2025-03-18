@@ -15,7 +15,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
         public int Id { get; set; }
         public string PhysicalState { get; set; }
         public bool IsADRProduct { get; set; }
-
+        public bool IsPackaged { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<ProductType, NewProductTypeVm>();

@@ -12,7 +12,9 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
     public class ProductTypeForListVm : IMapFrom<ProductType>
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string PhysicalState { get; set; }
+        public bool IsADRProduct { get; set; }
+        public bool IsPackaged { get; set; }
 
         public void Mapping(Profile profile)
         {

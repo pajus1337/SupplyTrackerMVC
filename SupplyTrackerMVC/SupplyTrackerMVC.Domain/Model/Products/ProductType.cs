@@ -11,8 +11,10 @@ namespace SupplyTrackerMVC.Domain.Model.Products
         public int Id { get; set; }
         public string PhysicalState { get; set; }
         public bool IsADRProduct { get; set; }
+        public bool IsPackaged { get; set; }
 
         // 1:N
         public ICollection<Product> Products { get; set; }
     }
 }
+    

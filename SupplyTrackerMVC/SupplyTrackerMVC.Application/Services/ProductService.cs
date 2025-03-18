@@ -24,7 +24,7 @@ namespace SupplyTrackerMVC.Application.Services
             _validatorFactory = validatorFactory;
         }
 
-        public async Task<ServiceResponse<VoidValue>> AddNewProductAsync(NewProductVm model, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<VoidValue>> AddProductAsync(NewProductVm model, CancellationToken cancellationToken)
         {
             if (model == null)
             {
@@ -207,7 +207,7 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public NewProductVm PrepareNewProductViewModel()
+        public NewProductVm PrepareNewProductVm()
         {
             var model = new NewProductVm
             {
@@ -233,9 +233,26 @@ namespace SupplyTrackerMVC.Application.Services
             return ServiceResponse<VoidValue>.CreateSuccess(null, productTypeId);
         }
 
-        public Task<ServiceResponse<ListProductTypeForListVm>> GetProductTypesForListAsync(CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ListProductTypeForListVm>> GetProductTypesForListAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var productTypesQuery = _productRepository.GetAllProductTypes();
+                var productTypes = await productTypesQuery.ProjectTo<ProductTypeForListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+
+                ListProductTypeForListVm result = new ListProductTypeForListVm() 
+                {
+                    ProductTypes = productTypes,
+                    Count = productTypesQuery.Count(),
+                };
+
+                return ServiceResponse<ListProductTypeForListVm>.CreateSuccess(result);
+            }
+
+            catch (Exception ex)
+            {
+                return ServiceResponse<ListProductTypeForListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
 
         public async Task<ServiceResponse<ProductTypeVm>> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken)

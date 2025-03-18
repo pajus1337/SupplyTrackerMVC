@@ -8,19 +8,14 @@
     <h1 class="my-4">Products</h1>
     
     <div class="mb-3">
-        <a asp-action="Create" class="btn btn-success">Create New</a>
+        <a asp-controller="Product" asp-action="AddProduct" class="btn btn-success">Create New</a>
     </div>
 
     <form asp-action="ViewProductList" asp-controller="Product" method="post">
         <div class="row mb-3">
             <div class="col-md-4">
                 <div class="input-group">
-                    <input type="text"
-                           asp-for="SearchString"
-                           name="searchString"
-                           id="searchString"
-                           class="form-control"
-                           placeholder="Search..." />
+                    <input type="text" asp-for="SearchString" name="searchString" id="searchString" class="form-control" placeholder="Search..." />
                     <button type="submit" class="btn btn-primary">Find</button>
                 </div>
             </div>
