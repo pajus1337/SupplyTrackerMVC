@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SupplyTrackerMVC.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -88,7 +88,8 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PhysicalState = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsADRProduct = table.Column<bool>(type: "bit", nullable: false)
+                    IsADRProduct = table.Column<bool>(type: "bit", nullable: false),
+                    IsPackaged = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

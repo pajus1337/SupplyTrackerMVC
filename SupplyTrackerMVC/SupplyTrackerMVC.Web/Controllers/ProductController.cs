@@ -15,6 +15,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         {
             _productService = productService;
         }
+
         public IActionResult Index()
         {
             return View();
@@ -84,16 +85,7 @@ namespace SupplyTrackerMVC.Web.Controllers
             var serviceResponse = await _productService.AddProductTypeAsync(model, cancellationToken);
             if (!serviceResponse.Success)
             {
-                if (serviceResponse.ErrorMessage != null)
-                {
-                    foreach (var error in serviceResponse.ErrorMessage)
-                    {
-                        ModelState.AddModelError(string.Empty, error);
-                    }
-                }
-                TempData["Header"] = "Add new product type";
-
-                return View("AddProductType", model);
+                return HandleErrors(serviceResponse);
             }
 
             TempData["Header"] = "Successfully added new product type";

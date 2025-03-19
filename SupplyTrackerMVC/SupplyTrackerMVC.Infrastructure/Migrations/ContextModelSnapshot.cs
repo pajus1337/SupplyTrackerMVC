@@ -460,6 +460,9 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.Property<bool>("IsADRProduct")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsPackaged")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PhysicalState")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

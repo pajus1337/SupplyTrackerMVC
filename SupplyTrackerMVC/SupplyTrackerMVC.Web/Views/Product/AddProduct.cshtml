@@ -4,62 +4,73 @@
     ViewData["Title"] = "Add New Product";
 }
 
-<h1>Add new product</h1>
-<hr />
-<h5>Please fill in the required fields for new product :</h5>
-<p></p>
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="NewProduct">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id"/>
-                <span asp-validation-for="Id" class="text-danger"></span>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Product Display Name</label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label"></label>
-                    <input class="form-check-input" asp-for="isActive" /> @Html.DisplayNameFor(model => model.isActive)
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductType" class="control-label">Select Product Type</label>
-                <select asp-for="ProductTypeId" class="form-control" asp-items="@(new SelectList(Model.ProductType.ProductTypes, "Id", "Description"))"></select>
-                <span asp-validation-for="ProductTypeId" class="text-danger"></span>
-            </div>
-            <p></p>
-            <div class="form-group">
-                <label asp-for="ProductDetail.ChemicalSymbol" class="control-label"></label>
-                <input asp-for="ProductDetail.ChemicalSymbol" class="form-control" />
-                <span asp-validation-for="ProductDetail.ChemicalSymbol" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductDetail.ChemicalName" class="control-label"></label>
-                <input asp-for="ProductDetail.ChemicalName" class="form-control" />
-                <span asp-validation-for="ProductDetail.ChemicalName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductDetail.MassFraction" class="control-label"></label>
-                <input asp-for="ProductDetail.MassFraction" class="form-control" />
-                <span asp-validation-for="ProductDetail.MassFraction" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductDetail.ProductDescription" class="control-label"></label>
-                <textarea asp-for="ProductDetail.ProductDescription" class="form-control" rows="5"></textarea>
-                <span asp-validation-for="ProductDetail.ProductDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<div class="container my-4">
+    <h1 class="mb-4">Add New Product</h1>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    <h5>Please fill in the required fields for new product:</h5>
+
+    <div class="row my-3">
+        <div class="col-md-4">
+            <form asp-controller="Product" asp-action="AddProduct">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="control-label">Product Display Name</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group form-check mb-3">
+                    <input class="form-check-input" asp-for="isActive" />
+                    <label class="form-check-label" asp-for="isActive"></label>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ProductType" class="control-label">Select Product Type</label>
+                    <select asp-for="ProductTypeId" class="form-control"
+                            asp-items="@(new SelectList(Model.ProductType.ProductTypes, "Id", "Description"))">
+                    </select>
+                    <span asp-validation-for="ProductTypeId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ProductDetail.ChemicalSymbol" class="control-label"></label>
+                    <input asp-for="ProductDetail.ChemicalSymbol" class="form-control" />
+                    <span asp-validation-for="ProductDetail.ChemicalSymbol" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ProductDetail.ChemicalName" class="control-label"></label>
+                    <input asp-for="ProductDetail.ChemicalName" class="form-control" />
+                    <span asp-validation-for="ProductDetail.ChemicalName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ProductDetail.MassFraction" class="control-label"></label>
+                    <input asp-for="ProductDetail.MassFraction" class="form-control" />
+                    <span asp-validation-for="ProductDetail.MassFraction" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ProductDetail.ProductDescription" class="control-label"></label>
+                    <textarea asp-for="ProductDetail.ProductDescription" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="ProductDetail.ProductDescription" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <a asp-controller="Product" asp-action="ViewProductList" class="btn btn-secondary">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

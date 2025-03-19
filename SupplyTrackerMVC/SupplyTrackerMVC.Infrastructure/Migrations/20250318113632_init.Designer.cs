@@ -12,8 +12,8 @@ using SupplyTrackerMVC.Infrastructure;
 namespace SupplyTrackerMVC.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250304123018_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250318113632_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -461,6 +461,9 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("IsADRProduct")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPackaged")
                         .HasColumnType("bit");
 
                     b.Property<string>("PhysicalState")

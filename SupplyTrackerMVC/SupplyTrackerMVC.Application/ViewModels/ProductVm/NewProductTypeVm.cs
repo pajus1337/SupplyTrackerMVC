@@ -18,7 +18,6 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
         public bool IsPackaged { get; set; }
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<ProductType, NewProductTypeVm>();
             profile.CreateMap<NewProductTypeVm, ProductType>();
         }
 

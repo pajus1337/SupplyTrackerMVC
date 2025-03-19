@@ -18,6 +18,7 @@
                         <th>ID</th>
                         <th>Type</th>
                         <th>ADR</th>
+                        <th>Packaged</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -28,7 +29,12 @@
                             <td>@Html.DisplayFor(modelItem => item.Id)</td>
                             <td>@Html.DisplayFor(modelItem => item.PhysicalState)</td>
                             <td>@Html.DisplayFor(modelItem => item.IsADRProduct)</td>
-                            <!--TODO: Add Acrion Buttons-->
+                            <td>@Html.DisplayFor(ModelItem => item.IsPackaged)</td>
+                            <td>
+                                @Html.ActionLink("Edit", "UpdateProductType", new { productTypeId = item.Id }) |
+                                @Html.ActionLink("Details", "ViewProductType", new { productTypeId = item.Id }) |
+                                @Html.ActionLink("Delete", "DeleteProductType", new { productTypeId = item.Id })
+                            </td>
                         </tr>
                     }
                 </tbody>
