@@ -4,47 +4,50 @@
     ViewData["Title"] = "Edit Receiver Information";
 }
 
-<h1>Edit Receiver</h1>
-
-<h4>Details :</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="UpdateReceiver">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="Address.Id" />
-            <span asp-validation-for="Id" class="text-danger"></span>
-            <span asp-validation-for="Address.Id" class="text-danger"></span>
-
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address.Street" class="control-label"></label>
-                <input asp-for="Address.Street" class="form-control" />
-                <span asp-validation-for="Address.Street" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address.ZIP" class="control-label"></label>
-                <input asp-for="Address.ZIP" class="form-control" />
-                <span asp-validation-for="Address.ZIP" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address.City" class="control-label"></label>
-                <input asp-for="Address.City" class="form-control" />
-                <span asp-validation-for="Address.City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div class="container my-4">
+    <h1 class="mb-4">Edit Receiver</h1>
+    <h4 class="mb-3">Details</h4>
     <hr />
-    <h2>Contacts</h2>
-    <table id="contactsTable" class="table contacts-table my-table">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="UpdateReceiver">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Address.Id" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+                <span asp-validation-for="Address.Id" class="text-danger"></span>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Address.Street" class="control-label"></label>
+                    <input asp-for="Address.Street" class="form-control" />
+                    <span asp-validation-for="Address.Street" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Address.ZIP" class="control-label"></label>
+                    <input asp-for="Address.ZIP" class="form-control" />
+                    <span asp-validation-for="Address.ZIP" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Address.City" class="control-label"></label>
+                    <input asp-for="Address.City" class="form-control" />
+                    <span asp-validation-for="Address.City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <h2 class="mb-3">Contacts</h2>
+    <table id="contactsTable" class="table table-striped table-hover mb-4">
         <thead>
             <tr>
                 <th>First Name</th>
@@ -61,18 +64,25 @@
                     <td>@contact.LastName</td>
                     <td>@contact.Role</td>
                     <td>
-                        <a asp-controller="Contact" asp-action="UpdateContact" asp-route-contactId="@contact.Id" class="btn btn-primary">Edit</a>
-                        <a asp-action="DeleteContact" asp-route-id="@contact.Id" class="btn btn-danger">Delete</a>
+                        <a asp-controller="Contact" asp-action="UpdateContact" asp-route-contactId="@contact.Id" class="btn btn-primary me-2">
+                            Edit
+                        </a>
+                        <a asp-action="DeleteContact" asp-route-id="@contact.Id" class="btn btn-danger">
+                            Delete
+                        </a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <a asp-action="AddContactForReceiver" asp-route-receiverId="@Model.Id" class="btn btn-success">Add New Contact</a>
+    <a asp-action="AddContactForReceiver" asp-route-receiverId="@Model.Id" class="btn btn-success mb-4">
+        Add New Contact
+    </a>
 
-    <hr />
-    <h2>Receiver Branches</h2>
-    <table id="receiverBranchesTable" class="table receiver-branches-table my-table">
+    <hr class="my-4" />
+
+    <h2 class="mb-3">Receiver Branches</h2>
+    <table id="receiverBranchesTable" class="table table-striped table-hover mb-4">
         <thead>
             <tr>
                 <th>Name</th>
@@ -82,28 +92,37 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var receiverBranches in Model.ReceiverBranches)
+            @foreach (var receiverBranch in Model.ReceiverBranches)
             {
                 <tr>
-                    <td>@receiverBranches.Name</td>
-                    <td>@receiverBranches.BranchAlias</td>
-                    <td>@receiverBranches.BranchInternalID</td>
+                    <td>@receiverBranch.Name</td>
+                    <td>@receiverBranch.BranchAlias</td>
+                    <td>@receiverBranch.BranchInternalID</td>
                     <td>
-                        <a asp-controller="Receiver" asp-action="UpdateReceiverBranch" asp-route-receiverBranchId="@receiverBranches.Id" class="btn btn-primary">Edit</a>
-                        <a asp-action="" asp-route-id="@receiverBranches.Id" class="btn btn-danger">Delete</a>
+                        <a asp-controller="Receiver" asp-action="UpdateReceiverBranch" asp-route-receiverBranchId="@receiverBranch.Id" class="btn btn-primary me-2">
+                            Edit
+                        </a>
+                        <a asp-action="DeleteReceiverBranch" asp-route-id="@receiverBranch.Id" class="btn btn-danger">
+                            Delete
+                        </a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <a asp-controller="Receiver" asp-action="AddReceiverBranch" asp-route-receiverId="@Model.Id" class="btn btn-success">Add ReceiverBranch</a>
+    <a asp-controller="Receiver" asp-action="AddReceiverBranch" asp-route-receiverId="@Model.Id" class="btn btn-success mb-4">
+        Add Receiver Branch
+    </a>
 
-    <div>
-        <a asp-action="Index">Back to List</a>
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary">
+            Back to List
+        </a>
     </div>
+</div>
 
-    @section Scripts {
-        @{
-            await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        }
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+}

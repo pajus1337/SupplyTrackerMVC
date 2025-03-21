@@ -30,7 +30,9 @@
                             <td>
                                 @Html.ActionLink("Edit", "UpdateContactType", new { contactTypeId = item.Id }) |
                                 @Html.ActionLink("Details", "ViewContactTypeDetails", new { contactTypeId = item.Id }) |
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" onclick="setContactDetailId(@item.Id)">Delete</button>
+                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" onclick="setContactTypeId(@item.Id)">
+                                    Delete
+                                </a>
                             </td>
                         </tr>
                     }
@@ -62,11 +64,9 @@
     </div>
 </div>
 
-@section Scripts
-{
+@section Scripts {
     <script type="text/javascript">
-        function setContactTypeId(id)
-        {
+        function setContactTypeId(id) {
             document.getElementById("contactTypeId").value = id;
         }
     </script>

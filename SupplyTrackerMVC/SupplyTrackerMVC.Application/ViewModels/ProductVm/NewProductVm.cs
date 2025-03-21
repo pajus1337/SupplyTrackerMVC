@@ -36,8 +36,9 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
         {
             public NewProductValidator()
             {
-                RuleFor(x => x.Id).NotNull();
-                RuleFor(x => x.ProductType).NotNull();
+                RuleFor(x => x.ProductTypeId).GreaterThan(0);
+                RuleFor(x => x.Name).NotEmpty().MaximumLength(50);
+                RuleFor(x => x.ProductDetail).NotNull();
             }
         }
     }

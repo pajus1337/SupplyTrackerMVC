@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using SupplyTrackerMVC.Application.Mapping;
 using SupplyTrackerMVC.Domain.Model.Products;
 using System;
@@ -15,12 +16,22 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
         public string ChemicalSymbol { get; set; }
         public string ChemicalName { get; set; }
         public string ProductDescription { get; set; }
-        public int MassFraction { get; set; }
+        public double MassFraction { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<ProductDetail, NewProductDetailVm>();
             profile.CreateMap<NewProductDetailVm, ProductDetail>();
+        }
+
+        public class NewProductDetailValidator : AbstractValidator<ProductDetail>
+        {
+            public NewProductDetailValidator()
+            {
+                RuleFor(x => x.ChemicalSymbol).NotEmpty().MaximumLength(15);
+                RuleFor(x => x.ChemicalName).NotEmpty().MaximumLength(50);
+                RuleFor(x => x.ProductDescription).NotEmpty().MaximumLength(2500);
+                RuleFor(x => x.MassFraction).GreaterThan(0);
+            }
         }
     }
 }

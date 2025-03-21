@@ -1,85 +1,94 @@
 ﻿@model SupplyTrackerMVC.Application.ViewModels.ReceiverVm.ReceiverDetailsVm
 
 @{
-    ViewData["Title"] = "View Receiver Details";
+    ViewData["Title"] = "Receiver Details";
 }
 
-<h1>Receiver Company Information </h1>
-<br />
-<section>
-    <h2 class="section-title">Main Information : </h2>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-    </dl>
-</section>
-<section>
-    <hr class="styled-hr" />
-    <h2 class="section-title">Address Information :</h2>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Address.Street)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Address.Street)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Address.ZIP)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Address.ZIP)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Address.City)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Address.City)
-        </dd>
-    </dl>
-</section>
-<section>
-    <hr class="styled-hr" />
-    <h2 class="section-title">Available Contacts :</h2>
-    <hr />
-    <table class="table">
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Role</th>
-                <th>Contact Type Count</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var contact in Model.Contacts)
-            {
+<div class="container my-4">
+    <h1 class="mb-4">Receiver Company Information</h1>
+
+    <section class="mb-4">
+        <h2 class="mb-2">Main Information</h2>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+        </dl>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="mb-2">Address Information</h2>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Address.Street)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Address.Street)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Address.ZIP)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Address.ZIP)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Address.City)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Address.City)
+            </dd>
+        </dl>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="mb-2">Available Contacts</h2>
+        <hr />
+        <table class="table table-striped table-hover">
+            <thead>
                 <tr>
-                    <td>@contact.FirstName</td>
-                    <td>@contact.LastName</td>
-                    <td>@contact.Role</td>
-                    <td>@contact.ContactDetails.Count</td>
-                    <td>
-                        <a asp-controller="Contact" asp-action="ViewContact" asp-route-contactId="@contact.Id" class="btn btn-primary">Details</a>
-                    </td>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Role</th>
+                    <th>Contact Type Count</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</section>
-<div>
-    @Html.ActionLink("Edit", "UpdateReceiver", new { receiverId = Model.Id }) |
-    <a asp-action="ViewReceiverList">Back to List</a>
+            </thead>
+            <tbody>
+                @foreach (var contact in Model.Contacts)
+                {
+                    <tr>
+                        <td>@contact.FirstName</td>
+                        <td>@contact.LastName</td>
+                        <td>@contact.Role</td>
+                        <td>@contact.ContactDetails.Count</td>
+                        <td>
+                            <a asp-controller="Contact" asp-action="ViewContact" asp-route-contactId="@contact.Id" class="btn btn-primary">
+                                Details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+    <div class="mt-4">
+        <a asp-action="UpdateReceiver" asp-route-receiverId="@Model.Id" class="btn btn-warning me-2">
+            Edit
+        </a>
+        <a asp-action="ViewReceiverList" class="btn btn-secondary">
+            Back to List
+        </a>
+    </div>
 </div>

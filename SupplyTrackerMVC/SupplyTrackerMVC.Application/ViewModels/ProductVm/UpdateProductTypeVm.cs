@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
 {
-    public class NewProductTypeVm : IMapFrom<ProductType>
+    public class UpdateProductTypeVm : IMapFrom<ProductType>
     {
         public int Id { get; set; }
         public string PhysicalState { get; set; }
@@ -18,14 +18,15 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
         public bool IsPackaged { get; set; }
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<NewProductTypeVm, ProductType>();
+            profile.CreateMap<UpdateProductTypeVm, ProductType>().ReverseMap();
         }
 
-        public class NewProductTypeValidator : AbstractValidator<NewProductTypeVm>
+        public class UpdateProductTypeValidator : AbstractValidator<UpdateProductTypeVm>
         {
-            public NewProductTypeValidator()
+            public UpdateProductTypeValidator()
             {
-                RuleFor(x => x.PhysicalState).NotEmpty().Length(3, 10);
+                RuleFor(p => p.Id).GreaterThan(0);
+                RuleFor(p => p.PhysicalState).NotEmpty().Length(3, 10);
             }
         }
     }

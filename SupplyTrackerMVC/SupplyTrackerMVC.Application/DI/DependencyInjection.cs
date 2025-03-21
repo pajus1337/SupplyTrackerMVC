@@ -30,15 +30,7 @@ namespace SupplyTrackerMVC.Application.DI
 
             //FluentValidator 
             serviceDescriptors.AddTransient<IFluentValidatorFactory, FluentValidatorFactory>();
-            serviceDescriptors.AddTransient<IValidator<NewReceiverVm>, NewReceiverValidator>();
-            serviceDescriptors.AddTransient<IValidator<NewProductVm>, NewProductValidator>();
-            serviceDescriptors.AddTransient<IValidator<NewProductTypeVm>, NewProductTypeValidator>();
-            serviceDescriptors.AddTransient<IValidator<UpdateProductVm>, UpdateProductValidator>();
-            serviceDescriptors.AddTransient<IValidator<NewContactDetailTypeVm>, AddContactDetailTypeValidator>();
-            serviceDescriptors.AddTransient<IValidator<UpdateContactDetailTypeVm>, UpdateContactDetailTypeValidator>();
-            serviceDescriptors.AddTransient<IValidator<UpdateContactDetailVm>, UpdateContactDetailValidator>();
-            serviceDescriptors.AddTransient<IValidator<UpdateReceiverVm>, UpdateReceiverValidator>();
-            serviceDescriptors.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            serviceDescriptors.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), ServiceLifetime.Transient);
 
             return serviceDescriptors;
         }

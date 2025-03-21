@@ -62,7 +62,6 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<UpdateProductVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
-
             try
             {
                 var validator = _validatorFactory.GetValidator<UpdateProductVm>();
@@ -80,7 +79,6 @@ namespace SupplyTrackerMVC.Application.Services
                     return ServiceResponse<UpdateProductVm>.CreateFailed(new string[] { "Failed to update product" });
                 }
 
-                // TODO: Consider retruning bool or model
                 return ServiceResponse<UpdateProductVm>.CreateSuccess(null);
             }
             catch (Exception ex)
@@ -286,5 +284,15 @@ namespace SupplyTrackerMVC.Application.Services
         {
             ProductTypes = _productRepository.GetAllProductTypes().ProjectTo<ProductTypeForSelectListVm>(_mapper.ConfigurationProvider)
         };
+
+        public Task<ServiceResponse<UpdateProductTypeVm>> UpdateProductTypeAsync(int productTYpeId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ServiceResponse<VoidValue>> DeleteProductTypeAsync(int productTypeId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
