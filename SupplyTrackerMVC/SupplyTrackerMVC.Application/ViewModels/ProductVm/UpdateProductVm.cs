@@ -20,19 +20,19 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
         public int ProductTypeId { get; set; }
         public ProductTypeSelectListVm ProductType { get; set; }
 
-        public ProductDetail ProductDetail { get; set; }
+        public UpdateProductDetailVm ProductDetail { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Product, UpdateProductVm>();
-            profile.CreateMap<UpdateProductVm, Product>();
+            profile.CreateMap<Product, UpdateProductVm>(); 
         }
 
         public class UpdateProductValidator : AbstractValidator<UpdateProductVm>
         {
             public UpdateProductValidator()
             {
-                RuleFor(x => x.Id).NotNull();
+                RuleFor(x => x.Name).NotEmpty().MaximumLength(30).MinimumLength(3);
+                RuleFor(x => x.ProductTypeId).GreaterThan(0);
             }
         }
     }

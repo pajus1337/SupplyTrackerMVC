@@ -184,18 +184,16 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<UpdateProductVm>.CreateFailed(new string[] { "Error: Invalid product Id" });
             }
 
-            var productQuery = _productRepository.GetProductById(productId);
             try
             {
+                var productQuery = _productRepository.GetProductById(productId);
                 var product = await productQuery.SingleOrDefaultAsync(cancellationToken);
                 if (product == null)
                 {
-                    return ServiceResponse<UpdateProductVm>.CreateFailed(new string[] { "Error: Sender is null" });
+                    return ServiceResponse<UpdateProductVm>.CreateFailed(new string[] { "Error: Product not found in Database" });
                 }
-
                 var productVm = _mapper.Map<UpdateProductVm>(product);
-                // TODO: check
-                // productVm.ProductType = GetProductTypes();
+                productVm.ProductType = GetProductTypes();
 
                 return ServiceResponse<UpdateProductVm>.CreateSuccess(productVm);
             }
