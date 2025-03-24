@@ -155,5 +155,21 @@ namespace SupplyTrackerMVC.Web.Controllers
 
             return View(serviceResponse.Data);
         }
+
+
+        // Implement PRG Pattern.
+        [HttpPost]
+        public async Task<IActionResult> DeleteProduct(int productId, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _productService.DeleteProductASync(productId, cancellationToken);
+
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            TempData["SuccessMessage"] = $"Product with ID {productId} has been successfully deleted.";
+            return RedirectToAction("ViewProductList");
+        }
     }
 }

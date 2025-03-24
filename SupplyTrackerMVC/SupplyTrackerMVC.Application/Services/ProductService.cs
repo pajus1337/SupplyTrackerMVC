@@ -192,6 +192,7 @@ namespace SupplyTrackerMVC.Application.Services
                 {
                     return ServiceResponse<UpdateProductVm>.CreateFailed(new string[] { "Error: Product not found in Database" });
                 }
+
                 var productVm = _mapper.Map<UpdateProductVm>(product);
                 productVm.ProductType = GetProductTypes();
 

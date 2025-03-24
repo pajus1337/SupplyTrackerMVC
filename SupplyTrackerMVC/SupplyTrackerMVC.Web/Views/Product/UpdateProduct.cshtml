@@ -12,12 +12,8 @@
         <div class="col-md-4">
             <form asp-action="UpdateProduct">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <div class="form-group mb-3">
-                    <label asp-for="Id" class="control-label"></label>
-                    <input asp-for="Id" class="form-control" />
+                    <input type="hidden" asp-for="Id" />
                     <span asp-validation-for="Id" class="text-danger"></span>
-                </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="Name" class="control-label"></label>
@@ -31,9 +27,35 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <label asp-for="ProductTypeId" class="control-label"></label>
-                    <input asp-for="ProductTypeId" class="form-control" />
+                    <label asp-for="ProductType" class="control-label">Select Product Type</label>
+                    <select asp-for="ProductTypeId" class="form-control"
+                            asp-items="@(new SelectList(Model.ProductType.ProductTypes, "Id", "Description"))">
+                    </select>
                     <span asp-validation-for="ProductTypeId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ProductDetail.ChemicalSymbol" class="control-label"></label>
+                    <input asp-for="ProductDetail.ChemicalSymbol" class="form-control" />
+                    <span asp-validation-for="ProductDetail.ChemicalSymbol" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ProductDetail.ChemicalName" class="control-label"></label>
+                    <input asp-for="ProductDetail.ChemicalName" class="form-control" />
+                    <span asp-validation-for="ProductDetail.ChemicalName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ProductDetail.MassFraction" class="control-label"></label>
+                    <input asp-for="ProductDetail.MassFraction" class="form-control" />
+                    <span asp-validation-for="ProductDetail.MassFraction" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ProductDetail.ProductDescription" class="control-label"></label>
+                    <textarea asp-for="ProductDetail.ProductDescription" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="ProductDetail.ProductDescription" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">

@@ -24,7 +24,8 @@ namespace SupplyTrackerMVC.Application.ViewModels.ProductVm
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Product, UpdateProductVm>(); 
+            profile.CreateMap<Product, UpdateProductVm>()
+                .ForMember(x => x.ProductType, opt => opt.Ignore()); 
         }
 
         public class UpdateProductValidator : AbstractValidator<UpdateProductVm>
