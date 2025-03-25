@@ -5,9 +5,9 @@
 }
 
 <div class="container my-4">
+    @await Html.PartialAsync("_MessagesPartial")
     <h1 class="mb-4">Product Type</h1>
 
-    <h3>@TempData["Header"]</h3>
     <h4 class="mb-3">Details:</h4>
     <hr />
 

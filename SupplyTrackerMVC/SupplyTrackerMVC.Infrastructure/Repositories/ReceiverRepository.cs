@@ -1,14 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SupplyTrackerMVC.Domain.Exceptions;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Interfaces.Common;
 using SupplyTrackerMVC.Domain.Model.Receivers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Infrastructure.Repositories
 {
@@ -21,51 +15,43 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
             _context = context;
         }
 
-        // TODO: Change into Async AddReceiverAsync
         public async Task<(bool Success, int? ReceiverId)> AddReceiverAsync(Receiver receiver, CancellationToken cancellationToken)
         {
             await _context.AddAsync(receiver, cancellationToken);
-            int success = await SaveChangesAsync(cancellationToken);
+            int recordsAffected = await SaveChangesAsync(cancellationToken);
 
-            return success > 0 ? (true, receiver.Id) : (false, null);
+            return recordsAffected > 0 ? (true, receiver.Id) : (false, null);
         }
 
         public async Task<bool> DeleteReceiverAsync(int receiverId, CancellationToken cancellationToken)
         {
-            try
+            var receiver = await _context.Receivers.FindAsync(receiverId, cancellationToken);
+            if (receiver == null)
             {
-                var receiver = await _context.Receivers.FirstOrDefaultAsync(p => p.Id == receiverId, cancellationToken);
-                if (receiver == null)
-                {
-                    return false;
-                }
-
-                if (receiver is ISoftDeletable softDeletable)
-                {
-                    softDeletable.IsDeleted = true;
-                    softDeletable.DeletedOnUtc = DateTime.UtcNow;
-                }
-                else
-                {
-                    _context.Receivers.Remove(receiver);
-                }
-
-                int success = await SaveChangesAsync(cancellationToken);
-
-                return success > 0 ? true : false;
-
+                throw new EntityNotFoundException($"Receiver with ID {receiverId} not found.");
             }
-            catch (Exception)
+
+            if (receiver is ISoftDeletable softDeletable)
             {
-                throw;
+                softDeletable.IsDeleted = true;
+                softDeletable.DeletedOnUtc = DateTime.UtcNow;
             }
+            else
+            {
+                _context.Receivers.Remove(receiver);
+            }
+
+            int recordsAffected = await _context.SaveChangesAsync(cancellationToken);
+
+            return recordsAffected > 0;
         }
 
         public async Task<bool> UpdateReceiverAsync(Receiver receiver, CancellationToken cancellationToken)
         {
             _context.Receivers.Update(receiver);
-            int success = await SaveChangesAsync(cancellationToken);
-            return success > 0 ? true : false;
+            int recordsAffected = await SaveChangesAsync(cancellationToken);
+
+            return recordsAffected > 0;
         }
 
         public IQueryable<ReceiverBranch> GetAllActiveReceiverBranches(int receiverId)
@@ -88,9 +74,9 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
         public async Task<(bool Success, int? ReceiverBranchId)> AddReceiverBranchAsync(ReceiverBranch receiverBranch, CancellationToken cancellationToken)
         {
                 await _context.AddAsync(receiverBranch, cancellationToken);
-                int success = await SaveChangesAsync(cancellationToken);
+                int recordsAffected = await SaveChangesAsync(cancellationToken);
 
-                return success > 0 ? (true, receiverBranch.Id) : (false, null);
+                return recordsAffected > 0 ? (true, receiverBranch.Id) : (false, null);
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)

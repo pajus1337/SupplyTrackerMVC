@@ -31,16 +31,16 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
-            var validator = _validatorFactory.GetValidator<NewProductVm>();
-            var result = await validator.ValidateAsync(model, cancellationToken);
-            if (!result.IsValid)
-            {
-                return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
-            }
-
-            var product = _mapper.Map<Product>(model);
             try
             {
+                var validator = _validatorFactory.GetValidator<NewProductVm>();
+                var result = await validator.ValidateAsync(model, cancellationToken);
+                if (!result.IsValid)
+                {
+                    return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
+                }
+
+                var product = _mapper.Map<Product>(model);
                 var (productId, isSuccess) = await _productRepository.AddProductAsync(product, cancellationToken);
                 if (!isSuccess)
                 {
@@ -237,7 +237,7 @@ namespace SupplyTrackerMVC.Application.Services
                 var productTypesQuery = _productRepository.GetAllProductTypes();
                 var productTypes = await productTypesQuery.ProjectTo<ProductTypeForListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
 
-                ListProductTypeForListVm result = new ListProductTypeForListVm() 
+                ListProductTypeForListVm result = new ListProductTypeForListVm()
                 {
                     ProductTypes = productTypes,
                     Count = productTypesQuery.Count(),

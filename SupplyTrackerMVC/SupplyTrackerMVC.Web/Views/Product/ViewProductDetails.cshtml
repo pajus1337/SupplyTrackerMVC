@@ -5,12 +5,8 @@
 }
 
 <div class="container my-4">
+    @await Html.PartialAsync("_MessagesPartial")
     <h1 class="mb-4">Product Details</h1>
-
-    @if (TempData["Header"] != null)
-    {
-        <h3 class="mb-3">@TempData["Header"]</h3>
-    }
 
     <h4 class="mb-3">Product Details</h4>
     <hr />

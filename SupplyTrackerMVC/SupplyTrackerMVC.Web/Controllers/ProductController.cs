@@ -34,19 +34,11 @@ namespace SupplyTrackerMVC.Web.Controllers
             var serviceResponse = await _productService.AddProductAsync(model, cancellationToken);
             if (!serviceResponse.Success)
             {
-                if (serviceResponse.ErrorMessage != null)
-                {
-                    foreach (var error in serviceResponse.ErrorMessage)
-                    {
-                        ModelState.AddModelError(string.Empty, error);
-                    }
-                }
-
-                TempData["Header"] = "Add new product";
-                return View("AddProduct", model);
+                return HandleErrors(serviceResponse);
             }
 
-            TempData["Header"] = "Successfully added new product";
+            TempData["SuccessMessage"] = "Successfully Added New Product";
+
             return RedirectToAction("ViewProductDetails", new { productId = serviceResponse.ObjectId });
         }
 
@@ -62,13 +54,17 @@ namespace SupplyTrackerMVC.Web.Controllers
             return View(serviceResponse.Data);
         }
 
-
-        // TODO: Refine, ( Error Handling ) Display success message of update process )
         [HttpPost]
         public async Task<IActionResult> UpdateProduct(UpdateProductVm model, CancellationToken cancellationToken)
         {
-            await _productService.UpdateProductAsync(model, cancellationToken);
-            return View();
+         var serviceResponse =  await _productService.UpdateProductAsync(model, cancellationToken);
+            if (!serviceResponse.Success) 
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            TempData["SuccessMessage"] = "Product Updated Successfully";
+            return RedirectToAction("ViewProductDetails", new { productId = model.Id });
         }
 
         [HttpGet]
@@ -88,7 +84,7 @@ namespace SupplyTrackerMVC.Web.Controllers
                 return HandleErrors(serviceResponse);
             }
 
-            TempData["Header"] = "Successfully added new product type";
+            TempData["SuccessMessage"] = "Successfully added new product type";
             return RedirectToAction("ViewProductType", new { productTypeId = serviceResponse.ObjectId });
         }
 
