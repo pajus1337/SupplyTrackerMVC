@@ -44,7 +44,7 @@ namespace SupplyTrackerMVC.Application.Services
             var result = await validator.ValidateAsync(model, cancellationToken);
             if (!result.IsValid)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage));
+                return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage),true);
             }
 
             var delivery = _mapper.Map<Delivery>(model);

@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.DeliveryVm;
 
 namespace SupplyTrackerMVC.Web.Controllers
 {
-    public class DeliveryController : Controller
+    public class DeliveryController : BaseController
     {
         private readonly IDeliveryService _deliveryService;
         public DeliveryController(IDeliveryService deliveryService)
@@ -24,8 +25,6 @@ namespace SupplyTrackerMVC.Web.Controllers
             return View(model); 
         }
 
-
-        // TODO: Implement Class into BaseController for Use of Generic Error Creation Message Handler
         [HttpPost]
         public async Task<IActionResult> NewDelivery(NewDeliveryVm model, CancellationToken cancellationToken)
         {
@@ -62,6 +61,20 @@ namespace SupplyTrackerMVC.Web.Controllers
         {
             var branches = _deliveryService.GetReceiverBranchesByReceiverId(receiverId);
             return Json(branches);
+        }
+
+
+        // TODO: Create Pagination and Add more search filters ( Find firs out how to, ( best way )) ;)) 
+        [HttpGet]
+        public async Task<IActionResult> GetDeliveriesList(CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _deliveryService.GetDeliveryForListAsync(cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            return View(serviceResponse.Data);
         }
     }
 }

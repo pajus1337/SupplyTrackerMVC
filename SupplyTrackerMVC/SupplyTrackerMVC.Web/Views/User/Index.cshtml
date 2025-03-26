@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "User Dashboard";
 }
-
+<!--TODO: Add Action Url's for button-->
 <div class="container my-4">
     <h1 class="mb-4">@ViewData["Title"]</h1>
 
@@ -14,7 +14,6 @@
                 <div class="card-body">
                     <p class="card-text">Create, View or Modify Deliveries.</p>
                     <button class="btn btn-primary"
-                    <!--TODO: Add Action Url's for button-->
                             onclick="location.href='@Url.Action("", "")'">
                         Manage Deliveries
                     </button>
