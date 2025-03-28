@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.ProductVm;
+using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Products;
@@ -284,7 +285,7 @@ namespace SupplyTrackerMVC.Application.Services
             ProductTypes = _productRepository.GetAllProductTypes().ProjectTo<ProductTypeForSelectListVm>(_mapper.ConfigurationProvider)
         };
 
-        public Task<ServiceResponse<UpdateProductTypeVm>> UpdateProductTypeAsync(int productTYpeId, CancellationToken cancellationToken)
+        public Task<ServiceResponse<UpdateProductTypeVm>> UpdateProductTypeAsync(int productTypeId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -293,5 +294,35 @@ namespace SupplyTrackerMVC.Application.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task<ServiceResponse<UpdateProductTypeVm>> GetProductTypeToEditAsync(int productTypeId, CancellationToken cancellationToken)
+        {
+            if (productTypeId < 1 )
+            {
+                return ServiceResponse<UpdateProductTypeVm>.CreateFailed(new string[] { "Invalid Product Type ID" });
+            }
+
+            try
+            {
+                var productTypeVm = await _productRepository.GetProductTypeById(productTypeId).ProjectTo<UpdateProductTypeVm>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken);
+                if (productTypeVm == null)
+                {
+                    return ServiceResponse<UpdateProductTypeVm>.CreateFailed(new string[] { "Product Type not found" });
+                }
+
+                return ServiceResponse<UpdateProductTypeVm>.CreateSuccess(productTypeVm);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<UpdateProductTypeVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
+        }
+
+        public Task<ServiceResponse<UpdateProductTypeVm>> UpdateProductTypeAsync(UpdateProductTypeVm model, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }

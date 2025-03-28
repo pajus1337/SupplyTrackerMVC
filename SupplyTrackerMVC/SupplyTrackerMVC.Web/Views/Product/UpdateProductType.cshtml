@@ -1,0 +1,50 @@
+﻿@model SupplyTrackerMVC.Application.ViewModels.ProductVm.UpdateProductTypeVm
+
+@{
+    ViewData["Title"] = "Update Product Type";
+}
+
+<div class="container my-4">
+    <h1 class="mb-4">Update Product Type</h1>
+    <h4 class="mb-3">Update Product Type Details</h4>
+    <hr class="mb-4" />
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="UpdateProductType">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group mb-3">
+                    <label asp-for="PhysicalState" class="control-label"></label>
+                    <input asp-for="PhysicalState" class="form-control" />
+                    <span asp-validation-for="PhysicalState" class="text-danger"></span>
+                </div>
+
+                <div class="form-group form-check mb-3">
+                    <input class="form-check-input" asp-for="IsADRProduct" />
+                    <label class="form-check-label" asp-for="IsADRProduct"></label>
+                </div>
+
+                <div class="form-group form-check mb-3">
+                    <input class="form-check-input" asp-for="IsPackaged" />
+                    <label class="form-check-label" asp-for="IsPackaged"></label>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-controller="Product" asp-action="ViewProductTypesList" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

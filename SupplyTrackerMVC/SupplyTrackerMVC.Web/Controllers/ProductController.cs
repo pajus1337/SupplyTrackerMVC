@@ -101,6 +101,18 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> UpdateProductType(int productTypeId, CancellationToken cancellationToken)
+        {
+            var serviceResponse = await _productService.GetProductTypeToEditAsync(productTypeId, cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            return View(serviceResponse.Data);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> ViewProductDetails(int productId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _productService.GetProductDetailsByIdAsync(productId, cancellationToken);
