@@ -10,6 +10,7 @@ using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Contacts;
 using SupplyTrackerMVC.Domain.Model.Receivers;
+using SupplyTrackerMVC.Domain.Model.Senders;
 
 namespace SupplyTrackerMVC.Application.Services
 {
@@ -319,9 +320,28 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public Task<ServiceResponse<ReceiverForDeleteVm>> GetReceiverForDeleteAsync(int receiverId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ReceiverForDeleteVm>> GetReceiverForDeleteAsync(int receiverId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (receiverId <= 0)
+            {
+                return ServiceResponse<ReceiverForDeleteVm>.CreateFailed(new string[] { "Invalid receiver ID" });
+            }
+
+            try
+            {
+                var receiverQuery = _receiverRepository.GetReceiverById(receiverId).ProjectTo<ReceiverForDeleteVm>(_mapper.ConfigurationProvider);
+                var receiverVm = await receiverQuery.SingleOrDefaultAsync(cancellationToken);
+                if (receiverVm == null)
+                {
+                    return ServiceResponse<ReceiverForDeleteVm>.CreateFailed(new string[] { "Receiver not found in Db" });
+                }
+
+                return ServiceResponse<ReceiverForDeleteVm>.CreateSuccess(receiverVm);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<ReceiverForDeleteVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
     }
 }
