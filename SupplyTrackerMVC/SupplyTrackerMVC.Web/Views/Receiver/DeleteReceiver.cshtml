@@ -1,19 +1,19 @@
-﻿@model SupplyTrackerMVC.Application.ViewModels.SenderVm.SenderForDeleteVm
+﻿@model SupplyTrackerMVC.Application.ViewModels.ReceiverVm.ReceiverForDeleteVm
 
 @{
-    ViewData["Title"] = "Sender Deletion Confirmation";
+    ViewData["Title"] = "Receiver Deletion Confirmation";
 }
 
 <div class="container my-4">
     <h1 class="mb-4">@ViewData["Title"]</h1>
 
     <div class="alert alert-warning" role="alert">
-        <strong>Are you sure you want to delete this sender?</strong>
+        <strong>Are you sure you want to delete this receiver?</strong>
     </div>
 
     <div class="card shadow-sm mb-4">
         <div class="card-header">
-            Details of the Sender to be Deleted
+            Details of the Receiver to be Deleted
         </div>
         <div class="card-body">
             <dl class="row mb-0">
@@ -25,12 +25,12 @@
             </dl>
         </div>
         <div class="card-footer d-flex justify-content-between">
-            <form asp-action="DeleteSender" method="post" class="mb-0">
+            <form asp-action="DeleteReceiver" method="post" class="mb-0">
                 <input type="hidden" asp-for="Id" />
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
 
-            <a asp-action="ViewSenderList" class="btn btn-secondary">
+            <a asp-action="ViewReceiverList" class="btn btn-secondary">
                 Back to List
             </a>
         </div>
