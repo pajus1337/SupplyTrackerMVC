@@ -263,9 +263,23 @@ namespace SupplyTrackerMVC.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<VoidValue>> DeleteReceiverByIdAsync(int receiverId, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<VoidValue>> DeleteReceiverByIdAsync(int receiverId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (receiverId < 1)
+            {
+                return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Invalid receiver ID" });
+            }
+
+            try
+            {
+                await _receiverRepository.DeleteReceiverAsync(receiverId, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<VoidValue>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+            }
+
+            return ServiceResponse<VoidValue>.CreateSuccess(null, receiverId);
         }
 
 

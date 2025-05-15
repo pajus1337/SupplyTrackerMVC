@@ -120,7 +120,9 @@ namespace SupplyTrackerMVC.Web.Controllers
             {
                 return HandleErrors(serviceResponse);
             }
-            return View(serviceResponse.Data);
+
+            TempData["SuccessMessage"] = $"Receiver with ID {serviceResponse.ObjectId} has been successfully deleted.";
+            return RedirectToAction("ViewReceiverList");
         }
 
         [HttpGet]

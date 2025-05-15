@@ -46,6 +46,8 @@ namespace SupplyTrackerMVC.Application.Services
             return ServiceResponse<NewSenderVm>.CreateSuccess(model, senderId);
         }
 
+
+        //TODO : Refactor to implement RetrunService, improve logic.
         public async Task<ServiceResponse<VoidValue>> DeleteSenderByIdAsync(int senderId, CancellationToken cancellationToken)
         {
             var (success, error, additionalMessage) = await _senderRepository.DeleteSenderAsync(senderId, cancellationToken);

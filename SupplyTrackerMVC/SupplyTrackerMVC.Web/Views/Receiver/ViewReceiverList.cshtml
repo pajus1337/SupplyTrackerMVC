@@ -5,6 +5,7 @@
 }
 
 <div class="container">
+    @await Html.PartialAsync("_MessagesPartial")
     <h1 class="my-4">Receivers</h1>
 
     <div class="mb-3">
@@ -15,12 +16,7 @@
         <div class="row mb-3">
             <div class="col-md-4">
                 <div class="input-group">
-                    <input type="text"
-                           asp-for="SearchString"
-                           name="searchString"
-                           id="searchString"
-                           class="form-control"
-                           placeholder="Search..." />
+                    <input type="text" asp-for="SearchString" name="searchString" id="searchString" class="form-control" placeholder="Search..." />
                     <button type="submit" class="btn btn-primary">Find</button>
                 </div>
             </div>
