@@ -126,8 +126,9 @@ namespace SupplyTrackerMVC.Web.Controllers
             {
                 return HandleErrors(serviceResponse);
             }
-            // TODO: View Confirmation ? 
-            return View(serviceResponse.AdditionalMessage);
+
+            TempData["SuccessMessage"] = $"Sender with ID {model.Id} has been successfully deleted.";
+            return RedirectToAction("ViewSenderList");
         }
 
 

@@ -8,7 +8,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.DeliveryVm
 {
     public class ListDeliveryForListVm
     {
-        public List<DeliveryForListVm>  Deliveries { get; set; }
+        public List<DeliveryForListVm> Deliveries { get; set; }
         public int Count { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace SupplyTrackerMVC.Application.Services
             var result = await validator.ValidateAsync(model, cancellationToken);
             if (!result.IsValid)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage),true);
+                return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
             }
 
             var delivery = _mapper.Map<Delivery>(model);
@@ -126,27 +126,21 @@ namespace SupplyTrackerMVC.Application.Services
 
         public async Task<ServiceResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(CancellationToken cancellationToken)
         {
-            var deliveriesQuery = _deliveryRepository.GetAllDeliveries().ProjectTo<DeliveryForListVm>(_mapper.ConfigurationProvider);
-
             try
             {
+                var deliveriesQuery = _deliveryRepository.GetAllDeliveries().ProjectTo<DeliveryForListVm>(_mapper.ConfigurationProvider);
                 var deliveries = await deliveriesQuery.ToListAsync(cancellationToken);
-                if (deliveries.Count > 0)
+                var result = new ListDeliveryForListVm()
                 {
-                    var result = new ListDeliveryForListVm()
-                    {
-                        Deliveries = deliveries,
-                        Count = deliveries.Count
-                    };
+                    Deliveries = deliveries,
+                    Count = deliveries.Count
+                };
 
-                    return ServiceResponse<ListDeliveryForListVm>.CreateSuccess(result);
-                }
-
-                return ServiceResponse<ListDeliveryForListVm>.CreateFailed(new string[] { "There are no deliveries in Db" });
-            }
+                return ServiceResponse<ListDeliveryForListVm>.CreateSuccess(result);
+            }      
             catch (Exception ex)
             {
-                return ServiceResponse<ListDeliveryForListVm>.CreateFailed(new string[] { "An error occurred while getting deliveries", ex.Message });
+                return ServiceResponse<ListDeliveryForListVm>.CreateFailed(new string[] { "An error occurred while getting deliveries", ex.Message});
             }
         }
     }

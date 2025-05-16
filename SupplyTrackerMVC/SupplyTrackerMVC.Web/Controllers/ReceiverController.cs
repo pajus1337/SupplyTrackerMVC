@@ -121,7 +121,7 @@ namespace SupplyTrackerMVC.Web.Controllers
                 return HandleErrors(serviceResponse);
             }
 
-            TempData["SuccessMessage"] = $"Receiver with ID {serviceResponse.ObjectId} has been successfully deleted.";
+            TempData["SuccessMessage"] = $"Receiver with ID {model.Id} has been successfully deleted.";
             return RedirectToAction("ViewReceiverList");
         }
 

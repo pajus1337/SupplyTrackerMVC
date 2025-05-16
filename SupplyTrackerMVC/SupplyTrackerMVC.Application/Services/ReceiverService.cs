@@ -279,7 +279,7 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<VoidValue>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
             }
 
-            return ServiceResponse<VoidValue>.CreateSuccess(null, receiverId);
+            return ServiceResponse<VoidValue>.CreateSuccess(null);
         }
 
 
