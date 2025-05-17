@@ -6,6 +6,7 @@ using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
+using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Contacts;
 using SupplyTrackerMVC.Domain.Model.Receivers;
@@ -258,9 +259,41 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-        public Task<ServiceResponse<UpdateReceiverVm>> UpdateReceiverAsync(UpdateReceiverVm model, CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ReceiverDetailsVm>> UpdateReceiverAsync(UpdateReceiverVm updateReceiverVm, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (updateReceiverVm == null)
+            {
+                return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new[] { "Error occurred while processing the HTTP POST form" });
+            }
+
+            try
+            {
+                var validator = _fluentValidatorFactory.GetValidator<UpdateReceiverVm>();
+                var validationResult = await validator.ValidateAsync(updateReceiverVm, cancellationToken);
+                if (!validationResult.IsValid)
+                {
+                    return ServiceResponse<ReceiverDetailsVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
+                }
+
+                var receiver = _mapper.Map<Receiver>(updateReceiverVm);
+                var success = await _receiverRepository.UpdateReceiverAsync(receiver, cancellationToken);
+                if (!success)
+                {
+                    return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new[] { "Failed to update receiver" });
+                }
+
+                var response = await GetReceiverDetailsByIdAsync(receiver.Id, cancellationToken);
+                if (!response.Success)
+                {
+                    return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new[] { "Receiver not found in DB after update" });
+                }
+
+                return ServiceResponse<ReceiverDetailsVm>.CreateSuccess(response.Data);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new[] { $"Error occurred -> {ex.Message}" });
+            }
         }
 
         public async Task<ServiceResponse<VoidValue>> DeleteReceiverByIdAsync(int receiverId, CancellationToken cancellationToken)
