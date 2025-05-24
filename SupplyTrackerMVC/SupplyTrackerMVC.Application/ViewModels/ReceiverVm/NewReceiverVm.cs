@@ -23,8 +23,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
         {
             public NewReceiverValidator()
             {
-                RuleFor(x => x.Id).NotNull();
-                RuleFor(x => x.Name).Length(0, 5);
+                RuleFor(x => x.Name).Must(x => !string.IsNullOrWhiteSpace(x)).Length(2, 19);
                 RuleFor(x => x.Address).SetValidator(new NewAddressForReceiverVmValidator());
             }
         }
