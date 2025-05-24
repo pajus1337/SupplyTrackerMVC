@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using SupplyTrackerMVC.Application.Mapping;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Domain.Model.Receivers;
@@ -25,6 +26,17 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
         public void Mapping(Profile profile)
         {
 
+        }
+
+        public class UpdateReceiverBranchValidator : AbstractValidator<UpdateReceiverBranch>
+        {
+            public UpdateReceiverBranchValidator()
+            {
+                RuleFor(x => x.Id).GreaterThan(0);
+                RuleFor(x => x.Name).Length(2, 18);
+                RuleFor(x => x.BranchInternalID).Length(2, 8);
+                RuleFor(x => x.BranchAlias).Length(2, 10);
+            }
         }
     }
 }

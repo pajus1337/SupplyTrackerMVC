@@ -14,10 +14,10 @@ namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
     {
         public NewAddressForSenderVmValidator()
         {
-            RuleFor(p => p.Street).NotNull().MinimumLength(3);
-            RuleFor(p => p.City).NotNull().MinimumLength(3);
-            RuleFor(p => p.ZIP).NotNull().MinimumLength(3);
-            RuleFor(p => p.Country).NotNull().MinimumLength(3);
+            RuleFor(p => p.Street).Must(x => !string.IsNullOrWhiteSpace(x)).Length(3,100);
+            RuleFor(p => p.City).Must(x => !string.IsNullOrWhiteSpace(x)).Length(2, 85);
+            RuleFor(p => p.ZIP).Must(x => !string.IsNullOrWhiteSpace(x)).Length(3,10);
+            RuleFor(p => p.Country).Must(x => !string.IsNullOrWhiteSpace(x)).Length(2, 56);
         }
     }
 }

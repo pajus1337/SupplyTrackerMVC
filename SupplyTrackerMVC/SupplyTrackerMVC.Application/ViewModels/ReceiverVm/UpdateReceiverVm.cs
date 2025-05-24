@@ -39,7 +39,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
     {
         public UpdateReceiverValidator()
         {
-            RuleFor(x => x.Id).NotNull();
+            RuleFor(x => x.Id).GreaterThan(0);
         }
     }
 }

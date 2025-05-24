@@ -28,8 +28,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
         {
             public NewSenderValidator()
             {
-                RuleFor(x => x.Id).NotNull();
-                RuleFor(x => x.Name).Length(0, 5);
+                RuleFor(x => x.Name).Length(2, 19);
                 RuleFor(x => x.Address).SetValidator(new NewAddressForSenderVmValidator());
                 RuleFor(x => x.Contacts).SetValidator(new NewContactForSenderVmValidator());
             }

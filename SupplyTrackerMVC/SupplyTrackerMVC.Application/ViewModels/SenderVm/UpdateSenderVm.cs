@@ -33,8 +33,8 @@ namespace SupplyTrackerMVC.Application.ViewModels.SenderVm
     {
         public UpdateSenderValidator()
         {
-            RuleFor(x => x.Id).NotNull();
-            RuleFor(x => x.Name).Length(0, 5);
+            RuleFor(x => x.Id).GreaterThan(0);
+            RuleFor(x => x.Name).Length(2, 18);
         }
     }
 }
