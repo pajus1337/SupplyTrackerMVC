@@ -124,16 +124,20 @@ namespace SupplyTrackerMVC.Application.Services
             ReceiverBranches = _receiverRepository.GetAllReceiverBranches().Where(rb => rb.ReceiverId == receiverId).ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider)
         };
 
-        public async Task<ServiceResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(CancellationToken cancellationToken)
+        public async Task<ServiceResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken)
         {
             try
             {
-                var deliveriesQuery = _deliveryRepository.GetAllDeliveries().ProjectTo<DeliveryForListVm>(_mapper.ConfigurationProvider);
-                var deliveries = await deliveriesQuery.ToListAsync(cancellationToken);
+                var deliveriesQuery = _deliveryRepository.GetAllDeliveries().Where(p => p.Receiver.Name.StartsWith(searchString)).OrderBy(p => p.Id);
+                var deliveriesToShow = await deliveriesQuery.Skip(pageSize * (pageNo - 1)).Take(pageSize).ProjectTo<DeliveryForListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+
                 var result = new ListDeliveryForListVm()
                 {
-                    Deliveries = deliveries,
-                    Count = deliveries.Count
+                    Deliveries = deliveriesToShow,
+                    CurrentPage = pageNo,
+                    PageSize = pageSize,
+                    SearchString = searchString,
+                    Count = deliveriesQuery.Count()
                 };
 
                 return ServiceResponse<ListDeliveryForListVm>.CreateSuccess(result);

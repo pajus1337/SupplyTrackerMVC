@@ -16,6 +16,6 @@ namespace SupplyTrackerMVC.Application.Interfaces
         Task<ServiceResponse<DeliveryDetailsVm>> GetDeliveryDetailsByIdAsync(int deliveryId, CancellationToken cancellationToken);
         NewDeliveryVm PrepareNewDeliveryViewModel();
         ReceiverBranchSelectListVm GetReceiverBranchesByReceiverId(int receiverId);
-        Task<ServiceResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(CancellationToken CancellationToken);
+        Task<ServiceResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(int pageSize, int pageNo, string searchString, CancellationToken CancellationToken);
     }
 }

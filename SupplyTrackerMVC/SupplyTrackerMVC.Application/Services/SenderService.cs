@@ -47,7 +47,7 @@ namespace SupplyTrackerMVC.Application.Services
         }
 
 
-        //TODO : Refactor to implement RetrunService, improve logic.
+        //TODO : Refactor to implement ReturnService, improve logic.
         public async Task<ServiceResponse<VoidValue>> DeleteSenderByIdAsync(int senderId, CancellationToken cancellationToken)
         {
             var (success, error, additionalMessage) = await _senderRepository.DeleteSenderAsync(senderId, cancellationToken);
@@ -105,7 +105,7 @@ namespace SupplyTrackerMVC.Application.Services
         {
             try
             {
-                var sendersQuery = _senderRepository.GetAllSenders().Where(p => p.Name.StartsWith(searchString));
+                var sendersQuery = _senderRepository.GetAllSenders().Where(p => p.Name.StartsWith(searchString)).OrderBy(p => p.Id);
                 var sendersToShow = sendersQuery.Skip(pageSize * (pageNo - 1)).Take(pageSize);
                 var senders = await sendersToShow.ToListAsync(cancellationToken);
 

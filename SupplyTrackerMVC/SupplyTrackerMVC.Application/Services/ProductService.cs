@@ -130,7 +130,7 @@ namespace SupplyTrackerMVC.Application.Services
         {
             try
             {
-                var productsQuery = _productRepository.GetAllProducts().Where(p => p.Name.StartsWith(searchString)).ProjectTo<ProductForListVm>(_mapper.ConfigurationProvider);
+                var productsQuery = _productRepository.GetAllProducts().Where(p => p.Name.StartsWith(searchString)).OrderBy(p => p.Id).ProjectTo<ProductForListVm>(_mapper.ConfigurationProvider);
                 var productsToShow = productsQuery.Skip(pageSize * (pageNo - 1)).Take(pageSize);
                 var products = await productsToShow.ToListAsync(cancellationToken);
 

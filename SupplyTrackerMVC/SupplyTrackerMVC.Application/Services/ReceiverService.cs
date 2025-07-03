@@ -52,7 +52,7 @@ namespace SupplyTrackerMVC.Application.Services
         {
             try
             {
-                var receiversQuery = _receiverRepository.GetAllReceivers().Where(p => p.Name.StartsWith(searchString));
+                var receiversQuery = _receiverRepository.GetAllReceivers().Where(p => p.Name.StartsWith(searchString)).OrderBy(p => p.Id);
                 var receiversToShow = receiversQuery.Skip(pageSize * (pageNo - 1)).Take(pageSize);
                 var receivers = await receiversToShow.ToListAsync(cancellationToken);
 

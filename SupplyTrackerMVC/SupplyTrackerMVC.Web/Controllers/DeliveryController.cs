@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.DeliveryVm;
+using System.Threading;
 
 namespace SupplyTrackerMVC.Web.Controllers
 {
@@ -66,9 +67,21 @@ namespace SupplyTrackerMVC.Web.Controllers
 
         // TODO: Create Pagination and Add more search filters ( Find firs out how to, ( best way )) ;)) 
         [HttpGet]
-        public async Task<IActionResult> GetDeliveriesList(CancellationToken cancellationToken)
+        public async Task<IActionResult> ViewDeliveriesList(CancellationToken cancellationToken)
         {
-            var serviceResponse = await _deliveryService.GetDeliveryForListAsync(cancellationToken);
+            var serviceResponse = await _deliveryService.GetDeliveryForListAsync(5,1, "", cancellationToken);
+            if (!serviceResponse.Success)
+            {
+                return HandleErrors(serviceResponse);
+            }
+
+            return View(serviceResponse.Data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ViewDeliveriesList(int pageSize, CancellationToken cancellationToken, int pageNo = 1, string searchString = "")
+        {
+            var serviceResponse = await _deliveryService.GetDeliveryForListAsync(pageSize,pageNo, searchString, cancellationToken);
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);

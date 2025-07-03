@@ -78,7 +78,6 @@ namespace SupplyTrackerMVC.Application.Services
             {
                 return ServiceResponse<ContactDetailTypeVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
             }
-
         }
 
         public async Task<ServiceResponse<UpdateContactDetailTypeVm>> GetContactDetailTypeForEditAsync(int contactDetailTypeId, CancellationToken cancellationToken)
@@ -368,7 +367,6 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<UpdateContactDetailVm>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
             }
         }
-
         public async Task<ServiceResponse<NewContactDetailVm>> AddContactDetailAsync(NewContactDetailVm model, CancellationToken cancellationToken)
         {
             if (model == null)
@@ -400,7 +398,6 @@ namespace SupplyTrackerMVC.Application.Services
             ContactDetailTypes = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForSelectListVm>(_mapper.ConfigurationProvider)
         };
 
-
         public async Task<ServiceResponse<NewContactDetailVm>> PrepareAddContactDetailVmAsync(int contactId, CancellationToken cancellationToken)
         {
             if (contactId < 1)
@@ -424,7 +421,6 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
-
         public async Task<ServiceResponse<NewContactVm>> PrepareAddContactVm(int contactOwnerId, CancellationToken cancellationToken)
         {
             var model = new NewContactVm
@@ -439,7 +435,6 @@ namespace SupplyTrackerMVC.Application.Services
             return ServiceResponse<NewContactVm>.CreateSuccess(model);
         }
 
-        
         private ContactDetailTypeSelectListVm GetContactTypesForSelectList() => new ContactDetailTypeSelectListVm()
         {
             ContactDetailTypes = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForSelectListVm>(_mapper.ConfigurationProvider)
