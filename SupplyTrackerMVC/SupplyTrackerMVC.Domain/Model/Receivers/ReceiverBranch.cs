@@ -19,7 +19,6 @@ namespace SupplyTrackerMVC.Domain.Model.Receivers
         public DateTime? DeletedOnUtc { get; set; }
         public int AddressId { get; set; }
         public Address Address { get; set; }
-
         public int ReceiverId { get; set; }
         public Receiver Receiver { get; set; }
     }

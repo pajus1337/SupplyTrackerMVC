@@ -124,11 +124,31 @@ namespace SupplyTrackerMVC.Application.Services
             ReceiverBranches = _receiverRepository.GetAllReceiverBranches().Where(rb => rb.ReceiverId == receiverId).ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider)
         };
 
-        public async Task<ServiceResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken)
+        // TODO : Finish implementation
+        public async Task<ServiceResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(int pageSize, int pageNo, string searchBy, string searchString, CancellationToken cancellationToken)
         {
             try
             {
-                var deliveriesQuery = _deliveryRepository.GetAllDeliveries().Where(p => p.Receiver.Name.StartsWith(searchString)).OrderBy(p => p.Id);
+                var deliveriesQuery = _deliveryRepository.GetAllDeliveries();
+
+                if (!string.IsNullOrWhiteSpace(searchString) && !string.IsNullOrWhiteSpace(searchBy))
+                {
+                    string searchLower = searchString.ToLower();
+
+                    deliveriesQuery = searchBy switch
+                    {
+                        "Sender" => deliveriesQuery.Where(p => p.Sender.Name.ToLower().StartsWith(searchLower)),
+                        "Receiver" => deliveriesQuery.Where(p => p.Receiver.Name.ToLower().StartsWith(searchLower)),
+                        "ReceiverBranch" => deliveriesQuery.Where(p => p.Receiver.ReceiverBranches.Any(rb => rb.Name.ToLower().StartsWith(searchLower))),
+                        "Product" => deliveriesQuery.Where(p => p.Product.Name.ToLower().StartsWith(searchLower)),
+                        _ => deliveriesQuery
+                    };
+                }
+
+                deliveriesQuery = deliveriesQuery.OrderBy(p => p.Id);
+
+                var totalCount = await deliveriesQuery.CountAsync(cancellationToken);
+
                 var deliveriesToShow = await deliveriesQuery.Skip(pageSize * (pageNo - 1)).Take(pageSize).ProjectTo<DeliveryForListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
 
                 var result = new ListDeliveryForListVm()
@@ -136,8 +156,9 @@ namespace SupplyTrackerMVC.Application.Services
                     Deliveries = deliveriesToShow,
                     CurrentPage = pageNo,
                     PageSize = pageSize,
+                    SearchBy = searchBy,
                     SearchString = searchString,
-                    Count = deliveriesQuery.Count()
+                    Count = totalCount,
                 };
 
                 return ServiceResponse<ListDeliveryForListVm>.CreateSuccess(result);

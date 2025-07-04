@@ -69,7 +69,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewDeliveriesList(CancellationToken cancellationToken)
         {
-            var serviceResponse = await _deliveryService.GetDeliveryForListAsync(5,1, "", cancellationToken);
+            var serviceResponse = await _deliveryService.GetDeliveryForListAsync(5,1,"", "", cancellationToken);
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);
@@ -79,9 +79,9 @@ namespace SupplyTrackerMVC.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ViewDeliveriesList(int pageSize, CancellationToken cancellationToken, int pageNo = 1, string searchString = "")
+        public async Task<IActionResult> ViewDeliveriesList(int pageSize, CancellationToken cancellationToken, int pageNo = 1, string searchBy = "", string searchString = "")
         {
-            var serviceResponse = await _deliveryService.GetDeliveryForListAsync(pageSize,pageNo, searchString, cancellationToken);
+            var serviceResponse = await _deliveryService.GetDeliveryForListAsync(pageSize,pageNo, searchBy, searchString, cancellationToken);
             if (!serviceResponse.Success)
             {
                 return HandleErrors(serviceResponse);
