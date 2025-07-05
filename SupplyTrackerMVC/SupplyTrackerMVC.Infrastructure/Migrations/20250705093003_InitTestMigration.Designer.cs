@@ -12,8 +12,8 @@ using SupplyTrackerMVC.Infrastructure;
 namespace SupplyTrackerMVC.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250318113632_init")]
-    partial class init
+    [Migration("20250705093003_InitTestMigration")]
+    partial class InitTestMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -364,6 +364,9 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ReceiverBranchId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ReceiverId")
                         .HasColumnType("int");
 
@@ -373,6 +376,8 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("ReceiverBranchId");
 
                     b.HasIndex("ReceiverId");
 
@@ -679,24 +684,32 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.HasOne("SupplyTrackerMVC.Domain.Model.Products.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SupplyTrackerMVC.Domain.Model.Receivers.ReceiverBranch", "ReceiverBranch")
+                        .WithMany("Deliveries")
+                        .HasForeignKey("ReceiverBranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SupplyTrackerMVC.Domain.Model.Receivers.Receiver", "Receiver")
                         .WithMany("Deliveries")
                         .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SupplyTrackerMVC.Domain.Model.Senders.Sender", "Sender")
                         .WithMany("Deliveries")
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Product");
 
                     b.Navigation("Receiver");
+
+                    b.Navigation("ReceiverBranch");
 
                     b.Navigation("Sender");
                 });
@@ -745,7 +758,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.HasOne("SupplyTrackerMVC.Domain.Model.Receivers.Receiver", "Receiver")
                         .WithMany("ReceiverBranches")
                         .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Address");
@@ -792,6 +805,11 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.Navigation("Deliveries");
 
                     b.Navigation("ReceiverBranches");
+                });
+
+            modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Receivers.ReceiverBranch", b =>
+                {
+                    b.Navigation("Deliveries");
                 });
 
             modelBuilder.Entity("SupplyTrackerMVC.Domain.Model.Senders.Sender", b =>

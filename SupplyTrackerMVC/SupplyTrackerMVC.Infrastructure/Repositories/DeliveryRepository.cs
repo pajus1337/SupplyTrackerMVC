@@ -14,61 +14,37 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
     public class DeliveryRepository : IDeliveryRepository
     {
         private readonly Context _context;
+
         public DeliveryRepository(Context context)
         {
             _context = context;
         }
+
         public async Task<(bool Success, int? DeliveryId)> AddDeliveryAsync(Delivery delivery, CancellationToken cancellationToken)
         {
-            if (delivery == null)
-            {
-                return (false, null);
-            }
+            await _context.Deliveries.AddAsync(delivery, cancellationToken);
+            var success = await _context.SaveChangesAsync(cancellationToken);
 
-            try
-            {
-                await _context.Deliveries.AddAsync(delivery, cancellationToken);
-                var success = await _context.SaveChangesAsync(cancellationToken);
-
-                return success > 0 ? (true, delivery.Id) : (false, null);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return success > 0 ? (true, delivery.Id) : (false, null);
         }
 
         public async Task<bool> DeleteDeliveryAsync(int deliveryId, CancellationToken cancellationToken)
         {
-            if (deliveryId == 0)
-            {
-                return false;
-            }
-            try
-            {
-                var delivery = await _context.Deliveries.FindAsync(deliveryId, cancellationToken);
-                if (delivery == null)
-                {
-                    return false;
-                }
-                else if (delivery is ISoftDeletable softDeletable)
-                {
-                    softDeletable.IsDeleted = true;
-                    softDeletable.DeletedOnUtc = DateTime.UtcNow;
-                }
-                else
-                {
-                    _context.Deliveries.Remove(delivery);
-                }
+            var delivery = await _context.Deliveries.FindAsync(deliveryId, cancellationToken);
 
-                int success = await _context.SaveChangesAsync(cancellationToken);
-
-                return success > 0;
-            }
-            catch (Exception)
+            if (delivery is ISoftDeletable softDeletable)
             {
-                throw;
+                softDeletable.IsDeleted = true;
+                softDeletable.DeletedOnUtc = DateTime.UtcNow;
             }
+            else
+            {
+                _context.Deliveries.Remove(delivery);
+            }
+
+            int success = await _context.SaveChangesAsync(cancellationToken);
+
+            return success > 0;
         }
 
         public IQueryable<Delivery> GetAllDeliveries() => _context.Deliveries;
@@ -81,25 +57,10 @@ namespace SupplyTrackerMVC.Infrastructure.Repositories
 
         public async Task<bool> UpdateDeliveryAsync(Delivery delivery, CancellationToken cancellationToken)
         {
-            if (delivery == null)
-            {
-                return false;
-            }
+            _context.Deliveries.Update(delivery);
+            int success = await _context.SaveChangesAsync(cancellationToken);
 
-            try
-            {
-                _context.Deliveries.Update(delivery);
-
-                int success = await _context.SaveChangesAsync(cancellationToken);
-
-                return success > 0;
-            }
-
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return success > 0;
         }
     }
 }

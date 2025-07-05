@@ -21,5 +21,6 @@ namespace SupplyTrackerMVC.Domain.Model.Receivers
         public Address Address { get; set; }
         public int ReceiverId { get; set; }
         public Receiver Receiver { get; set; }
+        public ICollection<Delivery> Deliveries { get; set; }
     }
 }

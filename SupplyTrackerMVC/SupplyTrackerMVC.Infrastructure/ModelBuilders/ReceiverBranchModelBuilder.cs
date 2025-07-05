@@ -15,10 +15,25 @@ namespace SupplyTrackerMVC.Infrastructure.ModelBuilders
         {
             builder.HasQueryFilter(rb => !rb.IsDeleted);
 
+            // Address - 1:1
             builder
                 .HasOne(rb => rb.Address)
                 .WithOne()
                 .HasForeignKey<ReceiverBranch>(rb => rb.AddressId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Receiver - N:1
+            builder
+                .HasOne(rb => rb.Receiver)
+                .WithMany(r => r.ReceiverBranches)
+                .HasForeignKey(rb => rb.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Deliveries - 1:N
+            builder
+                .HasMany(rb => rb.Deliveries)
+                .WithOne(d => d.ReceiverBranch)
+                .HasForeignKey(d => d.ReceiverBranchId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

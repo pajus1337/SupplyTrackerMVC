@@ -17,10 +17,14 @@ namespace SupplyTrackerMVC.Application.ViewModels.DeliveryVm
         public int Id { get; set; }
         public DateTime DeliveryDataTime { get; set; }
         public int ProductDeliveryWeight { get; set; }
+        public string ProductName { get; set; }
+        public string SenderName { get; set; }
+        public string ReceiverBranchName { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Delivery, DeliveryForListVm>();
+            profile.CreateMap<Delivery, DeliveryForListVm>()
+                .ForMember(destination => destination.ReceiverBranchName, opt => opt.MapFrom(source => source.ReceiverBranch.Name));
         }
     }
 }

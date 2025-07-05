@@ -38,14 +38,18 @@ namespace SupplyTrackerMVC.Application.ViewModels.DeliveryVm
             profile.CreateMap<NewDeliveryVm, Delivery>()
                 .ForMember(d => d.ProductId, opt => opt.MapFrom(s => s.SelectedProductId))
                 .ForMember(d => d.ReceiverId, opt => opt.MapFrom(s => s.SelectedReceiverId))
-                .ForMember(d => d.SenderId, opt => opt.MapFrom(s => s.SelectedSenderId));
+                .ForMember(d => d.SenderId, opt => opt.MapFrom(s => s.SelectedSenderId))
+                .ForMember(d => d.ReceiverBranchId, opt => opt.MapFrom(s => s.SelectedReceiverBranchId));
         }
 
         public class NewDeliveryValidator : AbstractValidator<NewDeliveryVm>
         {
             public NewDeliveryValidator()
             {
-                RuleFor(x => x.Id).NotNull();
+                RuleFor(x => x.SelectedSenderId).GreaterThan(0);
+                RuleFor(x => x.SelectedReceiverId).GreaterThan(0);
+                RuleFor(x => x.SelectedReceiverBranchId).GreaterThan(0);
+                RuleFor(x => x.SelectedProductId).GreaterThan(0);
                 RuleFor(x => x.DeliveryDataTime).GreaterThanOrEqualTo(DateTime.Today);
             }
         }

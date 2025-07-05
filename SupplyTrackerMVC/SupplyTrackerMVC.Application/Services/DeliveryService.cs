@@ -23,7 +23,13 @@ namespace SupplyTrackerMVC.Application.Services
         private readonly IFluentValidatorFactory _validatorFactory;
         private readonly IMapper _mapper;
 
-        public DeliveryService(IFluentValidatorFactory validatorFactory, IDeliveryRepository deliveryRepository, ISenderRepository senderRepository, IReceiverRepository receiverRepository, IProductRepository productRepository, IMapper mapper)
+        public DeliveryService(
+            IFluentValidatorFactory validatorFactory,
+            IDeliveryRepository deliveryRepository,
+            ISenderRepository senderRepository,
+            IReceiverRepository receiverRepository,
+            IProductRepository productRepository,
+            IMapper mapper)
         {
             _validatorFactory = validatorFactory;
             _deliveryRepository = deliveryRepository;
@@ -40,24 +46,23 @@ namespace SupplyTrackerMVC.Application.Services
                 return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
-            var validator = _validatorFactory.GetValidator<NewDeliveryVm>();
-            var result = await validator.ValidateAsync(model, cancellationToken);
-            if (!result.IsValid)
-            {
-                return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
-            }
-
-            var delivery = _mapper.Map<Delivery>(model);
             try
             {
-                var (isSuccess, delieryId) = await _deliveryRepository.AddDeliveryAsync(delivery, cancellationToken);
+                var validator = _validatorFactory.GetValidator<NewDeliveryVm>();
+                var result = await validator.ValidateAsync(model, cancellationToken);
+                if (!result.IsValid)
+                {
+                    return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
+                }
 
+                var delivery = _mapper.Map<Delivery>(model);
+                var (isSuccess, deliveryId) = await _deliveryRepository.AddDeliveryAsync(delivery, cancellationToken);
                 if (!isSuccess)
                 {
                     return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Failed to add new delivery" });
                 }
 
-                return ServiceResponse<VoidValue>.CreateSuccess(null, delieryId);
+                return ServiceResponse<VoidValue>.CreateSuccess(null, deliveryId);
             }
             catch (Exception ex)
             {
@@ -149,7 +154,11 @@ namespace SupplyTrackerMVC.Application.Services
 
                 var totalCount = await deliveriesQuery.CountAsync(cancellationToken);
 
-                var deliveriesToShow = await deliveriesQuery.Skip(pageSize * (pageNo - 1)).Take(pageSize).ProjectTo<DeliveryForListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+                var deliveriesToShow = await deliveriesQuery
+                    .Skip(pageSize * (pageNo - 1))
+                    .Take(pageSize)
+                    .ProjectTo<DeliveryForListVm>(_mapper.ConfigurationProvider)
+                    .ToListAsync(cancellationToken);
 
                 var result = new ListDeliveryForListVm()
                 {
@@ -162,10 +171,10 @@ namespace SupplyTrackerMVC.Application.Services
                 };
 
                 return ServiceResponse<ListDeliveryForListVm>.CreateSuccess(result);
-            }      
+            }
             catch (Exception ex)
             {
-                return ServiceResponse<ListDeliveryForListVm>.CreateFailed(new string[] { "An error occurred while getting deliveries", ex.Message});
+                return ServiceResponse<ListDeliveryForListVm>.CreateFailed(new string[] { "An error occurred while getting deliveries", ex.Message });
             }
         }
     }

@@ -15,18 +15,30 @@ namespace SupplyTrackerMVC.Infrastructure.ModelBuilders
         public void Configure(EntityTypeBuilder<Delivery> builder)
         {
             builder.HasQueryFilter(d => !d.IsDeleted);
-
+            
             builder
                 .HasOne(d => d.Sender)
                 .WithMany(s => s.Deliveries)
                 .HasForeignKey(d => d.SenderId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasOne(d => d.Receiver)
                 .WithMany(r => r.Deliveries)
                 .HasForeignKey(d => d.ReceiverId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasOne(d => d.ReceiverBranch)
+                .WithMany(rb => rb.Deliveries)
+                .HasForeignKey(d => d.ReceiverBranchId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasOne(d => d.Product)
+                .WithMany()
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SupplyTrackerMVC.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class InitTestMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -298,7 +298,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                         column: x => x.ReceiverId,
                         principalTable: "Receivers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -331,43 +331,6 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Deliveries",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeliveryDataTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SenderId = table.Column<int>(type: "int", nullable: false),
-                    ReceiverId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    ProductDeliveryWeight = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Deliveries", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Deliveries_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Deliveries_Receivers_ReceiverId",
-                        column: x => x.ReceiverId,
-                        principalTable: "Receivers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Deliveries_Senders_SenderId",
-                        column: x => x.SenderId,
-                        principalTable: "Senders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductDetails",
                 columns: table => new
                 {
@@ -390,6 +353,50 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Deliveries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeliveryDataTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SenderId = table.Column<int>(type: "int", nullable: false),
+                    ReceiverId = table.Column<int>(type: "int", nullable: false),
+                    ReceiverBranchId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductDeliveryWeight = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Deliveries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Deliveries_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Deliveries_ReceiverBranches_ReceiverBranchId",
+                        column: x => x.ReceiverBranchId,
+                        principalTable: "ReceiverBranches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Deliveries_Receivers_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "Receivers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Deliveries_Senders_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "Senders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -484,6 +491,11 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Deliveries_ReceiverBranchId",
+                table: "Deliveries",
+                column: "ReceiverBranchId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Deliveries_ReceiverId",
                 table: "Deliveries",
                 column: "ReceiverId");
@@ -574,9 +586,6 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 name: "ProductDetails");
 
             migrationBuilder.DropTable(
-                name: "ReceiverBranches");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -589,13 +598,16 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                 name: "Contacts");
 
             migrationBuilder.DropTable(
+                name: "ReceiverBranches");
+
+            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Receivers");
+                name: "Senders");
 
             migrationBuilder.DropTable(
-                name: "Senders");
+                name: "Receivers");
 
             migrationBuilder.DropTable(
                 name: "ProductTypes");
