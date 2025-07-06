@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SupplyTrackerMVC.Application.Interfaces;
-using SupplyTrackerMVC.Application.Services;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
-using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 
 namespace SupplyTrackerMVC.Web.Controllers
 {

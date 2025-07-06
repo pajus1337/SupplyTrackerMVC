@@ -1,0 +1,92 @@
+﻿@model SupplyTrackerMVC.Application.ViewModels.ReportVm.ReportFilterVm
+
+@{
+    ViewData["Title"] = "GeneratePdfReport";
+}
+
+<h1>GeneratePdfReport</h1>
+
+<h4>ReportFilterVm</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="GeneratePdfReport">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SelectedReceiverId" class="control-label"></label>
+                <input asp-for="SelectedReceiverId" class="form-control" />
+                <span asp-validation-for="SelectedReceiverId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedReceiverBranchId" class="control-label"></label>
+                <input asp-for="SelectedReceiverBranchId" class="form-control" />
+                <span asp-validation-for="SelectedReceiverBranchId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedProductId" class="control-label"></label>
+                <input asp-for="SelectedProductId" class="form-control" />
+                <span asp-validation-for="SelectedProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReportType" class="control-label"></label>
+                <input asp-for="ReportType" class="form-control" />
+                <span asp-validation-for="ReportType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedDate" class="control-label"></label>
+                <input asp-for="SelectedDate" class="form-control" />
+                <span asp-validation-for="SelectedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedMonth" class="control-label"></label>
+                <input asp-for="SelectedMonth" class="form-control" />
+                <span asp-validation-for="SelectedMonth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedYear" class="control-label"></label>
+                <input asp-for="SelectedYear" class="form-control" />
+                <span asp-validation-for="SelectedYear" class="text-danger"></span>
+            </div>
+
+            <!-- Testing Dropdown Display and selection -->
+
+            <div class="form-group">
+                <label asp-for="SelectedReceiverId" class="control-label"></label>
+                <select asp-for="SelectedReceiverId" class="form-control" asp-items="@(new SelectList(Model.Receivers.Receivers, "Id", "Name"))">
+                    <option value="">--- Select Receiver ---</option>
+                </select>
+                <span asp-validation-for="SelectedReceiverId" class="text-danger"></span>
+            </div>
+
+            <!-- End of tests -->
+
+            <div class="form-group">
+                <label asp-for="SelectedReceiverBranchId" class="control-label"></label>
+                <select asp-for="SelectedReceiverBranchId" class="form-control" asp-items="@(new SelectList(Model.ReceiverBranches.ReceiverBranches, "Id", "BranchAlias", "BranchInternalID"))">
+                    <option value="">--- Select Receiver Branch ---</option>
+                </select>
+                <span asp-validation-for="SelectedReceiverBranchId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedProductId" class="control-label"></label>
+                <select asp-for="SelectedProductId" class="form-control" asp-items="@(new SelectList(Model.Products.Products, "Id", "ChemicalSymbol"))">
+                    <option value="">--- Select Product ---</option>
+                </select>
+                <span asp-validation-for="SelectedProductId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -8,6 +8,6 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReceiverVm
 {
     public class ReceiverBranchSelectListVm
     {
-        public IQueryable<ReceiverBranchForSelectListVm> ReceiverBranches { get; set; }
+        public IEnumerable<ReceiverBranchForSelectListVm> ReceiverBranches { get; set; }
     }
 }

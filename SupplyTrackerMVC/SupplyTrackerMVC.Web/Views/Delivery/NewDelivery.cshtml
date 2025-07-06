@@ -42,7 +42,7 @@
             <div class="form-group">
                 <label asp-for="SelectedReceiverBranchId" class="control-label"></label>
                 <select asp-for="SelectedReceiverBranchId" class="form-control" asp-items="@(new SelectList(Model.ReceiverBranches.ReceiverBranches, "Id", "BranchAlias", "BranchInternalID"))">
-                    <option value="">--- Select Product ---</option>
+                    <option value="">--- Select Receiver Branch ---</option>
                 </select>
                 <span asp-validation-for="SelectedReceiverBranchId" class="text-danger"></span>
             </div>

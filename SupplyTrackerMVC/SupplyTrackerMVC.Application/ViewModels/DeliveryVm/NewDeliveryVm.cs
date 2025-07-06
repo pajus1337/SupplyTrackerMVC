@@ -5,14 +5,6 @@ using SupplyTrackerMVC.Application.ViewModels.ProductVm;
 using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Model.Deliveries;
-using SupplyTrackerMVC.Domain.Model.Products;
-using SupplyTrackerMVC.Domain.Model.Receivers;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Application.ViewModels.DeliveryVm
 {
@@ -31,8 +23,6 @@ namespace SupplyTrackerMVC.Application.ViewModels.DeliveryVm
 
         public int ProductDeliveryWeight { get; set; }
 
-
-        // TODO: Add Mapping
         public void Mapping(Profile profile)
         {
             profile.CreateMap<NewDeliveryVm, Delivery>()

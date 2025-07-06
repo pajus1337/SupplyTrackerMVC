@@ -5,11 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.ProductVm;
-using SupplyTrackerMVC.Application.ViewModels.ReceiverVm;
-using SupplyTrackerMVC.Application.ViewModels.SenderVm;
 using SupplyTrackerMVC.Domain.Interfaces;
 using SupplyTrackerMVC.Domain.Model.Products;
-using System.Net.Http.Headers;
 
 namespace SupplyTrackerMVC.Application.Services
 {
