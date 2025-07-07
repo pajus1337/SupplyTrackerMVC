@@ -37,7 +37,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> AddSender(NewSenderVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.AddNewSenderAsync(model, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse, model);
             }
@@ -50,7 +50,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> ViewSender(int senderId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.GetSenderDetailsByIdAsync(senderId, cancellationToken);
-            if (!serviceResponse.Success && serviceResponse.ErrorMessage != null)
+            if (!serviceResponse.IsSuccessful && serviceResponse.ErrorMessage != null)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -62,7 +62,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> UpdateSender(int senderId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.GetSenderForEditAsync(senderId, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -74,7 +74,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> UpdateSender(UpdateSenderVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.UpdateSenderAsync(model, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse, model);
             }
@@ -86,7 +86,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> ViewSenderList(CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.GetSendersForListAsync(5, 1, "", cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -98,7 +98,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> ViewSenderList(int pageSize, CancellationToken cancellationToken, int pageNo = 1, string searchString = "")
         {
             var serviceResponse = await _senderService.GetSendersForListAsync(pageSize, pageNo, searchString, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -110,7 +110,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> DeleteSender(int senderId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.GetSenderForDeleteAsync(senderId, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -122,7 +122,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> DeleteSender(SenderForDeleteVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.DeleteSenderByIdAsync(model.Id, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -138,7 +138,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> AddContactForSender(int senderId)
         {
             var serviceResponse = await _senderService.PrepareAddContactVm(senderId);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -151,7 +151,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> AddContactForSender(NewContactVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _senderService.AddSenderContactAsync(model, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }

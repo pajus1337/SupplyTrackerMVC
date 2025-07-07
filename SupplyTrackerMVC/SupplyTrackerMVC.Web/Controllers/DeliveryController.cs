@@ -31,7 +31,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         {
             var serviceResponse = await _deliveryService.AddNewDeliveryAsync(model, cancellationToken);
 
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 if (serviceResponse.ErrorMessage != null)
                 {
@@ -70,7 +70,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> ViewDeliveriesList(CancellationToken cancellationToken)
         {
             var serviceResponse = await _deliveryService.GetDeliveryForListAsync(5,1,"", "", cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -82,7 +82,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> ViewDeliveriesList(int pageSize, CancellationToken cancellationToken, int pageNo = 1, string searchBy = "", string searchString = "")
         {
             var serviceResponse = await _deliveryService.GetDeliveryForListAsync(pageSize,pageNo, searchBy, searchString, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }

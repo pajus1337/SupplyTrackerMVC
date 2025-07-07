@@ -1,4 +1,5 @@
-﻿using SupplyTrackerMVC.Application.Mapping;
+﻿using AutoMapper;
+using SupplyTrackerMVC.Application.Mapping;
 using SupplyTrackerMVC.Domain.Model.Deliveries;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,10 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReportVm
         public string ProductName { get; set; }
         public int ProductDeliveryWeight { get; set; }
         public DateTime DeliveryDate { get; set; }
+
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<Delivery, ReportDeliveryVm>();
+        }
     }
 }

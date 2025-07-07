@@ -1,4 +1,5 @@
-﻿@{
+﻿@using SupplyTrackerMVC.Application.Enums
+@{
     ViewData["Title"] = "User Dashboard";
 }
 <!--TODO: Add Action Url's for button-->
@@ -39,8 +40,8 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">Create and download Delivery Reports.</p>
-                    <button class="btn btn-primary me-2" onclick="location.href='@Url.Action("", "")'">Daily</button>>
-                    <button class="btn btn-secondary" onclick="location.href='@Url.Action("", "")'">Monthly</button>
+                    <button class="btn btn-primary me-2" onclick="location.href='@Url.Action("GeneratePdfReport", "Report", new { reportType = ReportType.Daily})'">Daily</button>
+                    <button class="btn btn-secondary" onclick="location.href='@Url.Action("GeneratePdfReport", "Report", new { reportType = ReportType.Monthly})'">Monthly</button>
                 </div>
             </div>
         </div>

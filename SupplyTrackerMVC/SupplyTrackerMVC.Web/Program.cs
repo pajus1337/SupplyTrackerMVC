@@ -1,9 +1,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Infrastructure;
 using SupplyTrackerMVC.Application.DI;
 using SupplyTrackerMVC.Infrastructure;
 using SupplyTrackerMVC.Infrastructure.Interceptors;
 using SupplyTrackerMVC.Web.Middleware;
+
+// QuestPDF License settings.
+QuestPDF.Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 

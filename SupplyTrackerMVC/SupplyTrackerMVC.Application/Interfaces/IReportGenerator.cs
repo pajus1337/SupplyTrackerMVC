@@ -1,4 +1,5 @@
-﻿using SupplyTrackerMVC.Application.ViewModels.ReportVm;
+﻿using SupplyTrackerMVC.Application.Responses;
+using SupplyTrackerMVC.Application.ViewModels.ReportVm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,6 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface IReportGenerator
     {
-        ListReportDeliveryVm GetDailyReportData(ReportFilterVm filter);
-        ListReportDeliveryVm GetMonthlyReportData(ReportFilterVm filter);
+        byte[] GeneratePdf(ListReportDeliveryVm reportData);
     }
 }

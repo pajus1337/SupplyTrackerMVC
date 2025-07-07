@@ -1,4 +1,5 @@
-﻿using SupplyTrackerMVC.Application.Responses;
+﻿using SupplyTrackerMVC.Application.Enums;
+using SupplyTrackerMVC.Application.Responses;
 using SupplyTrackerMVC.Application.ViewModels.ReportVm;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface IReportService
     {
-        Task<ServiceResponse<ReportFilterVm>> PrepareReportFilterVm(CancellationToken cancellationToken);
+        Task<ActionResponse<ReportFilterVm>> PrepareReportFilterVm(ReportType reportType, CancellationToken cancellationToken);
+        Task<ActionResponse<ReportGenerationResult>> GenerateReportAsync(ReportFilterVm filterModel, CancellationToken cancellationToken);
     }
 }

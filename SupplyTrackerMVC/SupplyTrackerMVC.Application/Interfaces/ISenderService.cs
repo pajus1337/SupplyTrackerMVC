@@ -11,17 +11,17 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface ISenderService
     {
-        Task<ServiceResponse<NewSenderVm>> AddNewSenderAsync(NewSenderVm model, CancellationToken cancellationToken);
-        Task<ServiceResponse<SenderDetailsVm>> UpdateSenderAsync(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken);
-        Task<ServiceResponse<VoidValue>> DeleteSenderByIdAsync(int senderId, CancellationToken cancellationToken);
-        Task<ServiceResponse<ListSenderForListVm>> GetSendersForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken);
-        Task<ServiceResponse<SenderDetailsVm>> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken);
-        Task<ServiceResponse<UpdateSenderVm>> GetSenderForEditAsync(int senderId, CancellationToken cancellationToken);
-        Task<ServiceResponse<SenderForDeleteVm>> GetSenderForDeleteAsync(int senderId, CancellationToken cancellationToken);
-        Task<ServiceResponse<SenderSelectListVm>> GetAllSendersForSelectListAsync(CancellationToken cancellationToken);
-        Task<ServiceResponse<NewContactVm>> AddSenderContactAsync(NewContactVm newContactVm, CancellationToken cancellationToken);
-        Task<ServiceResponse<NewContactVm>> PrepareAddContactVm(int senderId);
-        Task<ServiceResponse<ContactVm>> UpdateSenderContactAsync(UpdateContactVm updateContactVm, CancellationToken cancellationToken);
-        Task<ServiceResponse<VoidValue>> DeleteSenderContactAsync(int senderId, int senderContactId, CancellationToken cancellationToken);
+        Task<ActionResponse<NewSenderVm>> AddNewSenderAsync(NewSenderVm model, CancellationToken cancellationToken);
+        Task<ActionResponse<SenderDetailsVm>> UpdateSenderAsync(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken);
+        Task<ActionResponse<VoidValue>> DeleteSenderByIdAsync(int senderId, CancellationToken cancellationToken);
+        Task<ActionResponse<ListSenderForListVm>> GetSendersForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken);
+        Task<ActionResponse<SenderDetailsVm>> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken);
+        Task<ActionResponse<UpdateSenderVm>> GetSenderForEditAsync(int senderId, CancellationToken cancellationToken);
+        Task<ActionResponse<SenderForDeleteVm>> GetSenderForDeleteAsync(int senderId, CancellationToken cancellationToken);
+        Task<ActionResponse<SenderSelectListVm>> GetAllSendersForSelectListAsync(CancellationToken cancellationToken);
+        Task<ActionResponse<NewContactVm>> AddSenderContactAsync(NewContactVm newContactVm, CancellationToken cancellationToken);
+        Task<ActionResponse<NewContactVm>> PrepareAddContactVm(int senderId);
+        Task<ActionResponse<ContactVm>> UpdateSenderContactAsync(UpdateContactVm updateContactVm, CancellationToken cancellationToken);
+        Task<ActionResponse<VoidValue>> DeleteSenderContactAsync(int senderId, int senderContactId, CancellationToken cancellationToken);
     }
 }

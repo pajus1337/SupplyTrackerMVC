@@ -22,11 +22,11 @@ namespace SupplyTrackerMVC.Application.Services
             _validatorFactory = validatorFactory;
         }
 
-        public async Task<ServiceResponse<VoidValue>> AddProductAsync(NewProductVm model, CancellationToken cancellationToken)
+        public async Task<ActionResponse<VoidValue>> AddProductAsync(NewProductVm model, CancellationToken cancellationToken)
         {
             if (model == null)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
+                return ActionResponse<VoidValue>.Failed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
             try
@@ -35,29 +35,29 @@ namespace SupplyTrackerMVC.Application.Services
                 var result = await validator.ValidateAsync(model, cancellationToken);
                 if (!result.IsValid)
                 {
-                    return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
+                    return ActionResponse<VoidValue>.Failed(result.Errors.Select(e => e.ErrorMessage), true);
                 }
 
                 var product = _mapper.Map<Product>(model);
                 var (productId, isSuccess) = await _productRepository.AddProductAsync(product, cancellationToken);
                 if (!isSuccess)
                 {
-                    return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Failed to add new product" });
+                    return ActionResponse<VoidValue>.Failed(new string[] { "Failed to add new product" });
                 }
 
-                return ServiceResponse<VoidValue>.CreateSuccess(null, productId);
+                return ActionResponse<VoidValue>.Success(null, productId);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<VoidValue>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<UpdateProductVm>> UpdateProductAsync(UpdateProductVm model, CancellationToken cancellationToken)
+        public async Task<ActionResponse<UpdateProductVm>> UpdateProductAsync(UpdateProductVm model, CancellationToken cancellationToken)
         {
             if (model == null)
             {
-                return ServiceResponse<UpdateProductVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
+                return ActionResponse<UpdateProductVm>.Failed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
             try
@@ -66,7 +66,7 @@ namespace SupplyTrackerMVC.Application.Services
                 var result = await validator.ValidateAsync(model, cancellationToken);
                 if (!result.IsValid)
                 {
-                    return ServiceResponse<UpdateProductVm>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
+                    return ActionResponse<UpdateProductVm>.Failed(result.Errors.Select(e => e.ErrorMessage), true);
                 }
 
                 var product = _mapper.Map<Product>(model);
@@ -74,30 +74,30 @@ namespace SupplyTrackerMVC.Application.Services
 
                 if (!isSuccess)
                 {
-                    return ServiceResponse<UpdateProductVm>.CreateFailed(new string[] { "Failed to update product" });
+                    return ActionResponse<UpdateProductVm>.Failed(new string[] { "Failed to update product" });
                 }
 
-                return ServiceResponse<UpdateProductVm>.CreateSuccess(null);
+                return ActionResponse<UpdateProductVm>.Success(null);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<UpdateProductVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<UpdateProductVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<VoidValue>> DeleteProductASync(int productId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<VoidValue>> DeleteProductASync(int productId, CancellationToken cancellationToken)
         {
             if (productId == 0)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Wrong product Id" });
+                return ActionResponse<VoidValue>.Failed(new string[] { "Wrong product Id" });
             }
 
             var isSuccess = await _productRepository.DeleteProductAsync(productId, cancellationToken);
 
-            return isSuccess ? ServiceResponse<VoidValue>.CreateSuccess(null) : ServiceResponse<VoidValue>.CreateFailed(new string[] { "An error occurred while deleting" });
+            return isSuccess ? ActionResponse<VoidValue>.Success(null) : ActionResponse<VoidValue>.Failed(new string[] { "An error occurred while deleting" });
         }
 
-        public async Task<ServiceResponse<ProductSelectListVm>> GetProductsForSelectList(CancellationToken cancellationToken)
+        public async Task<ActionResponse<ProductSelectListVm>> GetProductsForSelectList(CancellationToken cancellationToken)
         {
             var productsQuery = _productRepository.GetAllProducts().ProjectTo<ProductForSelectListVm>(_mapper.ConfigurationProvider);
             try
@@ -106,7 +106,7 @@ namespace SupplyTrackerMVC.Application.Services
                 var products = await productsQuery.ToListAsync(cancellationToken);
                 if (products == null)
                 {
-                    return ServiceResponse<ProductSelectListVm>.CreateFailed(new string[] { "ProductTypes call returned null" });
+                    return ActionResponse<ProductSelectListVm>.Failed(new string[] { "ProductTypes call returned null" });
                 }
 
                 var productsVm = new ProductSelectListVm()
@@ -114,16 +114,16 @@ namespace SupplyTrackerMVC.Application.Services
                     Products = products
                 };
 
-                return ServiceResponse<ProductSelectListVm>.CreateSuccess(productsVm);
+                return ActionResponse<ProductSelectListVm>.Success(productsVm);
 
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ProductSelectListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ProductSelectListVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<ListProductForListVm>> GetProductsForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken)
+        public async Task<ActionResponse<ListProductForListVm>> GetProductsForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken)
         {
             try
             {
@@ -140,19 +140,19 @@ namespace SupplyTrackerMVC.Application.Services
                     SearchString = searchString,
                 };
 
-                return ServiceResponse<ListProductForListVm>.CreateSuccess(listProductForListVm);
+                return ActionResponse<ListProductForListVm>.Success(listProductForListVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ListProductForListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ListProductForListVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<ProductDetailVm>> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<ProductDetailVm>> GetProductDetailsByIdAsync(int productId, CancellationToken cancellationToken)
         {
             if (productId <= 0)
             {
-                return ServiceResponse<ProductDetailVm>.CreateFailed(new string[] { "Wrong product Id" });
+                return ActionResponse<ProductDetailVm>.Failed(new string[] { "Wrong product Id" });
             }
 
             var productQuery = _productRepository.GetProductById(productId);
@@ -161,25 +161,25 @@ namespace SupplyTrackerMVC.Application.Services
                 var product = await productQuery.SingleOrDefaultAsync(cancellationToken);
                 if (product == null)
                 {
-                    return ServiceResponse<ProductDetailVm>.CreateFailed(new string[] { "Product not found" });
+                    return ActionResponse<ProductDetailVm>.Failed(new string[] { "Product not found" });
                 }
 
                 var productVm = _mapper.Map<ProductDetailVm>(product);
 
-                return ServiceResponse<ProductDetailVm>.CreateSuccess(productVm);
+                return ActionResponse<ProductDetailVm>.Success(productVm);
             }
 
             catch (Exception ex)
             {
-                return ServiceResponse<ProductDetailVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ProductDetailVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<UpdateProductVm>> PrepareUpdateProductVmAsync(int productId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<UpdateProductVm>> PrepareUpdateProductVmAsync(int productId, CancellationToken cancellationToken)
         {
             if (productId <= 0)
             {
-                return ServiceResponse<UpdateProductVm>.CreateFailed(new string[] { "Error: Invalid product Id" });
+                return ActionResponse<UpdateProductVm>.Failed(new string[] { "Error: Invalid product Id" });
             }
 
             try
@@ -188,17 +188,17 @@ namespace SupplyTrackerMVC.Application.Services
                 var product = await productQuery.SingleOrDefaultAsync(cancellationToken);
                 if (product == null)
                 {
-                    return ServiceResponse<UpdateProductVm>.CreateFailed(new string[] { "Error: Product not found in Database" });
+                    return ActionResponse<UpdateProductVm>.Failed(new string[] { "Error: Product not found in Database" });
                 }
 
                 var productVm = _mapper.Map<UpdateProductVm>(product);
                 productVm.ProductType = GetProductTypes();
 
-                return ServiceResponse<UpdateProductVm>.CreateSuccess(productVm);
+                return ActionResponse<UpdateProductVm>.Success(productVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<UpdateProductVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<UpdateProductVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
@@ -213,22 +213,22 @@ namespace SupplyTrackerMVC.Application.Services
             return model;
         }
 
-        public async Task<ServiceResponse<VoidValue>> AddProductTypeAsync(NewProductTypeVm model, CancellationToken cancellationToken)
+        public async Task<ActionResponse<VoidValue>> AddProductTypeAsync(NewProductTypeVm model, CancellationToken cancellationToken)
         {
             var validator = _validatorFactory.GetValidator<NewProductTypeVm>();
             var result = await validator.ValidateAsync(model, cancellationToken);
             if (!result.IsValid)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
+                return ActionResponse<VoidValue>.Failed(result.Errors.Select(e => e.ErrorMessage), true);
             }
 
             var productType = _mapper.Map<ProductType>(model);
             var productTypeId = await _productRepository.AddProductTypeAsync(productType, cancellationToken);
 
-            return ServiceResponse<VoidValue>.CreateSuccess(null, productTypeId);
+            return ActionResponse<VoidValue>.Success(null, productTypeId);
         }
 
-        public async Task<ServiceResponse<ListProductTypeForListVm>> GetProductTypesForListAsync(CancellationToken cancellationToken)
+        public async Task<ActionResponse<ListProductTypeForListVm>> GetProductTypesForListAsync(CancellationToken cancellationToken)
         {
             try
             {
@@ -241,20 +241,20 @@ namespace SupplyTrackerMVC.Application.Services
                     Count = productTypesQuery.Count(),
                 };
 
-                return ServiceResponse<ListProductTypeForListVm>.CreateSuccess(result);
+                return ActionResponse<ListProductTypeForListVm>.Success(result);
             }
 
             catch (Exception ex)
             {
-                return ServiceResponse<ListProductTypeForListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ListProductTypeForListVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<ProductTypeVm>> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<ProductTypeVm>> GetProductTypeByIdAsync(int productTypeId, CancellationToken cancellationToken)
         {
             if (productTypeId <= 0)
             {
-                return ServiceResponse<ProductTypeVm>.CreateFailed(new string[] { "Error: Invalid product type Id" });
+                return ActionResponse<ProductTypeVm>.Failed(new string[] { "Error: Invalid product type Id" });
             }
 
             try
@@ -263,17 +263,17 @@ namespace SupplyTrackerMVC.Application.Services
                 var productType = await productTypeQuery.SingleOrDefaultAsync(cancellationToken);
                 if (productType == null)
                 {
-                    return ServiceResponse<ProductTypeVm>.CreateFailed(new string[] { "Error: Product type is null" });
+                    return ActionResponse<ProductTypeVm>.Failed(new string[] { "Error: Product type is null" });
                 }
 
                 var productTypeVm = _mapper.Map<ProductTypeVm>(productType);
 
-                return ServiceResponse<ProductTypeVm>.CreateSuccess(productTypeVm);
+                return ActionResponse<ProductTypeVm>.Success(productTypeVm);
             }
 
             catch (Exception ex)
             {
-                return ServiceResponse<ProductTypeVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ProductTypeVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
@@ -282,21 +282,21 @@ namespace SupplyTrackerMVC.Application.Services
             ProductTypes = _productRepository.GetAllProductTypes().ProjectTo<ProductTypeForSelectListVm>(_mapper.ConfigurationProvider)
         };
 
-        public Task<ServiceResponse<UpdateProductTypeVm>> UpdateProductTypeAsync(int productTypeId, CancellationToken cancellationToken)
+        public Task<ActionResponse<UpdateProductTypeVm>> UpdateProductTypeAsync(int productTypeId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<VoidValue>> DeleteProductTypeAsync(int productTypeId, CancellationToken cancellationToken)
+        public Task<ActionResponse<VoidValue>> DeleteProductTypeAsync(int productTypeId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ServiceResponse<UpdateProductTypeVm>> GetProductTypeToEditAsync(int productTypeId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<UpdateProductTypeVm>> GetProductTypeToEditAsync(int productTypeId, CancellationToken cancellationToken)
         {
             if (productTypeId < 1 )
             {
-                return ServiceResponse<UpdateProductTypeVm>.CreateFailed(new string[] { "Invalid Product Type ID" });
+                return ActionResponse<UpdateProductTypeVm>.Failed(new string[] { "Invalid Product Type ID" });
             }
 
             try
@@ -304,18 +304,18 @@ namespace SupplyTrackerMVC.Application.Services
                 var productTypeVm = await _productRepository.GetProductTypeById(productTypeId).ProjectTo<UpdateProductTypeVm>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken);
                 if (productTypeVm == null)
                 {
-                    return ServiceResponse<UpdateProductTypeVm>.CreateFailed(new string[] { "Product Type not found" });
+                    return ActionResponse<UpdateProductTypeVm>.Failed(new string[] { "Product Type not found" });
                 }
 
-                return ServiceResponse<UpdateProductTypeVm>.CreateSuccess(productTypeVm);
+                return ActionResponse<UpdateProductTypeVm>.Success(productTypeVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<UpdateProductTypeVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<UpdateProductTypeVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public Task<ServiceResponse<UpdateProductTypeVm>> UpdateProductTypeAsync(UpdateProductTypeVm model, CancellationToken cancellationToken)
+        public Task<ActionResponse<UpdateProductTypeVm>> UpdateProductTypeAsync(UpdateProductTypeVm model, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

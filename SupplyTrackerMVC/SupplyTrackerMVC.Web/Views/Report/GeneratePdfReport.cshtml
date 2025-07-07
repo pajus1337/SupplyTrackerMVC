@@ -1,54 +1,19 @@
 ﻿@model SupplyTrackerMVC.Application.ViewModels.ReportVm.ReportFilterVm
+@using SupplyTrackerMVC.Application.Enums
 
 @{
-    ViewData["Title"] = "GeneratePdfReport";
+    ViewData["Title"] = "Generate PDF Report";
 }
 
-<h1>GeneratePdfReport</h1>
+<h1>@ViewData["Title"]</h1>
 
-<h4>ReportFilterVm</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="GeneratePdfReport">
+    <div class="col-md-6">
+        <form asp-action="GeneratePdfReport" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SelectedReceiverId" class="control-label"></label>
-                <input asp-for="SelectedReceiverId" class="form-control" />
-                <span asp-validation-for="SelectedReceiverId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SelectedReceiverBranchId" class="control-label"></label>
-                <input asp-for="SelectedReceiverBranchId" class="form-control" />
-                <span asp-validation-for="SelectedReceiverBranchId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SelectedProductId" class="control-label"></label>
-                <input asp-for="SelectedProductId" class="form-control" />
-                <span asp-validation-for="SelectedProductId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReportType" class="control-label"></label>
-                <input asp-for="ReportType" class="form-control" />
-                <span asp-validation-for="ReportType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SelectedDate" class="control-label"></label>
-                <input asp-for="SelectedDate" class="form-control" />
-                <span asp-validation-for="SelectedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SelectedMonth" class="control-label"></label>
-                <input asp-for="SelectedMonth" class="form-control" />
-                <span asp-validation-for="SelectedMonth" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SelectedYear" class="control-label"></label>
-                <input asp-for="SelectedYear" class="form-control" />
-                <span asp-validation-for="SelectedYear" class="text-danger"></span>
-            </div>
 
-            <!-- Testing Dropdown Display and selection -->
+            <input asp-for="ReportType" type="hidden" id="ReportType" />
 
             <div class="form-group">
                 <label asp-for="SelectedReceiverId" class="control-label"></label>
@@ -57,13 +22,10 @@
                 </select>
                 <span asp-validation-for="SelectedReceiverId" class="text-danger"></span>
             </div>
-
-            <!-- End of tests -->
-
             <div class="form-group">
                 <label asp-for="SelectedReceiverBranchId" class="control-label"></label>
-                <select asp-for="SelectedReceiverBranchId" class="form-control" asp-items="@(new SelectList(Model.ReceiverBranches.ReceiverBranches, "Id", "BranchAlias", "BranchInternalID"))">
-                    <option value="">--- Select Receiver Branch ---</option>
+                <select asp-for="SelectedReceiverBranchId" class="form-control" asp-items="@(new SelectList(Model.ReceiverBranches.ReceiverBranches, "Id", "BranchAlias"))">
+                    <option value="">--- Select Branch ---</option>
                 </select>
                 <span asp-validation-for="SelectedReceiverBranchId" class="text-danger"></span>
             </div>
@@ -75,18 +37,60 @@
                 <span asp-validation-for="SelectedProductId" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group" id="daily-section">
+                <label asp-for="SelectedDate" class="control-label"></label>
+                <input asp-for="SelectedDate" type="date" class="form-control" />
+                <span asp-validation-for="SelectedDate" class="text-danger"></span>
             </div>
 
+            <div id="monthly-section">
+                <div class="form-group">
+                    <label asp-for="SelectedMonth" class="control-label"></label>
+                    <select asp-for="SelectedMonth" class="form-control">
+                        <option value="">--- Select Month ---</option>
+                        @for (int m = 1; m <= 12; m++)
+                        {
+                            <option value="@m">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)</option>
+                        }
+                    </select>
+                    <span asp-validation-for="SelectedMonth" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SelectedYear" class="control-label"></label>
+                    <select asp-for="SelectedYear" class="form-control">
+                        <option value="">--- Select Year ---</option>
+                        @{
+                            int currentYear = DateTime.Now.Year;
+                            for (int y = currentYear - 5; y <= currentYear; y++)
+                            {
+                                <option value="@y">@y</option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="SelectedYear" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Generate PDF" class="btn btn-primary" />
+            </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const type = document.getElementById("ReportType")?.value;
+            const isDaily = type === "Daily";
+            document.getElementById("daily-section").style.display = isDaily ? "block" : "none";
+            document.getElementById("monthly-section").style.display = isDaily ? "none" : "block";
+        });
+    </script>
+
 }
+

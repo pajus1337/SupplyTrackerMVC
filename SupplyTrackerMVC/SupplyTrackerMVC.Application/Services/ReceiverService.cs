@@ -28,7 +28,7 @@ namespace SupplyTrackerMVC.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<VoidValue>> AddReceiverAsync(NewReceiverVm model, CancellationToken cancellationToken)
+        public async Task<ActionResponse<VoidValue>> AddReceiverAsync(NewReceiverVm model, CancellationToken cancellationToken)
         {
             var validator = _fluentValidatorFactory.GetValidator<NewReceiverVm>();
             if (validator == null)
@@ -39,16 +39,16 @@ namespace SupplyTrackerMVC.Application.Services
             var validationResult = await validator.ValidateAsync(model, cancellationToken);
             if (!validationResult.IsValid)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
+                return ActionResponse<VoidValue>.Failed(validationResult.Errors.Select(e => e.ErrorMessage), true);
             }
 
             var receiver = _mapper.Map<Receiver>(model);
             var (isSuccess, receiverId) = await _receiverRepository.AddReceiverAsync(receiver, cancellationToken);
 
-            return isSuccess ? ServiceResponse<VoidValue>.CreateSuccess(null, receiverId) : ServiceResponse<VoidValue>.CreateFailed(new string[] { "Failed to add receiver" });
+            return isSuccess ? ActionResponse<VoidValue>.Success(null, receiverId) : ActionResponse<VoidValue>.Failed(new string[] { "Failed to add receiver" });
         }
 
-        public async Task<ServiceResponse<ListReceiverForListVm>> GetReceiversForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken)
+        public async Task<ActionResponse<ListReceiverForListVm>> GetReceiversForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken)
         {
             try
             {
@@ -74,22 +74,22 @@ namespace SupplyTrackerMVC.Application.Services
                     result.Receivers.Add(receiverForListVm);
                 }
 
-                return ServiceResponse<ListReceiverForListVm>.CreateSuccess(result);
+                return ActionResponse<ListReceiverForListVm>.Success(result);
             }
 
             catch (Exception ex)
             {
-                return ServiceResponse<ListReceiverForListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ListReceiverForListVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
 
         // TODO: Include contacts and maybe more ? In Service or repo ? Check out´the best solution for such opertation.
-        public async Task<ServiceResponse<ReceiverDetailsVm>> GetReceiverDetailsByIdAsync(int receiverId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<ReceiverDetailsVm>> GetReceiverDetailsByIdAsync(int receiverId, CancellationToken cancellationToken)
         {
             if (receiverId < 1)
             {
-                return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { "Invalid receiver ID" });
+                return ActionResponse<ReceiverDetailsVm>.Failed(new string[] { "Invalid receiver ID" });
             }
 
             try
@@ -99,27 +99,27 @@ namespace SupplyTrackerMVC.Application.Services
 
                 if (receiver == null)
                 {
-                    ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { "receiver not found" });
+                    ActionResponse<ReceiverDetailsVm>.Failed(new string[] { "receiver not found" });
                 }
 
                 var receiverVm = _mapper.Map<ReceiverDetailsVm>(receiver);
 
-                return ServiceResponse<ReceiverDetailsVm>.CreateSuccess(receiverVm);
+                return ActionResponse<ReceiverDetailsVm>.Success(receiverVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ReceiverDetailsVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<ReceiverSelectListVm>> GetReceiversForSelectListAsync(CancellationToken cancellationToken)
+        public async Task<ActionResponse<ReceiverSelectListVm>> GetReceiversForSelectListAsync(CancellationToken cancellationToken)
         {
             try
             {
                 var receivers = await _receiverRepository.GetAllReceivers().ProjectTo<ReceiverForSelectListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
                 if (receivers == null)
                 {
-                    return ServiceResponse<ReceiverSelectListVm>.CreateFailed(new string[] { "receiver not found" });
+                    return ActionResponse<ReceiverSelectListVm>.Failed(new string[] { "receiver not found" });
                 }
 
                 var receiversSelectListVm = new ReceiverSelectListVm()
@@ -127,15 +127,15 @@ namespace SupplyTrackerMVC.Application.Services
                     Receivers = receivers,
                 };
 
-                return ServiceResponse<ReceiverSelectListVm>.CreateSuccess(receiversSelectListVm);
+                return ActionResponse<ReceiverSelectListVm>.Success(receiversSelectListVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ReceiverSelectListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ReceiverSelectListVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<ReceiverBranchSelectListVm>> GetReceiverBranchesForSelectListAsync(CancellationToken cancellationToken)
+        public async Task<ActionResponse<ReceiverBranchSelectListVm>> GetReceiverBranchesForSelectListAsync(CancellationToken cancellationToken)
         {
             var receiverBranchesQuery = _receiverRepository.GetAllReceiverBranches().ProjectTo<ReceiverBranchForSelectListVm>(_mapper.ConfigurationProvider);
 
@@ -146,26 +146,26 @@ namespace SupplyTrackerMVC.Application.Services
                 // TODO: Remove null checks for collections in services. Lists and IQueryable results are never null, but may be empty
                 if (receiverBranches == null)
                 {
-                    return ServiceResponse<ReceiverBranchSelectListVm>.CreateFailed(new string[] { "receiver is null" });
+                    return ActionResponse<ReceiverBranchSelectListVm>.Failed(new string[] { "receiver is null" });
                 }
                 var receiverBranchesVm = new ReceiverBranchSelectListVm()
                 {
                     ReceiverBranches = receiverBranchesQuery,
                 };
 
-                return ServiceResponse<ReceiverBranchSelectListVm>.CreateSuccess(receiverBranchesVm);
+                return ActionResponse<ReceiverBranchSelectListVm>.Success(receiverBranchesVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ReceiverBranchSelectListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ReceiverBranchSelectListVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<VoidValue>> AddReceiverBranchAsync(NewReceiverBranchVm model, CancellationToken cancellationToken)
+        public async Task<ActionResponse<VoidValue>> AddReceiverBranchAsync(NewReceiverBranchVm model, CancellationToken cancellationToken)
         {
             if (model == null)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
+                return ActionResponse<VoidValue>.Failed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
             var receiverBranch = _mapper.Map<ReceiverBranch>(model);
@@ -174,11 +174,11 @@ namespace SupplyTrackerMVC.Application.Services
             {
                 var (isSuccess, receiverBranchId) = await _receiverRepository.AddReceiverBranchAsync(receiverBranch, cancellationToken);
 
-                return isSuccess ? ServiceResponse<VoidValue>.CreateSuccess(null, receiverBranch.Id) : ServiceResponse<VoidValue>.CreateFailed(new string[] { "Failed to add new Receiver Branch" });
+                return isSuccess ? ActionResponse<VoidValue>.Success(null, receiverBranch.Id) : ActionResponse<VoidValue>.Failed(new string[] { "Failed to add new Receiver Branch" });
             }
             catch (Exception ex)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(new string[] { "An error occurred while creating new receiver branch", ex.Message });
+                return ActionResponse<VoidValue>.Failed(new string[] { "An error occurred while creating new receiver branch", ex.Message });
             }
         }
 
@@ -208,11 +208,11 @@ namespace SupplyTrackerMVC.Application.Services
             return model;
         }
 
-        public async Task<ServiceResponse<ReceiverBranchDetailsVm>> GetReceiverBranchDetailsAsync(int receiverBranchId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<ReceiverBranchDetailsVm>> GetReceiverBranchDetailsAsync(int receiverBranchId, CancellationToken cancellationToken)
         {
             if (receiverBranchId <= 0)
             {
-                return ServiceResponse<ReceiverBranchDetailsVm>.CreateFailed(new string[] { "Invalid receiver branch ID" });
+                return ActionResponse<ReceiverBranchDetailsVm>.Failed(new string[] { "Invalid receiver branch ID" });
             }
 
             try
@@ -222,19 +222,19 @@ namespace SupplyTrackerMVC.Application.Services
 
                 if (receiverBranch == null)
                 {
-                    return ServiceResponse<ReceiverBranchDetailsVm>.CreateFailed(new string[] { "Receiver branch not found" });
+                    return ActionResponse<ReceiverBranchDetailsVm>.Failed(new string[] { "Receiver branch not found" });
                 }
 
-                return ServiceResponse<ReceiverBranchDetailsVm>.CreateSuccess(receiverBranch);
+                return ActionResponse<ReceiverBranchDetailsVm>.Success(receiverBranch);
 
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ReceiverBranchDetailsVm>.CreateFailed(new string[] { "An error occurred while retrieving receiver branch details", ex.Message });
+                return ActionResponse<ReceiverBranchDetailsVm>.Failed(new string[] { "An error occurred while retrieving receiver branch details", ex.Message });
             }
         }
 
-        private async Task<ServiceResponse<ContactDetailTypeSelectListVm>> GetContactTypesForSelectListAsync(CancellationToken cancellationToken)
+        private async Task<ActionResponse<ContactDetailTypeSelectListVm>> GetContactTypesForSelectListAsync(CancellationToken cancellationToken)
         {
             var contactTypesQuery = _contactRepository.GetContactDetailTypes().ProjectTo<ContactDetailTypeForSelectListVm>(_mapper.ConfigurationProvider);
 
@@ -243,7 +243,7 @@ namespace SupplyTrackerMVC.Application.Services
                 var contactTypes = await contactTypesQuery.ToListAsync(cancellationToken);
                 if (contactTypes.Count == 0)
                 {
-                    return ServiceResponse<ContactDetailTypeSelectListVm>.CreateFailed(new string[] { "Collection is empty, Add new elements before use" });
+                    return ActionResponse<ContactDetailTypeSelectListVm>.Failed(new string[] { "Collection is empty, Add new elements before use" });
                 }
 
                 var contactTypesVm = new ContactDetailTypeSelectListVm()
@@ -251,19 +251,19 @@ namespace SupplyTrackerMVC.Application.Services
                     ContactDetailTypes = contactTypes
                 };
 
-                return ServiceResponse<ContactDetailTypeSelectListVm>.CreateSuccess(contactTypesVm);
+                return ActionResponse<ContactDetailTypeSelectListVm>.Success(contactTypesVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ContactDetailTypeSelectListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ContactDetailTypeSelectListVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<ReceiverDetailsVm>> UpdateReceiverAsync(UpdateReceiverVm updateReceiverVm, CancellationToken cancellationToken)
+        public async Task<ActionResponse<ReceiverDetailsVm>> UpdateReceiverAsync(UpdateReceiverVm updateReceiverVm, CancellationToken cancellationToken)
         {
             if (updateReceiverVm == null)
             {
-                return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new[] { "Error occurred while processing the HTTP POST form" });
+                return ActionResponse<ReceiverDetailsVm>.Failed(new[] { "Error occurred while processing the HTTP POST form" });
             }
 
             try
@@ -272,35 +272,35 @@ namespace SupplyTrackerMVC.Application.Services
                 var validationResult = await validator.ValidateAsync(updateReceiverVm, cancellationToken);
                 if (!validationResult.IsValid)
                 {
-                    return ServiceResponse<ReceiverDetailsVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
+                    return ActionResponse<ReceiverDetailsVm>.Failed(validationResult.Errors.Select(e => e.ErrorMessage), true);
                 }
 
                 var receiver = _mapper.Map<Receiver>(updateReceiverVm);
                 var success = await _receiverRepository.UpdateReceiverAsync(receiver, cancellationToken);
                 if (!success)
                 {
-                    return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new[] { "Failed to update receiver" });
+                    return ActionResponse<ReceiverDetailsVm>.Failed(new[] { "Failed to update receiver" });
                 }
 
                 var response = await GetReceiverDetailsByIdAsync(receiver.Id, cancellationToken);
-                if (!response.Success)
+                if (!response.IsSuccessful)
                 {
-                    return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new[] { "Receiver not found in DB after update" });
+                    return ActionResponse<ReceiverDetailsVm>.Failed(new[] { "Receiver not found in DB after update" });
                 }
 
-                return ServiceResponse<ReceiverDetailsVm>.CreateSuccess(response.Data);
+                return ActionResponse<ReceiverDetailsVm>.Success(response.Data);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ReceiverDetailsVm>.CreateFailed(new[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ReceiverDetailsVm>.Failed(new[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<VoidValue>> DeleteReceiverByIdAsync(int receiverId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<VoidValue>> DeleteReceiverByIdAsync(int receiverId, CancellationToken cancellationToken)
         {
             if (receiverId < 1)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Invalid receiver ID" });
+                return ActionResponse<VoidValue>.Failed(new string[] { "Invalid receiver ID" });
             }
 
             try
@@ -309,19 +309,19 @@ namespace SupplyTrackerMVC.Application.Services
             }
             catch (Exception ex)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(new[] { $"An error occurred: {ex.Message}" });
+                return ActionResponse<VoidValue>.Failed(new[] { $"An error occurred: {ex.Message}" });
             }
 
-            return ServiceResponse<VoidValue>.CreateSuccess(null);
+            return ActionResponse<VoidValue>.Success(null);
         }
 
 
         // TODO: Should we get ReceiverBranch seperet or get all with one db query call? Think - And implement best way for the project.
-        public async Task<ServiceResponse<UpdateReceiverVm>> GetReceiverForEditAsync(int receiverId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<UpdateReceiverVm>> GetReceiverForEditAsync(int receiverId, CancellationToken cancellationToken)
         {
             if (receiverId < 1)
             {
-                return ServiceResponse<UpdateReceiverVm>.CreateFailed(new string[] { "Invalid receiver ID" });
+                return ActionResponse<UpdateReceiverVm>.Failed(new string[] { "Invalid receiver ID" });
             }
 
             try
@@ -329,20 +329,20 @@ namespace SupplyTrackerMVC.Application.Services
                 var receiverVm = await _receiverRepository.GetReceiverById(receiverId).ProjectTo<UpdateReceiverVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
                 if (receiverVm == null)
                 {
-                    return ServiceResponse<UpdateReceiverVm>.CreateFailed(new string[] { "Receiver not found in Db" });
+                    return ActionResponse<UpdateReceiverVm>.Failed(new string[] { "Receiver not found in Db" });
                 }
 
                 // var receiverBranches = await _receiverRepository.GetAllActiveReceiverBranches(receiverId).ProjectTo<ReceiverForListVm>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
 
-                return ServiceResponse<UpdateReceiverVm>.CreateSuccess(receiverVm);
+                return ActionResponse<UpdateReceiverVm>.Success(receiverVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<UpdateReceiverVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<UpdateReceiverVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<NewContactVm>> AddReceiverContactAsync(NewContactVm newContactVm, CancellationToken cancellationToken)
+        public async Task<ActionResponse<NewContactVm>> AddReceiverContactAsync(NewContactVm newContactVm, CancellationToken cancellationToken)
         {
             try
             {
@@ -350,26 +350,26 @@ namespace SupplyTrackerMVC.Application.Services
                 var validResult = await validator.ValidateAsync(newContactVm, cancellationToken);
                 if (!validResult.IsValid)
                 {
-                    return ServiceResponse<NewContactVm>.CreateFailed(validResult.Errors.Select(e => e.ErrorMessage), true);
+                    return ActionResponse<NewContactVm>.Failed(validResult.Errors.Select(e => e.ErrorMessage), true);
                 }
 
                 var contact = _mapper.Map<NewContactVm, Contact>(newContactVm);
                 contact.ReceiverId = newContactVm.ContactOwnerId;
                 var contactId = await _contactRepository.AddContactAsync(contact, cancellationToken);
 
-                return ServiceResponse<NewContactVm>.CreateSuccess(null, contactId);
+                return ActionResponse<NewContactVm>.Success(null, contactId);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<NewContactVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<NewContactVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<ReceiverForDeleteVm>> GetReceiverForDeleteAsync(int receiverId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<ReceiverForDeleteVm>> GetReceiverForDeleteAsync(int receiverId, CancellationToken cancellationToken)
         {
             if (receiverId <= 0)
             {
-                return ServiceResponse<ReceiverForDeleteVm>.CreateFailed(new string[] { "Invalid receiver ID" });
+                return ActionResponse<ReceiverForDeleteVm>.Failed(new string[] { "Invalid receiver ID" });
             }
 
             try
@@ -378,14 +378,14 @@ namespace SupplyTrackerMVC.Application.Services
                 var receiverVm = await receiverQuery.SingleOrDefaultAsync(cancellationToken);
                 if (receiverVm == null)
                 {
-                    return ServiceResponse<ReceiverForDeleteVm>.CreateFailed(new string[] { "Receiver not found in Db" });
+                    return ActionResponse<ReceiverForDeleteVm>.Failed(new string[] { "Receiver not found in Db" });
                 }
 
-                return ServiceResponse<ReceiverForDeleteVm>.CreateSuccess(receiverVm);
+                return ActionResponse<ReceiverForDeleteVm>.Success(receiverVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ReceiverForDeleteVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ReceiverForDeleteVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
     }

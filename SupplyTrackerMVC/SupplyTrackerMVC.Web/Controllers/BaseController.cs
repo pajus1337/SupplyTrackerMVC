@@ -5,7 +5,7 @@ namespace SupplyTrackerMVC.Web.Controllers
 {
     public abstract class BaseController : Controller
     {
-        protected IActionResult HandleErrors<T>(ServiceResponse<T> serviceResponse, object model = null)
+        protected IActionResult HandleErrors<T>(ActionResponse<T> serviceResponse, object model = null)
         {
             if (serviceResponse.IsValidationError)
             {

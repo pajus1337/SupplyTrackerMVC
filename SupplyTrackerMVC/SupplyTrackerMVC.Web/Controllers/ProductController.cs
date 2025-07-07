@@ -32,7 +32,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> AddProduct(NewProductVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _productService.AddProductAsync(model, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -46,7 +46,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> UpdateProduct(int productId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _productService.PrepareUpdateProductVmAsync(productId, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -58,7 +58,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> UpdateProduct(UpdateProductVm model, CancellationToken cancellationToken)
         {
          var serviceResponse =  await _productService.UpdateProductAsync(model, cancellationToken);
-            if (!serviceResponse.Success) 
+            if (!serviceResponse.IsSuccessful) 
             {
                 return HandleErrors(serviceResponse);
             }
@@ -79,7 +79,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> AddProductType(NewProductTypeVm model, CancellationToken cancellationToken)
         {
             var serviceResponse = await _productService.AddProductTypeAsync(model, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -92,7 +92,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> ViewProductType(int productTypeId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _productService.GetProductTypeByIdAsync(productTypeId, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -104,7 +104,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> UpdateProductType(int productTypeId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _productService.GetProductTypeToEditAsync(productTypeId, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -116,7 +116,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         public async Task<IActionResult> ViewProductDetails(int productId, CancellationToken cancellationToken)
         {
             var serviceResponse = await _productService.GetProductDetailsByIdAsync(productId, cancellationToken);
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -129,7 +129,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         {
             var serviceResponse = await _productService.GetProductsForListAsync(5, 1, "", cancellationToken);
 
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -142,7 +142,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         {
             var serviceResponse = await _productService.GetProductsForListAsync(pageSize, pageNo, searchString, cancellationToken);
 
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -156,7 +156,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         {
             var serviceResponse = await _productService.GetProductTypesForListAsync(cancellationToken);
 
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }
@@ -171,7 +171,7 @@ namespace SupplyTrackerMVC.Web.Controllers
         {
             var serviceResponse = await _productService.DeleteProductASync(productId, cancellationToken);
 
-            if (!serviceResponse.Success)
+            if (!serviceResponse.IsSuccessful)
             {
                 return HandleErrors(serviceResponse);
             }

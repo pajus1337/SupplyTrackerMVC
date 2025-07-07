@@ -26,13 +26,13 @@ namespace SupplyTrackerMVC.Application.Services
             _fluentValidatorFactory = fluentValidatorFactory;
         }
 
-        public async Task<ServiceResponse<NewSenderVm>> AddNewSenderAsync(NewSenderVm model, CancellationToken cancellationToken)
+        public async Task<ActionResponse<NewSenderVm>> AddNewSenderAsync(NewSenderVm model, CancellationToken cancellationToken)
         {
             var validator = _fluentValidatorFactory.GetValidator<NewSenderVm>();
             var validationResult = await validator.ValidateAsync(model, cancellationToken);
             if (!validationResult.IsValid)
             {
-                return ServiceResponse<NewSenderVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
+                return ActionResponse<NewSenderVm>.Failed(validationResult.Errors.Select(e => e.ErrorMessage), true);
             }
 
             var sender = _mapper.Map<Sender>(model);
@@ -40,15 +40,15 @@ namespace SupplyTrackerMVC.Application.Services
             if (!success)
             {
                 // TODO: Consider a more robust solution
-                return ServiceResponse<NewSenderVm>.CreateFailed(new string[] { "Failed to add new Sender ( More details ? )" });
+                return ActionResponse<NewSenderVm>.Failed(new string[] { "Failed to add new Sender ( More details ? )" });
             }
 
-            return ServiceResponse<NewSenderVm>.CreateSuccess(model, senderId);
+            return ActionResponse<NewSenderVm>.Success(model, senderId);
         }
 
 
         //TODO : Refactor to implement ReturnService, improve logic.
-        public async Task<ServiceResponse<VoidValue>> DeleteSenderByIdAsync(int senderId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<VoidValue>> DeleteSenderByIdAsync(int senderId, CancellationToken cancellationToken)
         {
             var (success, error, additionalMessage) = await _senderRepository.DeleteSenderAsync(senderId, cancellationToken);
             if (!success)
@@ -58,17 +58,17 @@ namespace SupplyTrackerMVC.Application.Services
                 {
                     errorMessage.Add(error);
                 }
-                ServiceResponse<VoidValue>.CreateFailed(errorMessage);
+                ActionResponse<VoidValue>.Failed(errorMessage);
             }
 
-            return ServiceResponse<VoidValue>.CreateSuccess(new VoidValue(), null, additionalMessage);
+            return ActionResponse<VoidValue>.Success(new VoidValue(), null, additionalMessage);
         }
 
-        public async Task<ServiceResponse<SenderDetailsVm>> UpdateSenderAsync(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken)
+        public async Task<ActionResponse<SenderDetailsVm>> UpdateSenderAsync(UpdateSenderVm updateSenderVm, CancellationToken cancellationToken)
         {
             if (updateSenderVm == null)
             {
-                return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
+                return ActionResponse<SenderDetailsVm>.Failed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
             try
@@ -77,31 +77,31 @@ namespace SupplyTrackerMVC.Application.Services
                 var validationResult = await validator.ValidateAsync(updateSenderVm, cancellationToken);
                 if (!validationResult.IsValid)
                 {
-                    return ServiceResponse<SenderDetailsVm>.CreateFailed(validationResult.Errors.Select(e => e.ErrorMessage), true);
+                    return ActionResponse<SenderDetailsVm>.Failed(validationResult.Errors.Select(e => e.ErrorMessage), true);
                 }
 
                 var sender = _mapper.Map<Sender>(updateSenderVm);
                 var success = await _senderRepository.UpdateSenderAsync(sender, cancellationToken);
                 if (!success)
                 {
-                    return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { "Failed to update sender" });
+                    return ActionResponse<SenderDetailsVm>.Failed(new string[] { "Failed to update sender" });
                 }
 
                 var response = await GetSenderDetailsByIdAsync(sender.Id, cancellationToken);
-                if (!response.Success)
+                if (!response.IsSuccessful)
                 {
-                    return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { "Sender not found in DB after update " });
+                    return ActionResponse<SenderDetailsVm>.Failed(new string[] { "Sender not found in DB after update " });
                 }
 
-                return ServiceResponse<SenderDetailsVm>.CreateSuccess(response.Data);
+                return ActionResponse<SenderDetailsVm>.Success(response.Data);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<SenderDetailsVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<SenderDetailsVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<ListSenderForListVm>> GetSendersForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken)
+        public async Task<ActionResponse<ListSenderForListVm>> GetSendersForListAsync(int pageSize, int pageNo, string searchString, CancellationToken cancellationToken)
         {
             try
             {
@@ -127,15 +127,15 @@ namespace SupplyTrackerMVC.Application.Services
                     result.Senders.Add(sendersForListVm);
                 }
 
-                return ServiceResponse<ListSenderForListVm>.CreateSuccess(result);
+                return ActionResponse<ListSenderForListVm>.Success(result);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ListSenderForListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<ListSenderForListVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<SenderSelectListVm>> GetAllSendersForSelectListAsync(CancellationToken cancellationToken)
+        public async Task<ActionResponse<SenderSelectListVm>> GetAllSendersForSelectListAsync(CancellationToken cancellationToken)
         {
             var sendersQuery = _senderRepository.GetAllSenders().ProjectTo<SenderForSelectListVm>(_mapper.ConfigurationProvider);
             try
@@ -143,32 +143,32 @@ namespace SupplyTrackerMVC.Application.Services
                 var senders = await sendersQuery.ToListAsync(cancellationToken);
                 if (senders == null)
                 {
-                    return ServiceResponse<SenderSelectListVm>.CreateFailed(new string[] { "Sender is null" });
+                    return ActionResponse<SenderSelectListVm>.Failed(new string[] { "Sender is null" });
                 }
 
-                return ServiceResponse<SenderSelectListVm>.CreateSuccess(new SenderSelectListVm { Senders = senders });
+                return ActionResponse<SenderSelectListVm>.Success(new SenderSelectListVm { Senders = senders });
             }
 
             catch (Exception ex)
             {
-                return ServiceResponse<SenderSelectListVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<SenderSelectListVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<SenderDetailsVm>> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<SenderDetailsVm>> GetSenderDetailsByIdAsync(int senderId, CancellationToken cancellationToken)
             => await GetSenderViewModelAsync<SenderDetailsVm>(senderId, cancellationToken);
 
-        public async Task<ServiceResponse<UpdateSenderVm>> GetSenderForEditAsync(int senderId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<UpdateSenderVm>> GetSenderForEditAsync(int senderId, CancellationToken cancellationToken)
             => await GetSenderViewModelAsync<UpdateSenderVm>(senderId, cancellationToken);
 
-        public async Task<ServiceResponse<SenderForDeleteVm>> GetSenderForDeleteAsync(int senderId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<SenderForDeleteVm>> GetSenderForDeleteAsync(int senderId, CancellationToken cancellationToken)
             => await GetSenderViewModelAsync<SenderForDeleteVm>(senderId, cancellationToken);
 
-        private async Task<ServiceResponse<TViewModel>> GetSenderViewModelAsync<TViewModel>(int senderId, CancellationToken cancellationToken)
+        private async Task<ActionResponse<TViewModel>> GetSenderViewModelAsync<TViewModel>(int senderId, CancellationToken cancellationToken)
         {
             if (senderId <= 0)
             {
-                return ServiceResponse<TViewModel>.CreateFailed(new string[] { "Invalid sender ID" });
+                return ActionResponse<TViewModel>.Failed(new string[] { "Invalid sender ID" });
             }
 
             var senderQuery = _senderRepository.GetSenderById(senderId).ProjectTo<TViewModel>(_mapper.ConfigurationProvider);
@@ -177,19 +177,19 @@ namespace SupplyTrackerMVC.Application.Services
                 var senderVm = await senderQuery.SingleOrDefaultAsync(cancellationToken);
                 if (senderVm == null)
                 {
-                    return ServiceResponse<TViewModel>.CreateFailed(new string[] { "Sender not found in Db" });
+                    return ActionResponse<TViewModel>.Failed(new string[] { "Sender not found in Db" });
                 }
 
-                return ServiceResponse<TViewModel>.CreateSuccess(senderVm);
+                return ActionResponse<TViewModel>.Success(senderVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<TViewModel>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<TViewModel>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
         // TODO: Refine AddSenderContactAsync Method
-        public async Task<ServiceResponse<NewContactVm>> AddSenderContactAsync(NewContactVm newContactVm, CancellationToken cancellationToken)
+        public async Task<ActionResponse<NewContactVm>> AddSenderContactAsync(NewContactVm newContactVm, CancellationToken cancellationToken)
         {
             try
             {
@@ -197,7 +197,7 @@ namespace SupplyTrackerMVC.Application.Services
                 var result = await validator.ValidateAsync(newContactVm, cancellationToken);
                 if (!result.IsValid)
                 {
-                    return ServiceResponse<NewContactVm>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
+                    return ActionResponse<NewContactVm>.Failed(result.Errors.Select(e => e.ErrorMessage), true);
                 }
 
                 var contact = _mapper.Map<NewContactVm, Contact>(newContactVm);
@@ -207,20 +207,20 @@ namespace SupplyTrackerMVC.Application.Services
                 // End Of testing
                 var contactId = await _contactRepository.AddContactAsync(contact, cancellationToken);
 
-                return ServiceResponse<NewContactVm>.CreateSuccess(null, contactId);
+                return ActionResponse<NewContactVm>.Success(null, contactId);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<NewContactVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<NewContactVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public Task<ServiceResponse<ContactVm>> UpdateSenderContactAsync(UpdateContactVm updateContactVm, CancellationToken cancellationToken)
+        public Task<ActionResponse<ContactVm>> UpdateSenderContactAsync(UpdateContactVm updateContactVm, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<VoidValue>> DeleteSenderContactAsync(int senderId, int senderContactId, CancellationToken cancellationToken)
+        public Task<ActionResponse<VoidValue>> DeleteSenderContactAsync(int senderId, int senderContactId, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -228,7 +228,7 @@ namespace SupplyTrackerMVC.Application.Services
 
         // TODO: ASync ?! - Change prototype
         // TODO: Move to contactService? Generic the logic ?
-        public async Task<ServiceResponse<NewContactVm>> PrepareAddContactVm(int senderId)
+        public async Task<ActionResponse<NewContactVm>> PrepareAddContactVm(int senderId)
         {
             var model = new NewContactVm
             {
@@ -239,7 +239,7 @@ namespace SupplyTrackerMVC.Application.Services
                 },
             };
 
-            return ServiceResponse<NewContactVm>.CreateSuccess(model);
+            return ActionResponse<NewContactVm>.Success(model);
         }
 
         private ContactDetailTypeSelectListVm GetContactTypes() => new ContactDetailTypeSelectListVm()

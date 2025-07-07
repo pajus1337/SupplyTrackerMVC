@@ -39,11 +39,11 @@ namespace SupplyTrackerMVC.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<VoidValue>> AddNewDeliveryAsync(NewDeliveryVm model, CancellationToken cancellationToken)
+        public async Task<ActionResponse<VoidValue>> AddNewDeliveryAsync(NewDeliveryVm model, CancellationToken cancellationToken)
         {
             if (model == null)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Error occurred while processing the HTTP POST form" });
+                return ActionResponse<VoidValue>.Failed(new string[] { "Error occurred while processing the HTTP POST form" });
             }
 
             try
@@ -52,29 +52,29 @@ namespace SupplyTrackerMVC.Application.Services
                 var result = await validator.ValidateAsync(model, cancellationToken);
                 if (!result.IsValid)
                 {
-                    return ServiceResponse<VoidValue>.CreateFailed(result.Errors.Select(e => e.ErrorMessage), true);
+                    return ActionResponse<VoidValue>.Failed(result.Errors.Select(e => e.ErrorMessage), true);
                 }
 
                 var delivery = _mapper.Map<Delivery>(model);
                 var (isSuccess, deliveryId) = await _deliveryRepository.AddDeliveryAsync(delivery, cancellationToken);
                 if (!isSuccess)
                 {
-                    return ServiceResponse<VoidValue>.CreateFailed(new string[] { "Failed to add new delivery" });
+                    return ActionResponse<VoidValue>.Failed(new string[] { "Failed to add new delivery" });
                 }
 
-                return ServiceResponse<VoidValue>.CreateSuccess(null, deliveryId);
+                return ActionResponse<VoidValue>.Success(null, deliveryId);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<VoidValue>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<VoidValue>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
-        public async Task<ServiceResponse<DeliveryDetailsVm>> GetDeliveryDetailsByIdAsync(int deliveryId, CancellationToken cancellationToken)
+        public async Task<ActionResponse<DeliveryDetailsVm>> GetDeliveryDetailsByIdAsync(int deliveryId, CancellationToken cancellationToken)
         {
             if (deliveryId <= 0)
             {
-                return ServiceResponse<DeliveryDetailsVm>.CreateFailed(new string[] { "Wrong delivery Id" });
+                return ActionResponse<DeliveryDetailsVm>.Failed(new string[] { "Wrong delivery Id" });
             }
 
             var deliveryQuery = _deliveryRepository.GetDeliveryById(deliveryId).ProjectTo<DeliveryDetailsVm>(_mapper.ConfigurationProvider);
@@ -83,11 +83,11 @@ namespace SupplyTrackerMVC.Application.Services
             {
                 var deliveryVm = await deliveryQuery.FirstOrDefaultAsync(cancellationToken);
 
-                return ServiceResponse<DeliveryDetailsVm>.CreateSuccess(deliveryVm);
+                return ActionResponse<DeliveryDetailsVm>.Success(deliveryVm);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<DeliveryDetailsVm>.CreateFailed(new string[] { $"Error occurred -> {ex.Message}" });
+                return ActionResponse<DeliveryDetailsVm>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
             }
         }
 
@@ -130,7 +130,7 @@ namespace SupplyTrackerMVC.Application.Services
         };
 
         // TODO : Finish implementation
-        public async Task<ServiceResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(int pageSize, int pageNo, string searchBy, string searchString, CancellationToken cancellationToken)
+        public async Task<ActionResponse<ListDeliveryForListVm>> GetDeliveryForListAsync(int pageSize, int pageNo, string searchBy, string searchString, CancellationToken cancellationToken)
         {
             try
             {
@@ -170,11 +170,11 @@ namespace SupplyTrackerMVC.Application.Services
                     Count = totalCount,
                 };
 
-                return ServiceResponse<ListDeliveryForListVm>.CreateSuccess(result);
+                return ActionResponse<ListDeliveryForListVm>.Success(result);
             }
             catch (Exception ex)
             {
-                return ServiceResponse<ListDeliveryForListVm>.CreateFailed(new string[] { "An error occurred while getting deliveries", ex.Message });
+                return ActionResponse<ListDeliveryForListVm>.Failed(new string[] { "An error occurred while getting deliveries", ex.Message });
             }
         }
     }
