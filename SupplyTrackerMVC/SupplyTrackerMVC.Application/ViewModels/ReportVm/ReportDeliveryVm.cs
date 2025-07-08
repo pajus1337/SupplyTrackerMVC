@@ -12,11 +12,12 @@ namespace SupplyTrackerMVC.Application.ViewModels.ReportVm
     public class ReportDeliveryVm : IMapFrom<Delivery>
     {
         public int Id { get; set; }
+        public string SenderName { get; set; }
         public string ReceiverName { get; set; }
         public string ReceiverBranchName { get; set; }
         public string ProductName { get; set; }
         public int ProductDeliveryWeight { get; set; }
-        public DateTime DeliveryDate { get; set; }
+        public DateTime DeliveryDateTime { get; set; }
 
         public void Mapping(Profile profile)
         {

@@ -15,7 +15,7 @@ namespace SupplyTrackerMVC.Domain.Model.Deliveries
         public int Id { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime? DeletedOnUtc { get; set; }
-        public DateTime DeliveryDataTime { get; set; }
+        public DateTime DeliveryDateTime { get; set; }
 
         // 1:N
         public int SenderId { get; set; }

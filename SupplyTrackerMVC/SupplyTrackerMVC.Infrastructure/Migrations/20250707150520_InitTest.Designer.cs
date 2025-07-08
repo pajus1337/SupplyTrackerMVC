@@ -12,8 +12,8 @@ using SupplyTrackerMVC.Infrastructure;
 namespace SupplyTrackerMVC.Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250705093003_InitTestMigration")]
-    partial class InitTestMigration
+    [Migration("20250707150520_InitTest")]
+    partial class InitTest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -352,7 +352,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DeliveryDataTime")
+                    b.Property<DateTime>("DeliveryDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")

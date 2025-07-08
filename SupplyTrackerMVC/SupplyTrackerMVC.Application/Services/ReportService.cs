@@ -58,6 +58,7 @@ namespace SupplyTrackerMVC.Application.Services
             }
         }
 
+        // TODO: Split it some day ?:> -> SRP
         public async Task<ActionResponse<ReportGenerationResult>> GenerateReportAsync(ReportFilterVm filterModel, CancellationToken cancellationToken)
         {
             if (filterModel == null)
@@ -113,7 +114,6 @@ namespace SupplyTrackerMVC.Application.Services
             return ActionResponse<ReportGenerationResult>.Success(validFilterModel);
         }
 
-        // TODO: Split it some day ?:> -> SRP
         private async Task<ActionResponse<ReportGenerationResult>> GetDailyReportDataAsync(ReportFilterVm filter, CancellationToken cancellationToken)
         {
             if (filter.SelectedDate is null)
@@ -128,8 +128,8 @@ namespace SupplyTrackerMVC.Application.Services
 
                 var deliveriesReport = await _deliveryRepository.GetAllDeliveries()
                     .Where(d =>
-                        d.DeliveryDataTime >= start &&
-                        d.DeliveryDataTime < end &&
+                        d.DeliveryDateTime >= start &&
+                        d.DeliveryDateTime < end &&
                         d.ReceiverId == filter.SelectedReceiverId &&
                         d.ReceiverBranchId == filter.SelectedReceiverBranchId &&
                         d.ProductId == filter.SelectedProductId)
@@ -156,7 +156,34 @@ namespace SupplyTrackerMVC.Application.Services
 
         private async Task<ActionResponse<ReportGenerationResult>> GetMonthlyReportDataAsync(ReportFilterVm filter, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var deliveriesReport = await _deliveryRepository.GetAllDeliveries()
+                    .Where(d =>
+                        d.DeliveryDateTime.Year == filter.SelectedYear &&
+                        d.DeliveryDateTime.Month == filter.SelectedMonth &&
+                        d.ReceiverId == filter.SelectedReceiverId &&
+                        d.ReceiverBranchId == filter.SelectedReceiverBranchId &&
+                        d.ProductId == filter.SelectedProductId)
+                    .ProjectTo<ReportDeliveryVm>(_mapper.ConfigurationProvider)
+                    .ToListAsync(cancellationToken);
+
+                var reportData = new ListReportDeliveryVm
+                {
+                    ReportDeliveries = deliveriesReport
+                };
+
+                var result = new ReportGenerationResult
+                {
+                    ReportData = reportData,
+                };
+
+                return ActionResponse<ReportGenerationResult>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                return ActionResponse<ReportGenerationResult>.Failed(new string[] { $"Error occurred -> {ex.Message}" });
+            }
         }
     }
 }

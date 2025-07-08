@@ -349,7 +349,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DeliveryDataTime")
+                    b.Property<DateTime>("DeliveryDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")

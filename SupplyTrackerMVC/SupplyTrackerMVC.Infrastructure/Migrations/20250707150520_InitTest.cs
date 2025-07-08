@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SupplyTrackerMVC.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitTestMigration : Migration
+    public partial class InitTest : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -363,7 +363,7 @@ namespace SupplyTrackerMVC.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeliveryDataTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeliveryDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SenderId = table.Column<int>(type: "int", nullable: false),
                     ReceiverId = table.Column<int>(type: "int", nullable: false),
                     ReceiverBranchId = table.Column<int>(type: "int", nullable: false),
