@@ -26,7 +26,7 @@ namespace SupplyTrackerMVC.Application.ViewModels.Common
         public AddContactDetailTypeValidator()
         {
             RuleFor(x => x.Id).NotNull();
-            RuleFor(x => x.Name).Length(3,12);
+            RuleFor(x => x.Name).Length(3,16);
         }
     }
 }

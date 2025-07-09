@@ -10,6 +10,6 @@ namespace SupplyTrackerMVC.Application.Interfaces
 {
     public interface IStatisticsService
     {
-        Task<ActionResponse<StatisticsDataVm>> GetStatisticsAsync();
+        Task<ActionResponse<StatisticsDataVm>> GetStatisticsAsync(CancellationToken cancellationToken);
     }
 }
