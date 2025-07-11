@@ -11,7 +11,6 @@ QuestPDF.Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 var connectionString = Environment.GetEnvironmentVariable("SUPPLYTRACKER_CONNECTIONSTRING") ?? throw new InvalidOperationException("Connection string var not found in Environment");
 
