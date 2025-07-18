@@ -26,6 +26,18 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddControllersWithViews();
 
+// Identity Custom Configuration 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredUniqueChars = 0;
+    options.Password.RequiredLength = 6;
+
+    options.SignIn.RequireConfirmedEmail = false; // TODO: Remember to change after setup the MailSend service.
+});
+
 // DI Configuration
 //- Services
 builder.Services.AddApplication();
