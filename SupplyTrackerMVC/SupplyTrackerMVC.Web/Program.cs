@@ -35,7 +35,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 0;
     options.Password.RequiredLength = 6;
 
-    options.SignIn.RequireConfirmedEmail = false; // TODO: Remember to change after setup the MailSend service.
+    options.SignIn.RequireConfirmedEmail = true;
 });
 
 // DI Configuration
