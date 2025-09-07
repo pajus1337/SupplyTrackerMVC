@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Domain.Interfaces;
+using SupplyTrackerMVC.Infrastructure.ExternalServices.Email;
 using SupplyTrackerMVC.Infrastructure.ExternalServices.Reporting;
 using SupplyTrackerMVC.Infrastructure.Interceptors;
 using SupplyTrackerMVC.Infrastructure.Repositories;
@@ -31,6 +33,9 @@ namespace SupplyTrackerMVC.Infrastructure
 
             // Interceptors
             serviceDescriptors.AddSingleton<SoftDeleteInterceptor>();
+
+            // E-mail (sendmail)
+            serviceDescriptors.AddTransient<IEmailSender, SendmailEmailSender>();
 
             return serviceDescriptors;
         }

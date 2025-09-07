@@ -1,17 +1,30 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
 using SupplyTrackerMVC.Application.DI;
 using SupplyTrackerMVC.Infrastructure;
+using SupplyTrackerMVC.Infrastructure.ExternalServices.Email;
 using SupplyTrackerMVC.Infrastructure.Interceptors;
+using SupplyTrackerMVC.Web.Adapters;
 using SupplyTrackerMVC.Web.Middleware;
 
 // QuestPDF License settings.
 QuestPDF.Settings.License = LicenseType.Community;
+// End
 
 var builder = WebApplication.CreateBuilder(args);
 
-// var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+// Sendmail Configuration + Validation 
+builder.Services.AddOptions<SendmailOptions>()
+    .Bind(builder.Configuration.GetSection("Sendmail"))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+// Adapter (Identity.IEmailSender -> delegate to Application.IEmailSende)
+builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, IdentityEmailSenderAdapter>();
+// End
+
 var connectionString = Environment.GetEnvironmentVariable("SUPPLYTRACKER_CONNECTIONSTRING") ?? throw new InvalidOperationException("Connection string var not found in Environment");
 
 builder.Services.AddDbContext<Context>(
@@ -37,6 +50,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
     options.SignIn.RequireConfirmedEmail = true;
 });
+// End 
 
 // DI Configuration
 //- Services
@@ -51,11 +65,23 @@ builder.Services.AddHttpContextAccessor();
 //- Exception  Handler 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+// End
 
 var app = builder.Build();
 
 // HACK: Remember 
 app.UseExceptionHandler();
+
+// ForwardedHeaders to set confirmation email as https link.
+var forwardedHeadersOptions = new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+};
+
+forwardedHeadersOptions.KnownNetworks.Clear();
+forwardedHeadersOptions.KnownProxies.Clear();
+app.UseForwardedHeaders(forwardedHeadersOptions);
+// End
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -74,6 +100,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
