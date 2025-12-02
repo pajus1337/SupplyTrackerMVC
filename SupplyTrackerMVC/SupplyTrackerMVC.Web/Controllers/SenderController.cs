@@ -1,7 +1,4 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+﻿using Microsoft.AspNetCore.Mvc;
 using SupplyTrackerMVC.Application.Interfaces;
 using SupplyTrackerMVC.Application.ViewModels.Common;
 using SupplyTrackerMVC.Application.ViewModels.SenderVm;
