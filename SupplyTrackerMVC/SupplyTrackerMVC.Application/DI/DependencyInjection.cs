@@ -21,7 +21,7 @@ namespace SupplyTrackerMVC.Application.DI
             serviceDescriptors.AddTransient<IStatisticsService, StatisticsService>();
 
             //AutoMapper
-            serviceDescriptors.AddAutoMapper(Assembly.GetExecutingAssembly());
+            serviceDescriptors.AddAutoMapper(cfg => { }, Assembly.GetExecutingAssembly());
 
             //FluentValidator 
             serviceDescriptors.AddTransient<IFluentValidatorFactory, FluentValidatorFactory>();
