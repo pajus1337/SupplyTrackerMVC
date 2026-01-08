@@ -27,6 +27,7 @@ namespace SupplyTrackerMVC.Infrastructure
             serviceDescriptors.AddTransient<IProductRepository, ProductRepository>();
             serviceDescriptors.AddTransient<IReceiverRepository, ReceiverRepository>();
             serviceDescriptors.AddTransient<ISenderRepository, SenderRepository>();
+            serviceDescriptors.AddTransient<IUserRepository, UserRepository>();
 
             // Generators
             serviceDescriptors.AddTransient<IReportGenerator, ReportGenerator>();

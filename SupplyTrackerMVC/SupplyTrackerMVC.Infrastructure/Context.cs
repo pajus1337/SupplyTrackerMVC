@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using SupplyTrackerMVC.Domain.Model.Addresses;
@@ -17,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace SupplyTrackerMVC.Infrastructure
 {
-    public class Context : IdentityDbContext
+    public class Context : IdentityDbContext<IdentityUser,IdentityRole, string>
     {
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Contact> Contacts { get; set; }

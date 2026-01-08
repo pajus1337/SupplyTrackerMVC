@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.HttpOverrides;
+﻿using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
@@ -35,6 +35,7 @@ builder.Services.AddDbContext<Context>(
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<Context>();
 
 builder.Services.AddControllersWithViews();
@@ -65,9 +66,18 @@ builder.Services.AddHttpContextAccessor();
 //- Exception  Handler 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-// End
 
-var app = builder.Build();
+     WebApplication app;
+// End
+try
+{
+     app = builder.Build();
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex);      
+    throw;
+}
 
 // HACK: Remember 
 app.UseExceptionHandler();
